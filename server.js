@@ -3,16 +3,18 @@
 // set up ======================================================================
 // get all the tools we need
 var express  = require('express');
+var path     = require('path');
 var app      = express();
-var port     = process.env.PORT || 8080;
+var http 	 = require('http').Server(app);
+var io	 	 = require('socket.io')(http); 
+var port     = process.env.PORT || 80;
 var passport = require('passport');
 var flash    = require('connect-flash');
 
 
-
 // db configuration =============================================================
 var configDB = require('./config/database-config.js');
-var query = require('pg-query');
+var query 	 = require('pg-query');
 query.connectionParameters = configDB;
 require('./config/passport')(passport, query); // pass passport for configuration
 
@@ -23,7 +25,11 @@ app.configure(function() {
 	app.use(express.cookieParser()); // read cookies (needed for auth)
 	app.use(express.bodyParser()); // get information from html forms
 
+	// set template engine
 	app.set('view engine', 'jade');
+
+	// add public folder
+	app.use(express.static(path.join(__dirname, 'public')));
 
 	// required for passport
 	app.use(express.session({ secret: 'sessionsecret' })); // session secret
@@ -52,5 +58,18 @@ app.use(function(err, req, res, next) {
     });
 
 // launch ======================================================================
-app.listen(port);
+http.listen(port);
+
+// socket.io
+// when new connection is established
+io.on('connection', function(socket) {
+	socket.emit('news', { hello: 'world' });
+
+	socket.on('monaEvent', function(data) {
+		console.log('Mona jest najlepsza! A dane z socketa to : \n');
+		console.log(data);
+		socket.emit('response', { hello: 'Przestan to klikac!' });
+	});
+});
+
 console.log('App runs on port: ' + port);
