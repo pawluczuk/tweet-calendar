@@ -20,3 +20,14 @@ $("#socketBtn").on('click', function() {
 	console.log("klik");
 	socket.emit('monaEvent', { my: 'data' });
 });
+
+$(document).ready(function() {
+  var sourcePath = '/resources/users';
+  var usersList = '<table>';
+  $.getJSON(sourcePath, function(data) {
+    $.each(data, function(){
+      usersList += '<tr><td>' + this.email + '</td></tr>';
+    });
+    $("#usersList").html(usersList);
+  }); 
+});

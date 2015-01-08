@@ -42,6 +42,9 @@ app.configure(function() {
 // routes ======================================================================
 require('./app/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
 
+// routes ======================================================================
+require('./app/resources.js')(app, passport, io, query);
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
     var err = new Error('Not Found');
