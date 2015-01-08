@@ -26,7 +26,7 @@ $(document).ready(function() {
   var usersList = '<table>';
   $.getJSON(sourcePath, function(data) {
     $.each(data, function(){
-      usersList += '<tr><td>' + this.email + '</td></tr>';
+      usersList += '<tr><td>' + this.name + '</td></tr>';
     });
     $("#usersList").html(usersList);
   }); 
