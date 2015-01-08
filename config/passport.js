@@ -20,18 +20,9 @@ module.exports = function(passport, query) {
 
     // used to deserialize the user
     passport.deserializeUser(function(id, done) {
-        // ODKOMENTOWAC
-        /*
         query('select * from "user" where user_id = $1::int', [id], function(err, rows, result) {
-            done(err, rows[0]);
+            if (rows.length) done(err, passportUser(rows[0]));
         });
-        */
-        var testUsr = {
-                id : 1,
-                username : 'monka@monka.pl',
-                password : 'monanana'
-        };
-        done(null, testUsr);
     });
 
  	// =========================================================================
@@ -52,8 +43,8 @@ module.exports = function(passport, query) {
         query('select * from "user" where email = $1::text', [email], function(err, rows, result) {
             if (err)
                 return done(err);
-            if (rows) {
-                return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
+            if (rows.length) {
+                return done(null, false, req.flash('signupMessage', 'Adres e-mail jest już w użyciu.'));
             }
             else {
                 // insert new user
@@ -66,7 +57,11 @@ module.exports = function(passport, query) {
                 query('insert into "user" values (DEFAULT, $1::text, $2::text, $3::text, $4::text)', 
                     [newUser.password, newUser.email, newUser.name, newUser.surname], 
                     function(err, rows, result) {
-                        return done(null, newUser);
+                        query('select * from "user" where email = $1::text', 
+                            [newUser.email], function(err, rows, result) {
+                                if (rows.length)
+                                    return done(null, passportUser(rows[0]));
+                        });
                     });
             }
         });
@@ -88,35 +83,31 @@ module.exports = function(passport, query) {
 
         // find a user whose email is the same as the forms email
         // we are checking to see if the user trying to login already exists
-
-        // ODKOMENTOWAC
-        /*
         query('select * from "user" where email = $1::text', [email], function(err, rows, result) {
             // if there are any errors, return the error before anything else
             if (err)
                 return done(err);
 
             // if no user is found, return the message
-            if (!rows)
-                return done(null, false, req.flash('loginMessage', 'Nie ma takiego użytkownika.')); // req.flash is the way to set flashdata using connect-flash
+            if (!rows.length)
+                return done(null, false, req.flash('loginMessage', 'Nie ma takiego użytkownika.'));
 
             // user is found
-            var dbPassword = rows[0].password;
-            if (!bcrypt.compareSync(password, dbPassword))
-                return done(null, false, req.flash('loginMessage', 'Niepoprawne hasło.')); // create the loginMessage and save it to session as flashdata
+            var user = rows[0];
+            if (!bcrypt.compareSync(password, user.password))
+                return done(null, false, req.flash('loginMessage', 'Niepoprawne hasło.'));
 
             // all is well, return successful user
-            return done(null, rows[0]);
+            return done(null, passportUser(user));
         });
-        */
-
-        // baza nie dziala - logowanie zawsze dzialajace
-        var testUsr = {
-                id : 1,
-                username : 'monka@monka.pl',
-                password : 'monanana'
-        };
-        return done(null, testUsr);
     }));
 
 };
+
+function passportUser(user) {
+    var obj = {};
+    obj.id = (user.user_id) ? user.user_id : '';
+    obj.username = (user.email) ? user.email : '';
+    obj.password = (user.password) ? user.password : '';
+    return obj;
+}
