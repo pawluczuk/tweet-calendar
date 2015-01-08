@@ -1,0 +1,17 @@
+extends layout
+block content
+			div(class="row")
+				div(class="col-sm-6")
+					div(class="well")
+						h3
+							span(class="fa fa-user")
+							|  Profil
+						p
+							strong id : 
+							=user.id
+						p
+							strong email : 
+							=user.username
+						p
+							strong pswd : 
+							=user.password

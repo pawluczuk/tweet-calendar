@@ -1,0 +1,32 @@
+html
+	head
+		title Tweet Calendar
+		link(rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css")
+		link(rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css")
+	body(style="padding-top: 80px;")
+		div(class="container")
+			div(class="col-sm-6 col-sm-offset-3")
+				h1
+					span(class="fa fa-sign-in") 
+					|  Rejestracja
+				if message != ''
+					div(class="alert alert-danger")=message
+				form(action="/signup" method="post")
+					div(class="form-group")
+						label Email
+						input(type="text" class="form-control" name="email")
+					div(class="form-group")
+						label Hasło
+						input(type="password" class="form-control" name="password")
+					div(class="form-group")
+						label Imię
+						input(type="text" class="form-control" name="name")
+					div(class="form-group")
+						label Nazwisko
+						input(type="text" class="form-control" name="surname")
+					button(type="submit" class="btn btn-warning btn-lg") Rejestracja
+				hr
+				p Masz już konto?
+					a(href="/login")  Zaloguj się.
+				p Lub powróć do
+					a(href="/")  strony głównej.

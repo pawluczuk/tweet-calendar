@@ -1,0 +1,27 @@
+html
+	head
+		title Tweet Calendar
+		link(rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css")
+		link(rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css")
+	body(style="padding-top: 80px;")
+		div(class="container")
+			div(class="page-header text-center")
+				h1
+					span(class="fa fa-calendar")
+					|  Tweet Calendar
+			div(class="text-right")
+				a(href="/logout" class="btn btn-default btn-sm") Wyloguj się
+				a(href="/profile" class="btn btn-default btn-sm")=user.username
+			nav(class="navbar navbar-default")
+				div(class="container-fluid")
+					div(class="collapse navbar-collapse")
+						ul(class="nav navbar-nav")
+							li
+								a(href='/calendar') Kalendarz
+							li
+								a(href='/notifications') Notyfikacje
+							li
+								a(href='/groups') Moje grupy
+							li
+								a(href='/profile') Profil
+			block content
