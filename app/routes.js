@@ -57,6 +57,17 @@ module.exports = function(app, passport) {
 			user : req.user
 		});
 	});
+	app.get('/notifications', isLoggedIn, function(req, res) {
+		res.render('notifications.jade', {
+			user : req.user
+		});
+	});
+	app.get('/groups', isLoggedIn, function(req, res) {
+		res.render('groups.jade', {
+			user : req.user
+		});
+	});
+
 
 	// =====================================
 	// LOGOUT ==============================
