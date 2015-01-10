@@ -1,7 +1,7 @@
 module.exports = function(io, query) {
 	return {
 		createGroup : function(data, callback) {
-			if (valid(data)) {
+			if (invalid(data)) {
 				callback(false);
 				return;
 			}
@@ -29,7 +29,7 @@ module.exports = function(io, query) {
 	};
 };
 
-function valid(data) {
+function invalid(data) {
 	return !data || !data.groupName || !data.ownerID || 
 				!data.groupUsers || !data.groupUsers.length;
 }

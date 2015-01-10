@@ -1,7 +1,7 @@
 module.exports = function(io, query) {
 	return {
 		createEvent : function(data, callback) {
-			if (validate(data)) {
+			if (invalid(data)) {
 				callback(false);
 				return;
 			}
@@ -14,10 +14,11 @@ module.exports = function(io, query) {
 						return;
 					}
 					if (!err && rows && rows[0] && rows[0].event_id) {
-						var statement = event_user_statement(rows[0].event_id, data.additionalUsers);
+						var eventID = rows[0].event_id;
+						var statement = event_user_statement(eventID, data.additionalUsers);
 						query(statement, function(err, rows, result) {
 							if (!err)
-								callback(true);
+								callback(true, eventID);
 							else
 								callback(false);
 						});
@@ -27,10 +28,10 @@ module.exports = function(io, query) {
 	};
 };
 
-function validate(data) {
+function invalid(data) {
 	return 	!data || !data.eventName || !data.eventType ||
-			!data.start || !data.end || !data.additionalUsers || 
-			!data.comment || !data.recipient || !data.sender;
+			!data.start || !data.end || 
+			!data.recipient || !data.sender;
 }
 
 function event_user_statement(event_id, userIDs) {

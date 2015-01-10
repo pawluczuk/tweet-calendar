@@ -1,11 +1,31 @@
+var socketUser = {};
+var userSocket = {};
 
 module.exports = function(io, passport, query) {
 
 	var newEvent = require('./socket-events/create-event.js')(io, query);
 	var newGroup = require('./socket-events/create-group.js')(io, query);
+	var eventNotification = require('./socket-events/event-notification.js')(io, query);
 	// user connected
 	io.on('connection', function(socket) {
-		//console.log(findClientsSocket(io));
+		// ask newly connected user for its ID
+		socket.emit('id-request', {});
+
+		// user ID received
+		socket.on('id-response', function(data) {
+			if (data && data.userID)
+				console.log('New user connected with ID: ' + data.userID);
+				socketUser[socket.id] = data.userID;
+				userSocket[data.userID] = socket.id;
+		});
+
+		// user disconnected
+		socket.on('disconnect', function () {
+			console.log('Disconnected user with ID: ' + socketUser[socket.id]);
+			// remove client from the list of connected users
+			delete userSocket[socketUser[socket.id]];
+		    delete socketUser[socket.id];
+		});
 
 		// new group created by user
 		socket.on('create-group', function(data) {
@@ -22,9 +42,11 @@ module.exports = function(io, passport, query) {
 		// new event created by user
 		socket.on('create-event', function(data) {
 			if (data) {
-				newEvent.createEvent(data, function(result) {
-					if (result)
+				newEvent.createEvent(data, function(result, eventID) {
+					if (result) {
 						socket.emit('event-created', { response : 'true'});
+						eventNotification.notify(data, eventID, userSocket, socket);
+					}
 					else
 						socket.emit('event-created', { response : 'false'});
 				});
@@ -38,37 +60,6 @@ module.exports = function(io, passport, query) {
 		});
 	});
 };
-
-// insert into database new group and its members
-function createGroup(data, query, callback) {
-	if (!data || !data.groupName || !data.ownerID || 
-		!data.groupUsers || !data.groupUsers.length) {
-		callback(false);
-		return;
-	}
-	var groupName = data.groupName;
-	var ownerID = data.ownerID;
-	var userIDs = data.groupUsers;
-	var result = query('insert into "group" values (DEFAULT, $1::int, $2::text) returning group_id', 
-		[ownerID, groupName], 
-	    function(err, rows, result) {
-	    	if (err) {
-	    		callback(false);
-	    		return;
-	    	}
-	    	if (rows && rows[0] && rows[0].group_id) {
-	    		var statement = user_group_statement(rows[0].group_id, userIDs);
-	    		query(statement, function(err, rows, result) {
-	    			if (!err)
-	    				callback(true);
-	    			else
-	    				callback(false);
-	    		});
-	    	}
-	    });
-}
-
-
 
 function findClientsSocket(io, roomId, namespace) {
     var res = [], ns = io.of(namespace ||"/");    // the default namespace is "/"

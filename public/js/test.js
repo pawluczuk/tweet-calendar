@@ -1,4 +1,5 @@
 var socket = io.connect('http://localhost');
+var userID = Number($('#mainContent').attr('user-id'));
 
 socket.on('group-created', function(data) {
   var response = 'Group created: ' + data.response;
@@ -8,12 +9,21 @@ socket.on('group-created', function(data) {
 socket.on('event-created', function(data) {
   var response = 'Event created: ' + data.response;
   createAlert(response);
-})
+});
+
+socket.on('id-request', function(data) {
+  socket.emit('id-response', { userID : userID } );
+});
+
+socket.on('new-event', function(data) {
+  var response = 'New event for you: ' + data.eventID;
+  createAlert(response);
+});
 
 $("#group-create-btn").on('click', function() {
   var group = {};
   group.groupName = 'mona-group3';
-  group.ownerID = 9;
+  group.ownerID = userID;
   group.groupUsers = [9, 16, 18];
 	socket.emit('create-group', group);
 });
@@ -35,7 +45,7 @@ $("#event-create-btn").on('click', function() {
   userEvent.additionalUsers = [16, 18];
   userEvent.comment = 'Hababababa mona event';
   userEvent.recipient = 17;
-  userEvent.sender = 9;
+  userEvent.sender = userID;
   socket.emit('create-event', userEvent);
 });
 
@@ -48,7 +58,7 @@ $("#event-create-btn-invalid").on('click', function() {
   userEvent.additionalUsers = [16, 18];
   userEvent.comment = 'Hababababa mona event';
   userEvent.recipient = 17;
-  userEvent.sender = 9;
+  userEvent.sender = userID;
   socket.emit('create-event', userEvent);
 });
 
