@@ -68,6 +68,11 @@ module.exports = function(app, passport) {
 		});
 	});
 
+	app.get('/test', isLoggedIn, function(req, res) {
+		res.render('test.jade', {
+			user : req.user // get the user out of session and pass to template
+		});
+	});
 
 	// =====================================
 	// LOGOUT ==============================

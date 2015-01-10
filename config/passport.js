@@ -54,14 +54,14 @@ module.exports = function(passport, query) {
                 newUser.name = req.body.name;
                 newUser.surname = req.body.surname;
 
-                query('insert into "user" values (DEFAULT, $1::text, $2::text, $3::text, $4::text)', 
+                query('insert into "user" values (DEFAULT, $1::text, $2::text, $3::text, $4::text) returning user_id', 
                     [newUser.password, newUser.email, newUser.name, newUser.surname], 
                     function(err, rows, result) {
-                        query('select * from "user" where email = $1::text', 
-                            [newUser.email], function(err, rows, result) {
-                                if (rows.length)
-                                    return done(null, passportUser(rows[0]));
-                        });
+                        if (rows[0])
+                        {
+                            newUser.user_id = rows[0].user_id;
+                            return done(null, passportUser(newUser));
+                        }
                     });
             }
         });

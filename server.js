@@ -1,16 +1,14 @@
 // server.js
 
 // set up ======================================================================
-// get all the tools we need
-var express  = require('express');
-var path     = require('path');
-var app      = express();
-var http 	 = require('http').Server(app);
-var io	 	 = require('socket.io')(http); 
-var port     = process.env.PORT || 80;
-var passport = require('passport');
-var flash    = require('connect-flash');
-
+var express  		= require('express');
+var path     		= require('path');
+var app      		= express();
+var http 	 		= require('http').Server(app);
+var io	 	 		= require('socket.io')(http); 
+var port     		= process.env.PORT || 80;
+var passport 		= require('passport');
+var flash    			= require('connect-flash');
 
 // db configuration =============================================================
 var configDB = require('./config/database-config.js');
@@ -43,7 +41,7 @@ app.configure(function() {
 require('./app/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
 
 // routes ======================================================================
-require('./app/resources.js')(app, passport, io, query);
+require('./app/resources.js')(app, passport, query);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -65,4 +63,4 @@ http.listen(port);
 console.log('App runs on port: ' + port);
 
 // launch socket.io
-require('./app/sockets.js')(io);
+require('./app/sockets.js')(io, passport, query);

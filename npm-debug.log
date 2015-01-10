@@ -1,172 +1,26 @@
 0 info it worked if it ends with ok
-1 verbose cli [ 'node', '/usr/local/bin/npm', 'install', '--save', 'socket.io' ]
+1 verbose cli [ 'node', '/usr/local/bin/npm', 'start' ]
 2 info using npm@1.4.28
 3 info using node@v0.10.32
-4 warn package.json node-authentication@ No description
-5 warn package.json node-authentication@ No repository field.
-6 warn package.json node-authentication@ No README data
-7 verbose readDependencies using package.json deps
-8 verbose cache add [ 'socket.io', null ]
-9 verbose cache add name=undefined spec="socket.io" args=["socket.io",null]
-10 verbose parsed url { protocol: null,
-10 verbose parsed url   slashes: null,
-10 verbose parsed url   auth: null,
-10 verbose parsed url   host: null,
-10 verbose parsed url   port: null,
-10 verbose parsed url   hostname: null,
-10 verbose parsed url   hash: null,
-10 verbose parsed url   search: null,
-10 verbose parsed url   query: null,
-10 verbose parsed url   pathname: 'socket.io',
-10 verbose parsed url   path: 'socket.io',
-10 verbose parsed url   href: 'socket.io' }
-11 silly lockFile 71475bfd-socket-io socket.io
-12 verbose lock socket.io /Users/monika/.npm/71475bfd-socket-io.lock
-13 silly lockFile 71475bfd-socket-io socket.io
-14 silly lockFile 71475bfd-socket-io socket.io
-15 verbose addNamed [ 'socket.io', '' ]
-16 verbose addNamed [ null, '*' ]
-17 silly lockFile c03de861-socket-io socket.io@
-18 verbose lock socket.io@ /Users/monika/.npm/c03de861-socket-io.lock
-19 silly addNameRange { name: 'socket.io', range: '*', hasData: false }
-20 verbose request where is /socket.io
-21 verbose request registry https://registry.npmjs.org/
-22 verbose request id 6d20b1cb137cc636
-23 verbose url raw /socket.io
-24 verbose url resolving [ 'https://registry.npmjs.org/', './socket.io' ]
-25 verbose url resolved https://registry.npmjs.org/socket.io
-26 verbose request where is https://registry.npmjs.org/socket.io
-27 info trying registry request attempt 1 at 13:18:38
-28 verbose etag "EZMS0TKE7DSQI8GTHRH40G4YK"
-29 http GET https://registry.npmjs.org/socket.io
-30 http 200 https://registry.npmjs.org/socket.io
-31 silly registry.get cb [ 200,
-31 silly registry.get   { date: 'Thu, 08 Jan 2015 12:18:33 GMT',
-31 silly registry.get     server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
-31 silly registry.get     etag: '"2V7FQQPBWEYB16EA95MPILF10"',
-31 silly registry.get     'content-type': 'application/json',
-31 silly registry.get     'cache-control': 'max-age=60',
-31 silly registry.get     'content-length': '103208',
-31 silly registry.get     'accept-ranges': 'bytes',
-31 silly registry.get     via: '1.1 varnish',
-31 silly registry.get     age: '44',
-31 silly registry.get     'x-served-by': 'cache-ams4127-AMS',
-31 silly registry.get     'x-cache': 'HIT',
-31 silly registry.get     'x-cache-hits': '2',
-31 silly registry.get     'x-timer': 'S1420719513.956356,VS0,VE0',
-31 silly registry.get     vary: 'Accept',
-31 silly registry.get     'keep-alive': 'timeout=10, max=50',
-31 silly registry.get     connection: 'Keep-Alive' } ]
-32 silly addNameRange number 2 { name: 'socket.io', range: '*', hasData: true }
-33 silly addNameRange versions [ 'socket.io',
-33 silly addNameRange   [ '0.3.8',
-33 silly addNameRange     '0.4.0',
-33 silly addNameRange     '0.4.1',
-33 silly addNameRange     '0.5.1',
-33 silly addNameRange     '0.5.3',
-33 silly addNameRange     '0.6.0',
-33 silly addNameRange     '0.6.1',
-33 silly addNameRange     '0.6.3',
-33 silly addNameRange     '0.6.4',
-33 silly addNameRange     '0.6.5',
-33 silly addNameRange     '0.6.6',
-33 silly addNameRange     '0.6.7',
-33 silly addNameRange     '0.6.8',
-33 silly addNameRange     '0.6.9',
-33 silly addNameRange     '0.6.10',
-33 silly addNameRange     '0.6.11',
-33 silly addNameRange     '0.6.12',
-33 silly addNameRange     '0.6.14',
-33 silly addNameRange     '0.6.15',
-33 silly addNameRange     '0.6.16',
-33 silly addNameRange     '0.6.17',
-33 silly addNameRange     '0.6.18',
-33 silly addNameRange     '0.7.0',
-33 silly addNameRange     '0.7.1',
-33 silly addNameRange     '0.7.2',
-33 silly addNameRange     '0.7.3',
-33 silly addNameRange     '0.7.4',
-33 silly addNameRange     '0.7.5',
-33 silly addNameRange     '0.7.6',
-33 silly addNameRange     '0.7.7',
-33 silly addNameRange     '0.7.8',
-33 silly addNameRange     '0.7.9',
-33 silly addNameRange     '0.7.10',
-33 silly addNameRange     '0.7.11',
-33 silly addNameRange     '0.8.0',
-33 silly addNameRange     '0.8.1',
-33 silly addNameRange     '0.8.2',
-33 silly addNameRange     '0.8.3',
-33 silly addNameRange     '0.8.4',
-33 silly addNameRange     '0.8.5',
-33 silly addNameRange     '0.8.6',
-33 silly addNameRange     '0.8.7',
-33 silly addNameRange     '0.9.0',
-33 silly addNameRange     '0.9.1',
-33 silly addNameRange     '0.9.1-1',
-33 silly addNameRange     '0.9.2',
-33 silly addNameRange     '0.9.3',
-33 silly addNameRange     '0.9.4',
-33 silly addNameRange     '0.9.5',
-33 silly addNameRange     '0.9.6',
-33 silly addNameRange     '0.9.7',
-33 silly addNameRange     '0.9.8',
-33 silly addNameRange     '0.9.9',
-33 silly addNameRange     '0.9.10',
-33 silly addNameRange     '0.9.11',
-33 silly addNameRange     '0.9.12',
-33 silly addNameRange     '0.9.13',
-33 silly addNameRange     '0.9.14',
-33 silly addNameRange     '0.9.15',
-33 silly addNameRange     '0.9.16',
-33 silly addNameRange     '1.0.0-pre',
-33 silly addNameRange     '1.0.0-pre2',
-33 silly addNameRange     '1.0.0-pre3',
-33 silly addNameRange     '1.0.0-pre4',
-33 silly addNameRange     '1.0.0-pre5',
-33 silly addNameRange     '0.9.17',
-33 silly addNameRange     '1.0.0',
-33 silly addNameRange     '1.0.1',
-33 silly addNameRange     '1.0.2',
-33 silly addNameRange     '1.0.3',
-33 silly addNameRange     '1.0.4',
-33 silly addNameRange     '1.0.5',
-33 silly addNameRange     '1.0.6',
-33 silly addNameRange     '1.1.0',
-33 silly addNameRange     '1.2.0',
-33 silly addNameRange     '1.2.1' ] ]
-34 verbose addNamed [ 'socket.io', '1.2.1' ]
-35 verbose addNamed [ '1.2.1', '1.2.1' ]
-36 silly lockFile 77e414a6-socket-io-1-2-1 socket.io@1.2.1
-37 verbose lock socket.io@1.2.1 /Users/monika/.npm/77e414a6-socket-io-1-2-1.lock
-38 silly lockFile 03c4f5da-rg-socket-io-socket-io-1-2-1-tgz https://registry.npmjs.org/socket.io/-/socket.io-1.2.1.tgz
-39 verbose lock https://registry.npmjs.org/socket.io/-/socket.io-1.2.1.tgz /Users/monika/.npm/03c4f5da-rg-socket-io-socket-io-1-2-1-tgz.lock
-40 verbose addRemoteTarball [ 'https://registry.npmjs.org/socket.io/-/socket.io-1.2.1.tgz',
-40 verbose addRemoteTarball   '84400af534c0d32baa9ac88937eedb5b8465ee92' ]
-41 info retry fetch attempt 1 at 13:18:39
-42 verbose fetch to= /var/folders/rx/9lq5vqd15m59863qryff7dn80000gn/T/npm-2551-iBVFW69S/registry.npmjs.org/socket.io/-/socket.io-1.2.1.tgz
-43 http GET https://registry.npmjs.org/socket.io/-/socket.io-1.2.1.tgz
-44 http 200 https://registry.npmjs.org/socket.io/-/socket.io-1.2.1.tgz
-45 silly lockFile 03c4f5da-rg-socket-io-socket-io-1-2-1-tgz https://registry.npmjs.org/socket.io/-/socket.io-1.2.1.tgz
-46 silly lockFile 03c4f5da-rg-socket-io-socket-io-1-2-1-tgz https://registry.npmjs.org/socket.io/-/socket.io-1.2.1.tgz
-47 silly lockFile 77e414a6-socket-io-1-2-1 socket.io@1.2.1
-48 silly lockFile 77e414a6-socket-io-1-2-1 socket.io@1.2.1
-49 silly lockFile c03de861-socket-io socket.io@
-50 silly lockFile c03de861-socket-io socket.io@
-51 error Error: EACCES, mkdir '/Users/monika/.npm/socket.io/1.2.1'
-51 error  { [Error: EACCES, mkdir '/Users/monika/.npm/socket.io/1.2.1']
-51 error   errno: 3,
-51 error   code: 'EACCES',
-51 error   path: '/Users/monika/.npm/socket.io/1.2.1',
-51 error   parent: 'node-authentication' }
-52 error Please try running this command again as root/Administrator.
-53 error System Darwin 14.0.0
-54 error command "node" "/usr/local/bin/npm" "install" "--save" "socket.io"
-55 error cwd /Users/monika/Desktop/tweet-calendar
-56 error node -v v0.10.32
-57 error npm -v 1.4.28
-58 error path /Users/monika/.npm/socket.io/1.2.1
-59 error code EACCES
-60 error errno 3
-61 error stack Error: EACCES, mkdir '/Users/monika/.npm/socket.io/1.2.1'
-62 verbose exit [ 3, true ]
+4 verbose run-script [ 'prestart', 'start', 'poststart' ]
+5 info prestart node-authentication@
+6 info start node-authentication@
+7 verbose unsafe-perm in lifecycle true
+8 info node-authentication@ Failed to exec start script
+9 error node-authentication@ start: `node server.js`
+9 error Exit status 8
+10 error Failed at the node-authentication@ start script.
+10 error This is most likely a problem with the node-authentication package,
+10 error not with npm itself.
+10 error Tell the author that this fails on your system:
+10 error     node server.js
+10 error You can get their info via:
+10 error     npm owner ls node-authentication
+10 error There is likely additional logging output above.
+11 error System Darwin 14.0.0
+12 error command "node" "/usr/local/bin/npm" "start"
+13 error cwd /Users/monika/Desktop/tweet-calendar
+14 error node -v v0.10.32
+15 error npm -v 1.4.28
+16 error code ELIFECYCLE
+17 verbose exit [ 1, true ]

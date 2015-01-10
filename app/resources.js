@@ -1,4 +1,4 @@
-module.exports = function(app, passport, io, query) {
+module.exports = function(app, passport, query) {
 	// get list of all 
 	app.get('/resources/users', isLoggedIn, function(req, res) {
       	query('select * from "user"', function(err, rows, result) {

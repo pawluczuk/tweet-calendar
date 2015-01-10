@@ -1,0 +1,15 @@
+extends layout
+block content
+			div(class="row")
+				div(class="col-sm-12")
+					div(class="well")
+						h3
+							span(class="fa fa-user")
+							|  Test
+						button(id="group-create-btn") Nowa grupa
+						button(id="event-create-btn") Nowe wydarzenie
+						div(id="group-create-response")
+			script(src="https://cdn.socket.io/socket.io-1.2.1.js")
+			script(src="http://code.jquery.com/jquery-2.1.3.min.js")
+			script(src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js")
+			script(src="/js/test.js")
