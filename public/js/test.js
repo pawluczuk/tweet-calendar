@@ -11,6 +11,11 @@ socket.on('event-created', function(data) {
   createAlert(response);
 });
 
+socket.on('event-deleted', function(data) {
+  var response = 'Event deleted: ' + data.response;
+  createAlert(response);
+});
+
 socket.on('id-request', function(data) {
   socket.emit('id-response', { userID : userID } );
 });
@@ -60,6 +65,10 @@ $("#event-create-btn-invalid").on('click', function() {
   userEvent.recipient = 17;
   userEvent.sender = userID;
   socket.emit('create-event', userEvent);
+});
+
+$("#event-delete-btn").on('click', function(){
+  socket.emit('delete-event', { eventID : 5 });
 });
 
 $(document).ready(function() {

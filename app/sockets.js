@@ -5,6 +5,7 @@ module.exports = function(io, passport, query) {
 
 	var newEvent = require('./socket-events/create-event.js')(io, query);
 	var newGroup = require('./socket-events/create-group.js')(io, query);
+	var deleteEvent = require('./socket-events/delete-event.js')(io, query);
 	var eventNotification = require('./socket-events/event-notification.js')(io, query);
 	// user connected
 	io.on('connection', function(socket) {
@@ -52,6 +53,17 @@ module.exports = function(io, passport, query) {
 				});
 			}
 		});
+
+		socket.on('delete-event', function(data) {
+			if (data) {
+				deleteEvent.deleteEvent(data, function(result) {
+					if (result)
+						socket.emit('event-deleted', { response : 'true'});
+					else
+						socket.emit('event-deleted', { response : 'false'});
+				});
+			}
+		})
 
 		// test event
 		socket.on('monaEvent', function(data) {
