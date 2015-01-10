@@ -68,7 +68,7 @@ $("#event-create-btn-invalid").on('click', function() {
 });
 
 $("#event-delete-btn").on('click', function(){
-  socket.emit('delete-event', { eventID : 5 });
+  socket.emit('delete-event', { eventID : 10 });
 });
 
 $(document).ready(function() {
