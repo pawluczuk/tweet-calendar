@@ -1,18 +1,16 @@
-var connectedClients = {};
+
 module.exports = function(io, passport, query) {
+
+	var newEvent = require('./socket-events/create-event.js')(io, query);
+	var newGroup = require('./socket-events/create-group.js')(io, query);
 	// user connected
 	io.on('connection', function(socket) {
 		//console.log(findClientsSocket(io));
-		// test event
-		socket.on('monaEvent', function(data) {
-			console.log(data);
-			socket.emit('response', { hello: 'Przestan to klikac!' });
-		});
 
 		// new group created by user
 		socket.on('create-group', function(data) {
 			if (data) {
-				createGroup(data, query, function(result) {
+				newGroup.createGroup(data, function(result) {
 					if (result)
 						socket.emit('group-created', { response : 'true'});
 					else
@@ -21,15 +19,22 @@ module.exports = function(io, passport, query) {
 			}
 		});
 
+		// new event created by user
 		socket.on('create-event', function(data) {
 			if (data) {
-				createEvent(data, query, function(result) {
+				newEvent.createEvent(data, function(result) {
 					if (result)
 						socket.emit('event-created', { response : 'true'});
 					else
 						socket.emit('event-created', { response : 'false'});
 				});
 			}
+		});
+
+		// test event
+		socket.on('monaEvent', function(data) {
+			console.log(data);
+			socket.emit('response', { hello: 'Przestan to klikac!' });
 		});
 	});
 };
@@ -63,52 +68,7 @@ function createGroup(data, query, callback) {
 	    });
 }
 
-function createEvent(data, query, callback) {
-	if (!data || !data.eventName || !data.eventType ||
-		!data.start || !data.end || !data.additionalUsers || 
-		!data.comment || !data.recipient || !data.sender) {
-		callback(false);
-		return;
-	}
 
-	query('insert into "event" values (DEFAULT, $1::int, $2, $3::text, $4::text, $5, $6, now()::timestamp) returning event_id',
-		[data.sender, data.eventType, data.eventName, data.comment, data.start, data.end],
-		function(err, rows, result) {
-			if (err) {
-				callback(false);
-				return;
-			}
-			if (!err && rows && rows[0] && rows[0].event_id) {
-				var statement = event_user_statement(rows[0].event_id, data.additionalUsers);
-				query(statement, function(err, rows, result) {
-					if (!err)
-						callback(true);
-					else
-						callback(false);
-				});
-			}
-		});
-}
-
-function event_user_statement(event_id, userIDs) {
- 	var statement = 'insert into "event_user" values ';
- 	for (var i = 0; i < userIDs.length; i++)
- 	{
- 		statement += '(' + event_id + ',' + userIDs[i] + ')';
- 		if (i !== userIDs.length - 1) statement += ', ';
- 	}
- 	return statement;
-}
-
-function user_group_statement(group_id, userIDs) {
-	var statement = 'insert into "user_group" values ';
-	for (var i = 0; i < userIDs.length; i++)
-	{
-		statement += '(' + group_id + ',' + userIDs[i] + ')';
-		if (i !== userIDs.length - 1) statement += ', ';
-	}
-	return statement;
-}
 
 function findClientsSocket(io, roomId, namespace) {
     var res = [], ns = io.of(namespace ||"/");    // the default namespace is "/"
