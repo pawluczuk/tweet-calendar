@@ -23,7 +23,7 @@ function notifyConnected(eventID, senderID, connectedSockets, io) {
 }
 
 function notifyDisconnected(eventID, disconnectedUsers, query) {
-	var message = 'Nowe wydarzenie.';
+	var message = 'Nowe wydarzenie dla Ciebie.';
 	var statement = 'insert into "notification" values ';
 	for (var i = 0; i < disconnectedUsers.length; i++) {
  		statement += "(DEFAULT," + disconnectedUsers[i] + "," + 

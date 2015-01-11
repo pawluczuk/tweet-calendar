@@ -2,13 +2,19 @@ var socketUser = {};
 var userSocket = {};
 
 module.exports = function(io, passport, query) {
-
+	// supported actions
 	var newEvent = require('./socket-events/create-event.js')(io, query);
 	var newGroup = require('./socket-events/create-group.js')(io, query);
 	var deleteEvent = require('./socket-events/delete-event.js')(io, query);
-	var eventNotification = require('./socket-events/event-notification.js')(io, query);
 	var addUsers = require('./socket-events/add-users.js')(io, query);
 	var deleteUsers = require('./socket-events/delete-users.js')(io, query);
+
+	// supported actions' notifications
+	var newEventNotification = require('./socket-events/create-event-notification.js')(io, query);
+	//var deleteEventNotification = require('./socket-events/delete-event-notification.js')(io, query);
+	var addUsersNotification = require('./socket-events/add-users-notification.js')(io, query);
+	var deleteUsersNotification = require('./socket-events/delete-users-notification.js')(io, query);
+	
 	
 	// user connected
 	io.on('connection', function(socket) {
@@ -49,7 +55,7 @@ module.exports = function(io, passport, query) {
 				newEvent.createEvent(data, function(result, eventID) {
 					if (result) {
 						socket.emit('event-created', { response : 'true'});
-						eventNotification.notify(data, eventID, userSocket, socket);
+						newEventNotification.notify(data, eventID, userSocket, socket);
 					}
 					else
 						socket.emit('event-created', { response : 'false'});
@@ -59,9 +65,11 @@ module.exports = function(io, passport, query) {
 
 		socket.on('delete-event', function(data) {
 			if (data) {
-				deleteEvent.deleteEvent(data, function(result) {
-					if (result)
+				deleteEvent.deleteEvent(data, function(result, deletedUsers) {
+					if (result) {
 						socket.emit('event-deleted', { response : 'true'});
+						//deleteEventNotification.notify(data, deletedUsers, userSocket, socket);
+					}
 					else
 						socket.emit('event-deleted', { response : 'false'});
 				});
@@ -72,8 +80,10 @@ module.exports = function(io, passport, query) {
 		socket.on('add-users', function (data) {
 			if (data) {
 				addUsers.addUsers(data, function(result) {
-					if (result)
+					if (result) {
 						socket.emit('users-added', { response : 'true'});
+						addUsersNotification.notify(data, userSocket, socket);
+					}
 					else
 						socket.emit('users-added', { response : 'false'});
 				});
@@ -84,8 +94,10 @@ module.exports = function(io, passport, query) {
 		socket.on('delete-users', function (data) {
 			if (data) {
 				deleteUsers.deleteUsers(data, function(result) {
-					if (result)
+					if (result) {
 						socket.emit('users-deleted', { response : 'true'});
+						deleteUsersNotification.notify(data, userSocket, socket);
+					}
 					else
 						socket.emit('users-deleted', { response : 'false'});
 				});

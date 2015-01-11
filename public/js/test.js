@@ -2,17 +2,17 @@ var socket = io.connect('http://localhost');
 var userID = Number($('#mainContent').attr('user-id'));
 
 socket.on('group-created', function(data) {
-  var response = 'Group created: ' + data.response;
+  var response = 'Utworzyles nowa grupe : ' + data.response;
   createAlert(response);
 });
 
 socket.on('event-created', function(data) {
-  var response = 'Event created: ' + data.response;
+  var response = 'Utworzyles nowe wydarzenie : ' + data.response;
   createAlert(response);
 });
 
 socket.on('event-deleted', function(data) {
-  var response = 'Event deleted: ' + data.response;
+  var response = 'Usunales wydarzenie : ' + data.response;
   createAlert(response);
 });
 
@@ -21,18 +21,28 @@ socket.on('id-request', function(data) {
 });
 
 socket.on('new-event', function(data) {
-  var response = 'New event for you: ' + data.eventID;
+  var response = 'Nowe wydarzenie w ktorym jestes : ' + data.eventID;
   createAlert(response);
 });
 
 socket.on('users-deleted', function(data) {
-  var response = 'Users deleted from event';
+  var response = 'Usunales uzytkownikow z wydarzenia : ' + data.response;
   createAlert(response);
   socket.emit('add-users', {eventID : 51, users : [16, 18]});
 });
 
 socket.on('users-added', function(data) {
-  var response = 'Users added to event.';
+  var response = 'Dodales uzytkownikow do wydarzenia : ' + data.response;
+  createAlert(response);
+});
+
+socket.on('user-added', function(data) {
+  var response = 'Zostales dodany do wydarzenia : ' + data.eventID;
+  createAlert(response);
+});
+
+socket.on('user-deleted', function(data) {
+  var response = 'Zostales usuniety z wydarzenia : ' + data.eventID;
   createAlert(response);
 });
 
@@ -79,7 +89,7 @@ $("#event-create-btn-invalid").on('click', function() {
 });
 
 $("#event-delete-btn").on('click', function(){
-  socket.emit('delete-event', { eventID : 10 });
+  socket.emit('delete-event', { eventID : 49 });
 });
 
 $("#users-delete-btn").on('click', function(){
