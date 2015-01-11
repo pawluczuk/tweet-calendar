@@ -25,6 +25,17 @@ socket.on('new-event', function(data) {
   createAlert(response);
 });
 
+socket.on('users-deleted', function(data) {
+  var response = 'Users deleted from event';
+  createAlert(response);
+  socket.emit('add-users', {eventID : 51, users : [16, 18]});
+});
+
+socket.on('users-added', function(data) {
+  var response = 'Users added to event.';
+  createAlert(response);
+});
+
 $("#group-create-btn").on('click', function() {
   var group = {};
   group.groupName = 'mona-group3';
@@ -69,6 +80,10 @@ $("#event-create-btn-invalid").on('click', function() {
 
 $("#event-delete-btn").on('click', function(){
   socket.emit('delete-event', { eventID : 10 });
+});
+
+$("#users-delete-btn").on('click', function(){
+  socket.emit('delete-users', { eventID : 51, users : [16, 18] });
 });
 
 $(document).ready(function() {

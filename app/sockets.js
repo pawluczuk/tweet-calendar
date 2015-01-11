@@ -8,6 +8,8 @@ module.exports = function(io, passport, query) {
 	var deleteEvent = require('./socket-events/delete-event.js')(io, query);
 	var eventNotification = require('./socket-events/event-notification.js')(io, query);
 	var addUsers = require('./socket-events/add-users.js')(io, query);
+	var deleteUsers = require('./socket-events/delete-users.js')(io, query);
+	
 	// user connected
 	io.on('connection', function(socket) {
 		// ask newly connected user for its ID
@@ -66,6 +68,7 @@ module.exports = function(io, passport, query) {
 			}
 		});
 
+		// add users to event
 		socket.on('add-users', function (data) {
 			if (data) {
 				addUsers.addUsers(data, function(result) {
@@ -73,6 +76,18 @@ module.exports = function(io, passport, query) {
 						socket.emit('users-added', { response : 'true'});
 					else
 						socket.emit('users-added', { response : 'false'});
+				});
+			}
+		});
+
+		// delete users from event
+		socket.on('delete-users', function (data) {
+			if (data) {
+				deleteUsers.deleteUsers(data, function(result) {
+					if (result)
+						socket.emit('users-deleted', { response : 'true'});
+					else
+						socket.emit('users-deleted', { response : 'false'});
 				});
 			}
 		});
