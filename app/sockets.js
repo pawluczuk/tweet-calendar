@@ -8,13 +8,14 @@ module.exports = function(io, passport, query) {
 	var deleteEvent = require('./socket-events/delete-event.js')(io, query);
 	var addUsers = require('./socket-events/add-users.js')(io, query);
 	var deleteUsers = require('./socket-events/delete-users.js')(io, query);
+	var deleteCons = require('./socket-events/delete-cons.js')(io, query);
 
 	// supported actions' notifications
 	var newEventNotification = require('./socket-events/create-event-notification.js')(io, query);
 	//var deleteEventNotification = require('./socket-events/delete-event-notification.js')(io, query);
 	var addUsersNotification = require('./socket-events/add-users-notification.js')(io, query);
 	var deleteUsersNotification = require('./socket-events/delete-users-notification.js')(io, query);
-	
+	//var deleteConsNotification = reuqire('./socket-events/delete-cons-notification.js')(io, query);
 	
 	// user connected
 	io.on('connection', function(socket) {
