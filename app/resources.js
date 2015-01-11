@@ -10,6 +10,7 @@ module.exports = function(app, passport, query) {
 	// eventy ktorych wlascicielem jest uzytkownik o danym userID
 	app.get(/\/resources\/eventsOwner/, isLoggedIn, function(req, res) {
 		userID = req.query.userID;
+		if (req.user.id !== userID) res.send("Access blocked.");
 		if (userID) {
 			query('select event_id from "event" where owner_id = $1::int', [userID],
 				function(err, rows, result) {
@@ -25,6 +26,7 @@ module.exports = function(app, passport, query) {
 		userID = req.query.userID;
 		start = req.query.start;
 		end = req.query.end;
+		if (req.user.id !== userID) res.send("Access blocked.");
 		if (userID && start && end) {
 			query('select * from "event" where event_id in (select event_id from "event_user" where user_id = $1::int) and start_date > $2::date and end_date < $3::date', 
 				[userID, start, end],
@@ -39,6 +41,7 @@ module.exports = function(app, passport, query) {
 	// grupy ktorych wlascicielem jest uzytkownik o danym userID
 	app.get(/\/resources\/groupsOwner/, isLoggedIn, function(req, res) {
 		userID = req.query.userID;
+		if (req.user.id !== userID) res.send("Access blocked.");
 		if (userID) {
 			query('select group_id from "group" where owner_id = $1::int', [userID],
 				function(err, rows, result) {
@@ -52,6 +55,7 @@ module.exports = function(app, passport, query) {
 	// grupy do ktorych nalezy uzytkownik o danym userID
 	app.get(/\/resources\/groups/, isLoggedIn, function(req, res) {
 		userID = req.query.userID;
+		if (req.user.id !== userID) res.send("Access blocked.");
 		if (userID) {
 			query('select group_id from "user_group" where user_id = $1::int', [userID],
 				function(err, rows, result) {

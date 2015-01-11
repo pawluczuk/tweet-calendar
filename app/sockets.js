@@ -7,6 +7,7 @@ module.exports = function(io, passport, query) {
 	var newGroup = require('./socket-events/create-group.js')(io, query);
 	var deleteEvent = require('./socket-events/delete-event.js')(io, query);
 	var eventNotification = require('./socket-events/event-notification.js')(io, query);
+	var addUsers = require('./socket-events/add-users.js')(io, query);
 	// user connected
 	io.on('connection', function(socket) {
 		// ask newly connected user for its ID
@@ -63,7 +64,18 @@ module.exports = function(io, passport, query) {
 						socket.emit('event-deleted', { response : 'false'});
 				});
 			}
-		})
+		});
+
+		socket.on('add-users', function (data) {
+			if (data) {
+				addUsers.addUsers(data, function(result) {
+					if (result)
+						socket.emit('users-added', { response : 'true'});
+					else
+						socket.emit('users-added', { response : 'false'});
+				});
+			}
+		});
 
 		// test event
 		socket.on('monaEvent', function(data) {
