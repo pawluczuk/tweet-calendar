@@ -1,6 +1,11 @@
 var socket = io.connect('http://localhost');
 var userID = Number($('#mainContent').attr('user-id'));
 
+socket.on('send-notifications', function(data) {
+  console.log(data.data);
+  socket.emit('notifications-received', {});
+});
+
 socket.on('group-created', function(data) {
   var response = 'Utworzyles nowa grupe : ' + data.response;
   createAlert(response);

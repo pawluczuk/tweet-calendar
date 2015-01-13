@@ -16,6 +16,7 @@ module.exports = function(io, passport, query) {
 	var addUsersNotification = require('./socket-events/add-users-notification.js')(io, query);
 	var deleteUsersNotification = require('./socket-events/delete-users-notification.js')(io, query);
 	//var deleteConsNotification = reuqire('./socket-events/delete-cons-notification.js')(io, query);
+	var synchroniseData = require('./socket-events/synchronise-data.js')(io, query);
 	
 	// user connected
 	io.on('connection', function(socket) {
@@ -25,14 +26,25 @@ module.exports = function(io, passport, query) {
 		// user ID received
 		socket.on('id-response', function(data) {
 			if (data && data.userID)
+			{
 				console.log('New user connected with ID: ' + data.userID);
 				socketUser[socket.id] = data.userID;
 				userSocket[data.userID] = socket.id;
+				synchroniseData.synchroniseNotifications(data.userID, function(result, synchData) {
+					if (result && synchData)
+						socket.emit('send-notifications', { data : synchData });
+				});
+			}
+		});
+
+		socket.on('notifications-received', function(data) {
+			synchroniseData.removeNotifications(socketUser[socket.id]);
 		});
 
 		// user disconnected
 		socket.on('disconnect', function () {
 			console.log('Disconnected user with ID: ' + socketUser[socket.id]);
+			// TODO : uniewaznic sesje passport
 			// remove client from the list of connected users
 			delete userSocket[socketUser[socket.id]];
 		    delete socketUser[socket.id];
