@@ -1,16 +1,210 @@
-extends layout
-block content
-			div(class="row")
-				div(class="col-sm-12")
-					div(class="well")
-						h3
-							span(class="fa fa-user")
-							|  Kalendarz
-						button(id="socketBtn") Kliknij mnie
-						div(id="socketReceiver")
-						//div(id="usersList", class="col-sm-12")
-						img(src= "http://imgur.com/sJrjZuU.jpg")
-			script(src="https://cdn.socket.io/socket.io-1.2.1.js")
-			script(src="http://code.jquery.com/jquery-2.1.3.min.js")
-			script(src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js")
-			script(src="/js/calendar.js")
+//
+//
+//extends layout
+html
+    head
+        block append stylesheet
+            link(rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.css")
+            link(href='http://fullcalendar.io/js/fullcalendar-2.2.5/fullcalendar.css', rel='stylesheet')
+            link(rel='stylesheet' href="http://cdn.jsdelivr.net/fullcalendar/1.5.4/fullcalendar.print.css")
+        block prepend script
+            script(src='http://code.jquery.com/jquery-1.9.0.js')
+            script(src='http://code.jquery.com/jquery-migrate-1.2.1.min.js')
+            script(src='http://fullcalendar.io/js/fullcalendar-2.2.2/lib/moment.min.js')
+            script(src="http://fullcalendar.io/js/fullcalendar-2.2.2/lib/jquery-ui.custom.min.js")
+            script(src='http://fullcalendar.io/js/fullcalendar-2.2.2/fullcalendar.js')
+            script(src='http://cdn.jsdelivr.net/fullcalendar/1.5.4/gcal.js')
+            script(src='http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/js/bootstrap.js')
+            script(src='http://bootstrapdocs.com/v1.4.0/js/bootstrap-modal.js')
+            script(src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.js")
+            script(src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/additional-methods.js")
+
+
+
+
+
+                                                                                                        //    $.ajax({
+                                                                                                        //        url: url, // pobranie grup usera
+                                                                                                        //        dataType: 'json',
+                                                                                                        //        data: data,
+                                                                                                        //        success: callback
+                                                                                                        //    });
+                                                                                                        //
+                                                                                                        //                $("event-user").validate({
+                                                                                                        //                   debug: true,
+                                                                                                        //                   rules: {
+                                                                                                        //                       email: {
+                                                                                                        //                           required: true,
+                                                                                                        //                           email: true
+                                                                                                        //                       },
+                                                                                                        //                       messages: {
+                                                                                                        //                           email: {
+                                                                                                        //                               required: "Please enter a email adress",
+                                                                                                        //                               email: "Please enter a valid email address"
+                                                                                                        //                           }
+                                                                                                        //                       }
+                                                                                                        //                   }
+                                                                                                        //               });
+
+
+        script.
+               $(document).ready(function() {
+               $('#calendar').fullCalendar({
+                   header: {
+                       left: 'prev,next, today',
+                       center: 'title',
+                       right: 'month,agendaWeek,agendaDay'
+                   },
+                   selectable: true,
+                   defaultView: 'agendaWeek',
+                   selectHelper: true,
+                   editable: true,
+
+                   select: function(start, end, allDay) {
+
+                       endtime = moment(end).format('dddd, MMM d, h:mm');
+                       starttime = moment(start).format('dddd, MMM d, h:mm');
+
+                       var mywhen = starttime + ' - ' + endtime;
+                       $('#eventStart').val(start);
+                       $('#eventEnd').val(end);
+                       $('#dailyEvent').val(allDay);
+                       $('#when').text(mywhen);
+                       $('#Modalerino').modal('show');
+                   },
+                       eventClick: function (calEvent, jsEvent, view) {
+                        alert("asd");
+                       },
+                   eventLimit: true
+                                                                            //                   events: "/resources/events?&start=startDate&end=endDate" {
+                                                                            //                       $.ajax({
+                                                                            //                               type: 'POST',
+                                                                            //                               url: "/resources/events?&start=startDate&end=endDate",
+                                                                            //                               success: function (response) {
+                                                                            //                                   if (response == 'True') {
+                                                                            //                                       $('#calendar').fullCalendar('refetchEvents');
+                                                                            //                                       alert('Database populated! ');
+                                                                            //                                   }
+                                                                            //                                   else {
+                                                                            //                                       alert('Error, could not populate database!');
+                                                                            //                                   }
+                                                                            //                               }
+                                                                            //                           });
+                                                                            //
+                                                                            //                   }
+               });
+               $('#buttonCreate').click(function(){
+                   if($('#eventColor').val() =="red"){
+                       $('#calendar').fullCalendar('renderEvent',
+                               {
+                                   start: new Date($('#eventEnd').val()),
+                                   title: $('#event-name').val(),
+                                   //end: new Date($('#eventEnd').val()),
+                                   color: $('#eventColor').val(),
+                                   allDay: ($('#dailyEvent').val() == "true")
+                               },
+                               true);
+                   }
+                   else
+                   $('#calendar').fullCalendar('renderEvent',
+                                       {
+                                           start: new Date($('#eventStart').val()),
+                                           title: $('#event-name').val(),
+                                           end: new Date($('#eventEnd').val()),
+                                           color: $('#eventColor').val(),
+                                           allDay: ($('#dailyEvent').val() == "true")
+                                       },
+                                       true);
+                   $('#Modalerino').modal('hide');
+                                                                            //                   $.ajax({
+                                                                            //                       type: 'POST',
+                                                                            //                       url: "/Home/SaveEvent",
+                                                                            //                       data: dataRow,
+                                                                            //                       success: function (response) {
+                                                                            //                           if (response == 'True') {
+                                                                            //                               $('#calendar').fullCalendar('refetchEvents');
+                                                                            //                               alert('New event saved!');
+                                                                            //                           }
+                                                                            //                           else {
+                                                                            //                               alert('Error, could not save event!');
+                                                                            //                           }
+                                                                            //                       }
+                                                                            //                   });
+
+               });
+                   $('#Modalerino').on('hidden.bs.modal',  function () {
+                       $('#when').val(null);
+                       $('#event-name').val(null);
+                       $('#event-details').val(null);
+                       $('#eventColor').val(null);
+                       $('#event-user').val(null);
+                   });
+
+                });
+
+
+    body
+    include layout.jade
+
+    block append content
+    div(class="container")
+       div(class="row")
+            div(class="col-sm-12")
+               div(class="well")
+                   h3
+                       span(class="fa fa-user")
+                       | Mój kalendarz
+                #calendar
+            #Modalerino.modal.fade(tabindex="-1", role="dialog", aria-labelledby="ModalerinoLabel", aria-hidden="true")
+                   .modal-dialog
+                      .modal-content
+                          .modal-header
+                              button.close(type="button", data-dismiss="modal", aria-label="Close")
+                                  span(aria-hidden="true") &#215;
+                              h4#ModalerinoLabel.modal-title New event
+                          .modal-body
+                              form
+                                  .form-group
+                                      label.control-label(for="when") When:
+                                      #when.controls.controls-row(style="margin-top:5px;")
+                                  .form-group
+                                      label.control-label(for="event-name") Event name:
+                                      input#event-name.form-control(type="text", placeholder="Write event name here")
+                                  .form-group
+                                      label.control-label(for="message-text") Event Description:
+                                      textarea#event-details.form-control(placeholder="Write event details here")
+                                  .form-group
+                                      label.control-label(for="message-text") Pick event type:
+                                      select#eventColor.form-control
+                                          option(value="green") Consultations
+                                          option(value="blue") Meeting
+                                          option(value="red") Deadline
+                                          option(value="cyan") Do not disturb
+                                          option(value="pink") Busy
+                                  .form-group
+                                      label.control-label(for="event-users") Add users to event:
+                                      input#event-user.form-control(placeholder="Put Your friend email here", type="email")
+                                  .form-group
+                                      button#buttonCreate.btn.btn-primary(type="button") Create event
+                                  .controls
+                                      input#eventStart(type="hidden")
+                                      input#eventEnd(type="hidden")
+                                      input#dailyEvent(type="hidden")
+                          .modal-footer
+                              button.close(type="button", data-dismiss="modal", aria-label="Close")
+                                  span(aria-hidden="true") Close
+
+       div(class="row")
+            div(class="col-sm-12")
+                h3 Legend
+                div(class="col-sm-14")
+                    div(class="col-md-2", style="background:green")
+                        h4 Consultations
+                    div(class="col-md-2", style="background:blue")
+                        h4 Meeting
+                    div(class="col-md-2", style="background:red")
+                        h4 Deadline
+                    div(class="col-md-2", style="background:cyan")
+                        h4 Do not disturb
+                    div(class="col-md-2", style="background:pink")
+                        h4 Busy
