@@ -22,7 +22,7 @@ module.exports = function(app, passport, query) {
 	});
 
 	// eventy na ktore jest zapisany uzytkownik o danym userID
-	app.get(/\/resources\/events/, isLoggedIn, function(req, res) {
+	app.get(/\/resources\/eventsByDate/, isLoggedIn, function(req, res) {
 		userID = req.user.id;
 		start = req.query.start;
 		end = req.query.end;
@@ -37,6 +37,57 @@ module.exports = function(app, passport, query) {
 		}
 		else res.send("Invalid query.");
 	});
+
+    // eventy na ktore jest zapisany uzytkownik o danym userIDi danym eventID
+    app.get(/\/resources\/eventsByID/, isLoggedIn, function(req, res) {
+        userID = req.user.id;
+        eventID = req.query.eventID;
+        console.log(userID);
+        console.log(eventID);
+        if (userID && eventID) {
+            query('select * from "event" where event_id in (select event_id from "event_user" where user_id = $1::int)and event_id=$2::int ',
+                [userID, eventID],
+                function(err, rows, result) {
+                    if (!err)
+                        res.send(rows);
+                    else res.send("Invalid query.");
+                });
+        }
+        else res.send("Invalid query.");
+    });
+
+
+    // userzy przypisani do eventu o danym id
+    app.get(/\/resources\/usersByEventID/, isLoggedIn, function(req, res) {
+        eventID = req.query.eventID;
+        console.log(eventID);
+        if (userID && eventID) {
+            query('select * from "user" where user_id in (select user_id from "event_user" where event_id = $1::int)',
+                [eventID],
+                function(err, rows, result) {
+                    if (!err)
+                        res.send(rows);
+                    else res.send("Invalid query.");
+                });
+        }
+        else res.send("Invalid query.");
+    });
+
+    // tweety przypisane do eventu o danym id
+    app.get(/\/resources\/usersByEventID/, isLoggedIn, function(req, res) {
+        eventID = req.query.eventID;
+        console.log(eventID);
+        if (userID && eventID) {
+            query('select * from "tweet" where event_id = $1::int',
+                [eventID],
+                function(err, rows, result) {
+                    if (!err)
+                        res.send(rows);
+                    else res.send("Invalid query.");
+                });
+        }
+        else res.send("Invalid query.");
+    });
 
 	// grupy ktorych wlascicielem jest uzytkownik o danym userID
 	app.get(/\/resources\/groupsOwner/, isLoggedIn, function(req, res) {
