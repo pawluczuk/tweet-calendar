@@ -72,6 +72,22 @@ html
                    },
                    eventLimit: true,
                    events: '/resources/eventsOwner'
+                                                                            //                   events: "/resources/events?&start=startDate&end=endDate" {
+                                                                            //                       $.ajax({
+                                                                            //                               type: 'POST',
+                                                                            //                               url: "/resources/events?&start=startDate&end=endDate",
+                                                                            //                               success: function (response) {
+                                                                            //                                   if (response == 'True') {
+                                                                            //                                       $('#calendar').fullCalendar('refetchEvents');
+                                                                            //                                       alert('Database populated! ');
+                                                                            //                                   }
+                                                                            //                                   else {
+                                                                            //                                       alert('Error, could not populate database!');
+                                                                            //                                   }
+                                                                            //                               }
+                                                                            //                           });
+                                                                            //
+                                                                            //                   }
                });
                $('#buttonCreate').click(function(){
                    if($('#eventColor').val() =="red"){
