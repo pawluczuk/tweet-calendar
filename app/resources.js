@@ -11,7 +11,7 @@ module.exports = function(app, passport, query) {
 	app.get(/\/resources\/eventsOwner/, isLoggedIn, function(req, res) {
 		userID = req.user.id;
 		if (userID) {
-			query('select event_id from "event" where owner_id = $1::int', [userID],
+			query('select * from "event" where owner_id = $1::int', [userID],
 				function(err, rows, result) {
 					if (!err)
 						res.send(rows);
@@ -27,7 +27,7 @@ module.exports = function(app, passport, query) {
 		start = req.query.start;
 		end = req.query.end;
 		if (userID && start && end) {
-			query('select * from "event" where event_id in (select event_id from "event_user" where user_id = $1::int) and start_date > $2::date and end_date < $3::date', 
+			query('select * from "event" where event_id in (select event_id from "event_user" where user_id = $1::int) and start_date >= $2::date and end_date =< $3::date',
 				[userID, start, end],
 				function(err, rows, result) {
 					if (!err)
