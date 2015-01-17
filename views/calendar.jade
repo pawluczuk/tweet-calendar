@@ -53,7 +53,7 @@ html
                    selectable: true,
                    defaultView: 'agendaWeek',
                    selectHelper: true,
-                   editable: true,
+                   editable: false,
 
                    select: function(start, end, allDay) {
 
@@ -68,10 +68,11 @@ html
                        $('#Modalerino').modal('show');
                    },
                    eventClick: function (calEvent, jsEvent, view) {
-                        alert("asd");
+                        console.log("calEvent "+calEvent+" jsEvent "+jsEvent+" View "+view);
                    },
                    eventLimit: true,
-                   events: '/resources/eventsOwner'
+                   events: '/resources/eventsOwner',
+                   ignoreTimezone: false
                                                                             //                   events: "/resources/events?&start=startDate&end=endDate" {
                                                                             //                       $.ajax({
                                                                             //                               type: 'POST',
