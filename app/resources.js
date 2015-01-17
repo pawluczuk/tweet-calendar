@@ -11,7 +11,7 @@ module.exports = function(app, passport, query) {
 	app.get(/\/resources\/eventsOwner/, isLoggedIn, function(req, res) {
 		userID = req.user.id;
 		if (userID) {
-			query('select event_id AS id, name AS title, start_date AS start, end_date AS end from "event" where owner_id = $1::int' , [userID],
+			query('select e.event_id AS id, e.name AS title, e.start_date AS start, e.end_date AS end, et.color from "event" AS e, "event_type" AS et where e.owner_id = $1::int and e.type_code=et.type_code' , [userID],
 				function(err, rows, result) {
 					if (!err)
 						res.send(rows);
