@@ -1,26 +1,91 @@
 0 info it worked if it ends with ok
-1 verbose cli [ 'node', '/usr/local/bin/npm', 'start' ]
+1 verbose cli [ 'C:\\Program Files\\nodejs\\\\node.exe',
+1 verbose cli   'C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js',
+1 verbose cli   'install',
+1 verbose cli   'socketio' ]
 2 info using npm@1.4.28
-3 info using node@v0.10.32
-4 verbose run-script [ 'prestart', 'start', 'poststart' ]
-5 info prestart node-authentication@
-6 info start node-authentication@
-7 verbose unsafe-perm in lifecycle true
-8 info node-authentication@ Failed to exec start script
-9 error node-authentication@ start: `node server.js`
-9 error Exit status 8
-10 error Failed at the node-authentication@ start script.
-10 error This is most likely a problem with the node-authentication package,
-10 error not with npm itself.
-10 error Tell the author that this fails on your system:
-10 error     node server.js
-10 error You can get their info via:
-10 error     npm owner ls node-authentication
-10 error There is likely additional logging output above.
-11 error System Darwin 14.0.0
-12 error command "node" "/usr/local/bin/npm" "start"
-13 error cwd /Users/monika/Desktop/tweet-calendar
-14 error node -v v0.10.32
-15 error npm -v 1.4.28
-16 error code ELIFECYCLE
-17 verbose exit [ 1, true ]
+3 info using node@v0.10.35
+4 verbose node symlink C:\Program Files\nodejs\\node.exe
+5 warn package.json node-authentication@ No description
+6 warn package.json node-authentication@ No repository field.
+7 warn package.json node-authentication@ No README data
+8 verbose readDependencies using package.json deps
+9 verbose cache add [ 'socketio', null ]
+10 verbose cache add name=undefined spec="socketio" args=["socketio",null]
+11 verbose parsed url { protocol: null,
+11 verbose parsed url   slashes: null,
+11 verbose parsed url   auth: null,
+11 verbose parsed url   host: null,
+11 verbose parsed url   port: null,
+11 verbose parsed url   hostname: null,
+11 verbose parsed url   hash: null,
+11 verbose parsed url   search: null,
+11 verbose parsed url   query: null,
+11 verbose parsed url   pathname: 'socketio',
+11 verbose parsed url   path: 'socketio',
+11 verbose parsed url   href: 'socketio' }
+12 silly lockFile be461470-socketio socketio
+13 verbose lock socketio C:\Users\lem\AppData\Roaming\npm-cache\be461470-socketio.lock
+14 silly lockFile be461470-socketio socketio
+15 silly lockFile be461470-socketio socketio
+16 verbose addNamed [ 'socketio', '' ]
+17 verbose addNamed [ null, '*' ]
+18 silly lockFile fa004f70-socketio socketio@
+19 verbose lock socketio@ C:\Users\lem\AppData\Roaming\npm-cache\fa004f70-socketio.lock
+20 silly addNameRange { name: 'socketio', range: '*', hasData: false }
+21 verbose request where is /socketio
+22 verbose request registry https://registry.npmjs.org/
+23 verbose request id 8a1442ed55d5984c
+24 verbose url raw /socketio
+25 verbose url resolving [ 'https://registry.npmjs.org/', './socketio' ]
+26 verbose url resolved https://registry.npmjs.org/socketio
+27 verbose request where is https://registry.npmjs.org/socketio
+28 info trying registry request attempt 1 at 12:51:35
+29 http GET https://registry.npmjs.org/socketio
+30 http 404 https://registry.npmjs.org/socketio
+31 verbose headers { date: 'Sat, 17 Jan 2015 11:51:38 GMT',
+31 verbose headers   server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+31 verbose headers   'content-type': 'application/json',
+31 verbose headers   'cache-control': 'max-age=0',
+31 verbose headers   'content-length': '52',
+31 verbose headers   'accept-ranges': 'bytes',
+31 verbose headers   via: '1.1 varnish',
+31 verbose headers   age: '0',
+31 verbose headers   'x-served-by': 'cache-fra1245-FRA',
+31 verbose headers   'x-cache': 'MISS',
+31 verbose headers   'x-cache-hits': '0',
+31 verbose headers   'x-timer': 'S1421495497.991919,VS0,VE699',
+31 verbose headers   'keep-alive': 'timeout=10, max=50',
+31 verbose headers   connection: 'Keep-Alive' }
+32 silly registry.get cb [ 404,
+32 silly registry.get   { date: 'Sat, 17 Jan 2015 11:51:38 GMT',
+32 silly registry.get     server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+32 silly registry.get     'content-type': 'application/json',
+32 silly registry.get     'cache-control': 'max-age=0',
+32 silly registry.get     'content-length': '52',
+32 silly registry.get     'accept-ranges': 'bytes',
+32 silly registry.get     via: '1.1 varnish',
+32 silly registry.get     age: '0',
+32 silly registry.get     'x-served-by': 'cache-fra1245-FRA',
+32 silly registry.get     'x-cache': 'MISS',
+32 silly registry.get     'x-cache-hits': '0',
+32 silly registry.get     'x-timer': 'S1421495497.991919,VS0,VE699',
+32 silly registry.get     'keep-alive': 'timeout=10, max=50',
+32 silly registry.get     connection: 'Keep-Alive' } ]
+33 silly lockFile fa004f70-socketio socketio@
+34 silly lockFile fa004f70-socketio socketio@
+35 error 404 404 Not Found: socketio
+35 error 404
+35 error 404 'socketio' is not in the npm registry.
+35 error 404 You should bug the author to publish it
+35 error 404 It was specified as a dependency of 'node-authentication'
+35 error 404
+35 error 404 Note that you can also install from a
+35 error 404 tarball, folder, or http url, or git url.
+36 error System Windows_NT 6.2.9200
+37 error command "C:\\Program Files\\nodejs\\\\node.exe" "C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js" "install" "socketio"
+38 error cwd C:\Users\lem\Desktop\tweet-calendar
+39 error node -v v0.10.35
+40 error npm -v 1.4.28
+41 error code E404
+42 verbose exit [ 1, true ]
