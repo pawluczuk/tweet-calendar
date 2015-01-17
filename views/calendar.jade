@@ -19,33 +19,28 @@ html
             script(src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.js")
             script(src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/additional-methods.js")
 
-
-
-
-
-                                                                                                        //    $.ajax({
-                                                                                                        //        url: url, // pobranie grup usera
-                                                                                                        //        dataType: 'json',
-                                                                                                        //        data: data,
-                                                                                                        //        success: callback
-                                                                                                        //    });
-                                                                                                        //
-                                                                                                        //                $("event-user").validate({
-                                                                                                        //                   debug: true,
-                                                                                                        //                   rules: {
-                                                                                                        //                       email: {
-                                                                                                        //                           required: true,
-                                                                                                        //                           email: true
-                                                                                                        //                       },
-                                                                                                        //                       messages: {
-                                                                                                        //                           email: {
-                                                                                                        //                               required: "Please enter a email adress",
-                                                                                                        //                               email: "Please enter a valid email address"
-                                                                                                        //                           }
-                                                                                                        //                       }
-                                                                                                        //                   }
-                                                                                                        //               });
-
+        //    $.ajax({
+        //        url: url, // pobranie grup usera
+        //        dataType: 'json',
+        //        data: data,
+        //        success: callback
+        //    });
+        //
+        //                $("event-user").validate({
+        //                   debug: true,
+        //                   rules: {
+        //                       email: {
+        //                           required: true,
+        //                           email: true
+        //                       },
+        //                       messages: {
+        //                           email: {
+        //                               required: "Please enter a email adress",
+        //                               email: "Please enter a valid email address"
+        //                           }
+        //                       }
+        //                   }
+        //               });
 
         script.
                $(document).ready(function() {
@@ -72,26 +67,11 @@ html
                        $('#when').text(mywhen);
                        $('#Modalerino').modal('show');
                    },
-                       eventClick: function (calEvent, jsEvent, view) {
+                   eventClick: function (calEvent, jsEvent, view) {
                         alert("asd");
-                       },
-                   eventLimit: true
-                                                                            //                   events: "/resources/events?&start=startDate&end=endDate" {
-                                                                            //                       $.ajax({
-                                                                            //                               type: 'POST',
-                                                                            //                               url: "/resources/events?&start=startDate&end=endDate",
-                                                                            //                               success: function (response) {
-                                                                            //                                   if (response == 'True') {
-                                                                            //                                       $('#calendar').fullCalendar('refetchEvents');
-                                                                            //                                       alert('Database populated! ');
-                                                                            //                                   }
-                                                                            //                                   else {
-                                                                            //                                       alert('Error, could not populate database!');
-                                                                            //                                   }
-                                                                            //                               }
-                                                                            //                           });
-                                                                            //
-                                                                            //                   }
+                   },
+                   eventLimit: true,
+                   events: '/resources/eventsOwner'
                });
                $('#buttonCreate').click(function(){
                    if($('#eventColor').val() =="red"){
@@ -116,20 +96,20 @@ html
                                        },
                                        true);
                    $('#Modalerino').modal('hide');
-                                                                            //                   $.ajax({
-                                                                            //                       type: 'POST',
-                                                                            //                       url: "/Home/SaveEvent",
-                                                                            //                       data: dataRow,
-                                                                            //                       success: function (response) {
-                                                                            //                           if (response == 'True') {
-                                                                            //                               $('#calendar').fullCalendar('refetchEvents');
-                                                                            //                               alert('New event saved!');
-                                                                            //                           }
-                                                                            //                           else {
-                                                                            //                               alert('Error, could not save event!');
-                                                                            //                           }
-                                                                            //                       }
-                                                                            //                   });
+                    //                   $.ajax({
+                    //                       type: 'POST',
+                    //                       url: "/Home/SaveEvent",
+                    //                       data: dataRow,
+                    //                       success: function (response) {
+                    //                           if (response == 'True') {
+                    //                               $('#calendar').fullCalendar('refetchEvents');
+                    //                               alert('New event saved!');
+                    //                           }
+                    //                           else {
+                    //                               alert('Error, could not save event!');
+                    //                           }
+                    //                       }
+                    //                   });
 
                });
                    $('#Modalerino').on('hidden.bs.modal',  function () {
