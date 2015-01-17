@@ -1,5 +1,6 @@
 var socket = io.connect('http://localhost');
 socket.on('news', function (data) {
+    console.log("NEWS");
     console.log(data);
 });
 
@@ -16,18 +17,91 @@ socket.on('response', function(data) {
 	$("#socketReceiver").append(alert);
 });
 
-$("#socketBtn").on('click', function() {
-	console.log("klik");
-	socket.emit('monaEvent', { my: 'data' });
-});
-
 $(document).ready(function() {
-  var sourcePath = '/resources/users';
-  var usersList = '<table>';
-  $.getJSON(sourcePath, function(data) {
-    $.each(data, function(){
-      usersList += '<tr><td>' + this.name + '</td></tr>';
+    //    $.ajax({
+    //        url: url, // pobranie grup usera
+    //        dataType: 'json',
+    //        data: data,
+    //        success: callback
+    //    });
+    //
+    //                $("event-user").validate({
+    //                   debug: true,
+    //                   rules: {
+    //                       email: {
+    //                           required: true,
+    //                           email: true
+    //                       },
+    //                       messages: {
+    //                           email: {
+    //                               required: "Please enter a email adress",
+    //                               email: "Please enter a valid email address"
+    //                           }
+    //                       }
+    //                   }
+    //               });
+    $('#calendar').fullCalendar({
+        header: {
+            left: 'prev,next, today',
+            center: 'title',
+            right: 'month,agendaWeek,agendaDay'
+        },
+        selectable: true,
+        defaultView: 'agendaWeek',
+        selectHelper: true,
+        editable: true,
+
+        select: function(start, end, allDay) {
+            console.log(start);
+            endtime = moment(end).format('dddd, MMM d, h:mm');
+            starttime = moment(start).format('dddd, MMM d, h:mm');
+
+            var mywhen = starttime + ' - ' + endtime;
+
+            endtime = moment(end).format('YYYY-MM-DD hh:mm:ss');
+            starttime = moment(start).format('YYYY-MM-DD hh:mm:ss');
+
+            $('#eventStart').val(starttime);
+            $('#eventEnd').val(endtime);
+            $('#dailyEvent').val(allDay);
+            $('#when').text(mywhen);
+            $('#Modalerino').modal('show');
+        },
+        eventClick: function (calEvent, jsEvent, view) {
+            alert("asd");
+        },
+        eventLimit: true,
+        events: '/resources/eventsOwner'
+        //                   events: "/resources/events?&start=startDate&end=endDate" {
+        //                       $.ajax({
+        //                               type: 'POST',
+        //                               url: "/resources/events?&start=startDate&end=endDate",
+        //                               success: function (response) {
+        //                                   if (response == 'True') {
+        //                                       $('#calendar').fullCalendar('refetchEvents');
+        //                                       alert('Database populated! ');
+        //                                   }
+        //                                   else {
+        //                                       alert('Error, could not populate database!');
+        //                                   }
+        //                               }
+        //                           });
+        //
+        //                   }
     });
-    $("#usersList").html(usersList);
-  }); 
+        //                   $.ajax({
+        //                       type: 'POST',
+        //                       url: "/Home/SaveEvent",
+        //                       data: dataRow,
+        //                       success: function (response) {
+        //                           if (response == 'True') {
+        //                               $('#calendar').fullCalendar('refetchEvents');
+        //                               alert('New event saved!');
+        //                           }
+        //                           else {
+        //                               alert('Error, could not save event!');
+        //                           }
+        //                       }
+        //                   });
+
 });
