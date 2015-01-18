@@ -76,8 +76,7 @@ $(document).ready(function() {
             console.log(calEvent.id);
             window.location.href = "event/" + calEvent.id;
         },
-        eventLimit: true,
-        events: '/resources/eventsOwner',
+        events: '/resources/eventsOwner'
 
         //                   events: "/resources/events?&start=startDate&end=endDate" {
         //                       $.ajax({
