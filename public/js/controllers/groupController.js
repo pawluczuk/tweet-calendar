@@ -15,6 +15,18 @@ angular.module('tweetCalendarApp.controllers').controller('GroupCtrl', function(
         })
     });
 
+    socket.on('group-deleted', function(data) {
+        var response = 'Usunales grupe : ' + data.response;
+        console.log(response);
+        $scope.getGroups();
+    });
+
+    socket.on('group-created', function(data) {
+        var response = 'Utworzyles grupe: ' + data.response;
+        console.log(response);
+        $scope.getGroups();
+    });
+
     $scope.editGroup = function(groupID)
     {
         GroupService.getGroupUsers(groupID).then(function(data) {
@@ -26,7 +38,8 @@ angular.module('tweetCalendarApp.controllers').controller('GroupCtrl', function(
 
     $scope.deleteGroup = function(groupID)
     {
-        console.log(groupID);
+        var data = { 'groupID' : groupID}
+        socket.emit('delete-group', data);
     }
 
     $scope.createGroup = function(groupName)
