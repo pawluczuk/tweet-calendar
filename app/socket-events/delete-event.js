@@ -24,15 +24,22 @@ module.exports = function(io, query) {
 					        			callback(false);
 					        			return;
 					        		}
-					        		query('delete from "event" where event_id = $1::int', [data.eventID],
-					        			function(err, rows, result) {
-					        				if (err) {
-					        					callback(false);
-					        				}
-					        				else {
-					        					callback(true, deletedUsers);
-					        				}
-					        		});
+					        		query('delete from "event_group" where event_id = $1::int', [data.eventID],
+							        	function(err, rows, result) {
+							        		if (err) {
+							        			callback(false);
+							        			return;
+							        		}
+							        		query('delete from "event" where event_id = $1::int', [data.eventID],
+							        			function(err, rows, result) {
+							        				if (err) {
+							        					callback(false);
+							        				}
+							        				else {
+							        					callback(true, deletedUsers);
+							        				}
+							        		});
+							        });
 					        });
 		        	});
               });

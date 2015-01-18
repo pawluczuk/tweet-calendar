@@ -1,5 +1,10 @@
 var userID = Number($('#mainContent').attr('user-id'));
 
+socket.on('group-event-added', function(data) {
+  var response = 'Usunales grupe z wydarzenia : ' + data.response;
+  createAlert(response);
+});
+
 socket.on('event-edited', function(data) {
   var response = 'Edytowales wydarzenie : ' + data.response;
   createAlert(response);
@@ -151,6 +156,10 @@ $("#add-group-btn").on('click', function(){
 
 $("#add-group-users-btn").on('click', function(){
   socket.emit('add-group-users', { groupID : 16, users : ["bronka@bronka.pl"] });
+});
+
+$("#delete-group-event-btn").on('click', function(){
+  socket.emit('delete-group-event', { groupID : 16, eventID : 116 });
 });
 
 $(document).ready(function() {
