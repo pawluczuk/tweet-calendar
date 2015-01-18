@@ -5,6 +5,7 @@ module.exports = function(app, passport) {
 	// HOME PAGE (with login links) ========
 	// =====================================
 	app.get('/', function(req, res) {
+		console.log(req);
 		res.render('index.jade'); // load the index.ejs file
 	});
 
