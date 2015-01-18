@@ -17,6 +17,7 @@ module.exports = function(io, sessionStore, passportSocketIo, passport, express,
 	var addGroupUsers = require('./socket-events/add-group-users.js')(io, query);
 	var deleteGroupEvent = require('./socket-events/delete-group-event.js')(io, query);
 	var newTweet = require('./socket-events/add-tweet.js')(io, query);
+	var deleteTweet = require('./socket-events/delete-tweet.js')(io, query);
 	var removeGroupUsers = require('./socket-events/remove-group-users.js')(io, query);
 
 	// supported actions' notifications
@@ -248,6 +249,19 @@ module.exports = function(io, sessionStore, passportSocketIo, passport, express,
 					}
 					else
 						socket.emit('tweet-added', { response : 'false'});
+				});
+			}
+		});
+
+		// add tweets to event
+		socket.on('delete-tweet', function (data) {
+			if (data) {
+				deleteTweet.tweet(data, function(result) {
+					if (result) {
+						socket.emit('tweet-deleted', { response : 'true'});
+					}
+					else
+						socket.emit('tweet-deleted', { response : 'false'});
 				});
 			}
 		});
