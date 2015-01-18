@@ -19,7 +19,126 @@ html
             script(src='http://bootstrapdocs.com/v1.4.0/js/bootstrap-modal.js')
             script(src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.js")
             script(src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/additional-methods.js")
+<<<<<<< HEAD
+
+
+
+
+                                                                                                        //                $("event-user").validate({
+                                                                                                        //                   debug: true,
+                                                                                                        //                   rules: {
+                                                                                                        //                       email: {
+                                                                                                        //                           required: true,
+                                                                                                        //                           email: true
+                                                                                                        //                       },
+                                                                                                        //                       messages: {
+                                                                                                        //                           email: {
+                                                                                                        //                               required: "Please enter a email adress",
+                                                                                                        //                               email: "Please enter a valid email address"
+                                                                                                        //                           }
+                                                                                                        //                       }
+                                                                                                        //                   }
+                                                                                                        //               });
+
+
+        script.
+               $(document).ready(function() {
+               $('#calendar').fullCalendar({
+                   header: {
+                       left: 'prev,next, today',
+                       center: 'title',
+                       right: 'month,agendaWeek,agendaDay'
+                   },
+                   selectable: true,
+                   defaultView: 'agendaWeek',
+                   selectHelper: true,
+                   editable: true,
+
+                   select: function(start, end, allDay) {
+
+                       endtime = moment(end).format('dddd, MMM d, h:mm');
+                       starttime = moment(start).format('dddd, MMM d, h:mm');
+
+                       var mywhen = starttime + ' - ' + endtime;
+                       $('#eventStart').val(start);
+                       $('#eventEnd').val(end);
+                       $('#dailyEvent').val(allDay);
+                       $('#when').text(mywhen);
+                       $('#Modalerino').modal('show');
+                   },
+                       eventClick: function (calEvent, jsEvent, view) {
+                        alert("asd");
+                       },
+                   events: "resources/eventsOwner/",
+                   eventLimit: true
+                                                                            //                   events: "/resources/events?&start=startDate&end=endDate" {
+                                                                            //                       $.ajax({
+                                                                            //                               type: 'POST',
+                                                                            //                               url: "/resources/events?&start=startDate&end=endDate",
+                                                                            //                               success: function (response) {
+                                                                            //                                   if (response == 'True') {
+                                                                            //                                       $('#calendar').fullCalendar('refetchEvents');
+                                                                            //                                       alert('Database populated! ');
+                                                                            //                                   }
+                                                                            //                                   else {
+                                                                            //                                       alert('Error, could not populate database!');
+                                                                            //                                   }
+                                                                            //                               }
+                                                                            //                           });
+                                                                            //
+                                                                            //                   }
+               });
+               $('#buttonCreate').click(function(){
+                   if($('#eventColor').val() =="red"){
+                       $('#calendar').fullCalendar('renderEvent',
+                               {
+                                   start: new Date($('#eventEnd').val()),
+                                   title: $('#event-name').val(),
+                                   //end: new Date($('#eventEnd').val()),
+                                   color: $('#eventColor').val(),
+                                   allDay: ($('#dailyEvent').val() == "true")
+                               },
+                               true);
+                   }
+                   else
+                   $('#calendar').fullCalendar('renderEvent',
+                                       {
+                                           start: new Date($('#eventStart').val()),
+                                           title: $('#event-name').val(),
+                                           end: new Date($('#eventEnd').val()),
+                                           color: $('#eventColor').val(),
+                                           allDay: ($('#dailyEvent').val() == "true")
+                                       },
+                                       true);
+                   $('#Modalerino').modal('hide');
+                                                                            //                   $.ajax({
+                                                                            //                       type: 'POST',
+                                                                            //                       url: "/Home/SaveEvent",
+                                                                            //                       data: dataRow,
+                                                                            //                       success: function (response) {
+                                                                            //                           if (response == 'True') {
+                                                                            //                               $('#calendar').fullCalendar('refetchEvents');
+                                                                            //                               alert('New event saved!');
+                                                                            //                           }
+                                                                            //                           else {
+                                                                            //                               alert('Error, could not save event!');
+                                                                            //                           }
+                                                                            //                       }
+                                                                            //                   });
+
+               });
+                   $('#Modalerino').on('hidden.bs.modal',  function () {
+                       $('#when').val(null);
+                       $('#event-name').val(null);
+                       $('#event-details').val(null);
+                       $('#eventColor').val(null);
+                       $('#event-user').val(null);
+                   });
+
+                });
+=======
             script(src="/js/calendar.js")
+>>>>>>> 60879554041982c8be5e0c9a10c853b3badf9005
 
 
     body
