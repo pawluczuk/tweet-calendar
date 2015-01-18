@@ -2,7 +2,7 @@
 
 // load all the things we need
 var LocalStrategy   = require('passport-local').Strategy;
-var bcrypt   = require('bcrypt-nodejs');
+var bcrypt          = require('bcrypt-nodejs');
 
 // expose this function to our app using module.exports
 module.exports = function(passport, query) {

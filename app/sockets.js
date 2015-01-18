@@ -1,9 +1,10 @@
 var socketUser = {};
 var userSocket = {};
 
-module.exports = function(io, passport, query) {
+module.exports = function(io, sessionStore, passportSocketIo, passport, express, query) {
 	// supported actions
 	var newEvent = require('./socket-events/create-event.js')(io, query);
+	var editEvent = require('./socket-events/edit-event.js')(io, query);
 	var newGroup = require('./socket-events/create-group.js')(io, query);
 	var deleteEvent = require('./socket-events/delete-event.js')(io, query);
 	var addUsers = require('./socket-events/add-users.js')(io, query);
@@ -12,41 +13,43 @@ module.exports = function(io, passport, query) {
 
 	// supported actions' notifications
 	var newEventNotification = require('./socket-events/create-event-notification.js')(io, query);
-	//var deleteEventNotification = require('./socket-events/delete-event-notification.js')(io, query);
+	var editEventNotification = require('./socket-events/edit-event-notification.js')(io, query);
 	var addUsersNotification = require('./socket-events/add-users-notification.js')(io, query);
 	var deleteUsersNotification = require('./socket-events/delete-users-notification.js')(io, query);
-	//var deleteConsNotification = reuqire('./socket-events/delete-cons-notification.js')(io, query);
 	var synchroniseData = require('./socket-events/synchronise-data.js')(io, query);
 	
+	io.use(passportSocketIo.authorize({
+	  	cookieParser: 	express.cookieParser,
+	  	key: 			'express.sid',
+	  	store: 			sessionStore,
+	  	secret: 		'sessionsecret',
+	  	success:     	onAuthorizeSuccess,
+	  	fail:        	onAuthorizeFail,
+	  	passport: 		passport 
+	}));
+
 	// user connected
 	io.on('connection', function(socket) {
-		// ask newly connected user for its ID
-		socket.emit('id-request', {});
+		console.log('Connected user with ID: ' + socket.request.user.id);
 
-		// user ID received
-		socket.on('id-response', function(data) {
-			if (data && data.userID)
-			{
-				console.log('New user connected with ID: ' + data.userID);
-				socketUser[socket.id] = data.userID;
-				userSocket[data.userID] = socket.id;
-				synchroniseData.synchroniseNotifications(data.userID, function(result, synchData) {
-					if (result && synchData)
-						socket.emit('send-notifications', { data : synchData });
-				});
-			}
+		socketUser[socket.id] = socket.request.user.id;
+		userSocket[socket.request.user.id] = socket.id;
+
+		synchroniseData.synchroniseNotifications(socket.request.user.id, 
+			function(result, synchData) {
+				if (result && synchData)
+					socket.emit('send-notifications', { data : synchData });
 		});
 
 		socket.on('notifications-received', function(data) {
-			synchroniseData.removeNotifications(socketUser[socket.id]);
+			synchroniseData.removeNotifications(socket.request.user.id);
 		});
 
 		// user disconnected
 		socket.on('disconnect', function () {
-			console.log('Disconnected user with ID: ' + socketUser[socket.id]);
-			// TODO : uniewaznic sesje passport
+			console.log('Disconnected user with ID: ' + socket.request.user.id);
 			// remove client from the list of connected users
-			delete userSocket[socketUser[socket.id]];
+			delete userSocket[socket.request.user.id];
 		    delete socketUser[socket.id];
 		});
 
@@ -76,12 +79,25 @@ module.exports = function(io, passport, query) {
 			}
 		});
 
+		// new event created by user
+		socket.on('edit-event', function(data) {
+			if (data) {
+				editEvent.editEvent(data, function(result) {
+					if (result) {
+						socket.emit('event-edited', { response : 'true'});
+						editEventNotification.notify(data.eventID, userSocket, socket);
+					}
+					else
+						socket.emit('event-edited', { response : 'false'});
+				});
+			}
+		});
+
 		socket.on('delete-event', function(data) {
 			if (data) {
 				deleteEvent.deleteEvent(data, function(result, deletedUsers) {
 					if (result) {
 						socket.emit('event-deleted', { response : 'true'});
-						//deleteEventNotification.notify(data, deletedUsers, userSocket, socket);
 					}
 					else
 						socket.emit('event-deleted', { response : 'false'});
@@ -117,11 +133,6 @@ module.exports = function(io, passport, query) {
 			}
 		});
 
-		// test event
-		socket.on('monaEvent', function(data) {
-			console.log(data);
-			socket.emit('response', { hello: 'Przestan to klikac!' });
-		});
 	});
 };
 
@@ -141,4 +152,15 @@ function findClientsSocket(io, roomId, namespace) {
         }
     }
     return res;
+}
+
+function onAuthorizeSuccess(data, accept){
+  console.log('successful connection to socket.io');
+  accept();
+}
+
+function onAuthorizeFail(data, message, error, accept){
+  console.log('failed connection to socket.io:', message);
+  if(error)
+    accept(new Error(message));
 }

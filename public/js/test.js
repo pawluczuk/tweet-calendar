@@ -2,6 +2,7 @@ var socket = io.connect('http://localhost');
 var userID = Number($('#mainContent').attr('user-id'));
 
 socket.on('send-notifications', function(data) {
+  console.log("data received")
   console.log(data.data);
   socket.emit('notifications-received', {});
 });

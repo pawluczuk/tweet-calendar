@@ -8,7 +8,14 @@ var http 	 		= require('http').Server(app);
 var io	 	 		= require('socket.io')(http); 
 var port     		= process.env.PORT || 80;
 var passport 		= require('passport');
-var flash    			= require('connect-flash');
+var flash    		= require('connect-flash');
+var passportSocketIo 	= require('passport.socketio');
+var MongoStore 			= require('connect-mongo')(express.session);
+
+// session store
+var sessionStore  = new MongoStore({
+        url: 'mongodb://heroku_app32091303:fild9grmt2mtr2vour5lakslr7@ds031601.mongolab.com:31601/heroku_app32091303'
+    });
 
 // db configuration =============================================================
 var configDB = require('./config/database-config.js');
@@ -30,11 +37,14 @@ app.configure(function() {
 	app.use(express.static(path.join(__dirname, 'public')));
 
 	// required for passport
-	app.use(express.session({ secret: 'sessionsecret' })); // session secret
+	app.use(express.session({
+	  key: 'express.sid',
+	  store: sessionStore,
+	  secret: 'sessionsecret'
+	}));
 	app.use(passport.initialize());
 	app.use(passport.session()); // persistent login sessions
 	app.use(flash()); // use connect-flash for flash messages stored in session
-
 });
 
 // routes ======================================================================
@@ -63,4 +73,4 @@ http.listen(port);
 console.log('App runs on port: ' + port);
 
 // launch socket.io
-require('./app/sockets.js')(io, passport, query);
+require('./app/sockets.js')(io, sessionStore, passportSocketIo, passport, express, query);
