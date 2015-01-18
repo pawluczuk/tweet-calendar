@@ -45,6 +45,8 @@ $(document).ready(function() {
             center: 'title',
             right: 'month,agendaWeek,agendaDay'
         },
+        firstDay: 1,
+        allDaySlot: false,
         selectable: true,
         defaultView: 'agendaWeek',
         selectHelper: true,
