@@ -1,7 +1,13 @@
+//
+   Created by lem on 2015-01-17.
 body
 include layout.jade
 
     block content
+        div(ng-controller="EventCtrl" ng-init="init(#{event.id})")
+            div(class="row")
+                div(class="col-sm-12")
+                    div(class="well")
 
         div(class="row")
             div(class="col-sm-12")
@@ -16,24 +22,30 @@ include layout.jade
                 div(class="well")
                     h3
                     p
+                        strong Event ID #
+                    {{ eventInfo.event_id }}
+                    p
                         strong Name
-                    |    event.Name
+                    |   {{ eventInfo.name }}
                     p
                         strong Type
-                    |   event.Type
+                    |   {{ eventInfo.type_code }}
                     p(class="text-left")
                         strong Start Date
-                    |   event.StartDate
+                    |   {{ eventInfo.start_date }}
                     p(class="text-left")
                         strong End Date
-                    |   event.EndDate
+                    |   {{ eventInfo.end_date }}
                     p
                         strong Description
-                    |   event.Description
+                    |   {{ eventInfo.description }}
                     p
                         strong Edit Date
-                    |   event.EditDate
-            div(class="col-sm-6")
+                    |   {{ eventInfo.edit_date }}
+                    div(class="well")
+                        h3
+                        |   Użyszkodnicy
+                    div(class="col-sm-6")
                 div(class="well")
                     h4
                         strong  Użytkownicy
@@ -69,8 +81,9 @@ include layout.jade
                     a(href="/eventDel", class="btn btn-danger btn-sm", style="padding: 5px") Usuń event
         div(class="row")
             div(class="col-sm-12")
-               div(class="well")
-                   h4
-                       strong Tweety
-                   p
-                   |    resources/tweetsByEventID?eventID=liczba
+                div(class="well")
+                    h4
+                        strong Tweety
+                    p
+                    |    resources/tweetsByEventID?eventID=liczba
+

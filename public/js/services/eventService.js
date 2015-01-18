@@ -1,5 +1,14 @@
-angular.module('tweetCalendarApp.services').factory('CalendarService', function($http) {
+angular.module('tweetCalendarApp.services').factory('EventService', function($http) {
 	var factory = {};
+
+	factory.getEventInfo = function(eventID) {
+		var war = $http.get("/resources/eventsByID?eventID=" + eventID).then(function(result) {
+			console.log(result.data[0]);
+			return result.data;
+		});
+		console.log(war);
+		return war;
+	};
 	
 	factory.projectExists = function(projectCode) {
 		return $http.get("/project/projectExists?code=" + projectCode).then(function(result) {

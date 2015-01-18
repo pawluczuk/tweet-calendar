@@ -43,7 +43,11 @@ module.exports = function(app, passport, query) {
         userID = req.user.id;
         eventID = req.query.eventID;
         if (userID && eventID) {
-            query('select * from "event" where event_id in (select event_id from "event_user" where user_id = $1::int)and event_id=$2::int ',
+            query('select * from "event" where event_id in (' +
+				'select event_id from "event_user" where user_id = $1::int' +
+				' union ' +
+				'select event_id from "event" where owner_id = $1::int' +
+				') and event_id=$2::int ',
                 [userID, eventID],
                 function(err, rows, result) {
                     if (!err)
