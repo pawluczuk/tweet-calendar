@@ -2,13 +2,21 @@ angular.module('tweetCalendarApp.services').factory('EventService', function($ht
 	var factory = {};
 
 	factory.getEventInfo = function(eventID) {
-		var war = $http.get("/resources/eventsByID?eventID=" + eventID).then(function(result) {
-			console.log(result.data[0]);
+		return $http.get("/resources/eventsByID?eventID=" + eventID).then(function(result) {
 			return result.data;
 		});
-		console.log(war);
-		return war;
 	};
+
+	factory.getUsers = function(eventID) {
+		return $http.get("/resources/usersByEventID?eventID=" + eventID).then(function(result) {
+			return result.data;
+		});
+	};
+
+	return factory;
+
+	/*
+	// TO NA DOLE NIEWAZNE
 	
 	factory.projectExists = function(projectCode) {
 		return $http.get("/project/projectExists?code=" + projectCode).then(function(result) {
@@ -45,6 +53,5 @@ angular.module('tweetCalendarApp.services').factory('EventService', function($ht
 			return results.data;
 		});
 	};
-	
-	return factory;
+	*/
 });
