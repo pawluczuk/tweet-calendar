@@ -5,7 +5,6 @@ module.exports = function(io, query) {
 				callback(false);
 				return;
 			}
-
 			var usersStatement = get_users_statement(data.users);
 			query(usersStatement, function(err, rows, result) {
 				if (err || !rows || !rows.length) {

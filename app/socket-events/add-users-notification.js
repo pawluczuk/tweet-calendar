@@ -27,7 +27,6 @@ function filterUsers(userIDs, connectedUsers) {
 		else
 			obj.disconnectedUsers.push(userIDs[i]);
 	}
-	console.log(obj);
 	return obj;
 }
 
