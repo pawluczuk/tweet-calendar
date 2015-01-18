@@ -8,6 +8,7 @@ module.exports = function(io, sessionStore, passportSocketIo, passport, express,
 	var acceptEvent = require('./socket-events/accept-event.js')(io, query);
 	var newGroup = require('./socket-events/create-group.js')(io, query);
 	var deleteEvent = require('./socket-events/delete-event.js')(io, query);
+	var deleteGroup = require('./socket-events/delete-group.js')(io, query);
 	var addUsers = require('./socket-events/add-users.js')(io, query);
 	var addGroup = require('./socket-events/add-group.js')(io, query);
 	var addEmails = require('./socket-events/add-emails.js')(io, query);
@@ -64,6 +65,17 @@ module.exports = function(io, sessionStore, passportSocketIo, passport, express,
 						socket.emit('group-created', { response : 'true'});
 					else
 						socket.emit('group-created', { response : 'false'});
+				});
+			}
+		});
+
+		socket.on('delete-group', function(data) {
+			if (data) {
+				deleteGroup.deleteGroup(data, function(result) {
+					if (result)
+						socket.emit('group-deleted', { response : 'true'});
+					else
+						socket.emit('group-deleted', { response : 'false'});
 				});
 			}
 		});

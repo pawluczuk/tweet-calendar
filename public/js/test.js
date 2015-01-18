@@ -61,6 +61,11 @@ socket.on('group-added', function(data) {
   createAlert(response);
 });
 
+socket.on('group-deleted', function(data) {
+  var response = 'Grupa usunieta : ' + data.response;
+  createAlert(response);
+});
+
 socket.on('user-deleted', function(data) {
   var response = 'Zostales usuniety z wydarzenia : ' + data.eventID;
   createAlert(response);
@@ -72,6 +77,10 @@ $("#group-create-btn").on('click', function() {
   group.ownerID = userID;
   group.groupUsers = [9, 16, 18];
 	socket.emit('create-group', group);
+});
+
+$("#delete-group-btn").on('click', function() {
+  socket.emit('delete-group', { groupID : 16 });
 });
 
 $("#group-create-btn-invalid").on('click', function() {
