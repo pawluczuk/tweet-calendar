@@ -77,6 +77,21 @@ module.exports = function(app, passport, query) {
         else res.send("Invalid query.");
     });
 
+    // grupy przypisane do eventu o danym id
+    app.get(/\/resources\/groupsByEventID/, isLoggedIn, function(req, res) {
+        eventID = req.query.eventID;
+        if (eventID) {
+            query('select group_id, name from "group" where group_id in (select group_id from event_group where event_id = $1::int)',
+                [eventID],
+                function(err, rows, result) {
+                    if (!err)
+                        res.send(rows);
+                    else res.send("Invalid query.");
+                });
+        }
+        else res.send("Invalid query.");
+    });
+
     // tweety przypisane do eventu o danym id
     app.get(/\/resources\/tweetsByEventID/, isLoggedIn, function(req, res) {
         eventID = req.query.eventID;

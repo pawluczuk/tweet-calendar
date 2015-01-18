@@ -51,16 +51,14 @@ include layout.jade
                         h4
                             strong  Grupy
                         div(class="well")
-                            button(class="btn btn-info btn-xs")
-                                strong Username
-                                span(class="glyphicon glyphicon-remove-circle")
-
-                            p
-                                text    /resources/groupsByEventID?eventID=liczba
+                            div(ng-repeat="group in groups")
+                                button(class="btn btn-info btn-xs", ng-click="deleteGroup(group.group_id)")
+                                    text {{ group.name }}
+                                    span(class="glyphicon glyphicon-remove-circle")
                         div(class="input-group")
-                            input(type="text", placeholder="Group name", class="form-control")
+                            input(type="text", ng-model="newGroup", placeholder="Nazwa grupy", class="form-control")
                             span(class="input-group-btn")
-                                button(class="btn btn-default", type="button")
+                                button(class="btn btn-default", type="button", style="padding: 5px", ng-click="addGroup(newGroup)")
                                     strong  Dodaj grupę
 
                     div(class="well")

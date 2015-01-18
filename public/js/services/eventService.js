@@ -13,7 +13,14 @@ angular.module('tweetCalendarApp.services').factory('EventService', function($ht
 		});
 	};
 
-	return factory;
+    factory.getGroups = function(eventID) {
+        return $http.get("/resources/groupsByEventID?eventID=" + eventID).then(function(result) {
+            return result.data;
+        });
+    };
+
+
+    return factory;
 
 	/*
 	// TO NA DOLE NIEWAZNE

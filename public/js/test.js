@@ -1,4 +1,4 @@
-var socket = io.connect('http://localhost');
+var socket = io.connect();
 var userID = Number($('#mainContent').attr('user-id'));
 
 socket.on('event-edited', function(data) {
@@ -124,7 +124,7 @@ $("#users-delete-btn").on('click', function(){
 });
 
 $("#add-emails-btn").on('click', function(){
-  socket.emit('add-emails', { eventID : 114, users : ["monka@monka.pl"] });
+  socket.emit('add-emails', { eventID : 114, users : ["blemiec@gmail.com"] });
 });
 
 $(document).ready(function() {
