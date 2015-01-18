@@ -135,10 +135,11 @@ module.exports = function(io, sessionStore, passportSocketIo, passport, express,
 
 		socket.on('add-emails', function (data) {
 			if (data) {
-				addEmails.addEmails(data, function(result) {
+				addEmails.addEmails(data, function(result, userIDs) {
 					if (result) {
 						socket.emit('emails-added', { response : 'true'});
-						//addUsersNotification.notify(data, userSocket, socket);
+						data.users = userIDs;
+						addUsersNotification.notify(data, userSocket, socket);
 					}
 					else
 						socket.emit('emails-added', { response : 'false'});

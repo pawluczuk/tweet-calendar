@@ -1,6 +1,7 @@
 module.exports = function(io, query) {
 	return {
 		notify : function(data, connectedUsers, socket) {
+			console.log(data)
 			if (invalid(data)) return;
 			var filter = filterUsers(data.users, connectedUsers);
 			var connected = filter.connectedUsers;
@@ -39,6 +40,7 @@ function notifyConnected(eventID, connectedSockets, io) {
 }
 
 function notifyDisconnected(eventID, disconnectedUsers, query) {
+	if (!disconnectedUsers || !disconnectedUsers.length) return;
 	var message = 'Zostales dodany do wydarzenia.';
 	var statement = 'insert into "notification" values ';
 	for (var i = 0; i < disconnectedUsers.length; i++) {
