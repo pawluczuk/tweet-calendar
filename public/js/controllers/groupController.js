@@ -7,7 +7,10 @@ angular.module('tweetCalendarApp.controllers').controller('GroupCtrl', function(
 
     $scope.editGroup = function(groupID)
     {
-        $('#ModalerinoEdit').modal('show');
+        GroupService.getGroupUsers(groupID).then(function(data) {
+            $scope.groupUsers = data;
+            $('#ModalerinoEdit').modal('show');
+        })
     }
 
     $scope.deleteGroup = function(groupID)
@@ -15,29 +18,21 @@ angular.module('tweetCalendarApp.controllers').controller('GroupCtrl', function(
         console.log(groupID);
     }
 
-    $scope.addGroup = function()
+    $scope.createGroup = function(groupName)
     {
-        var data = { 'eventID' : $scope.eventInfo.event_id, 'groups' : [ groupName ]};
-        console.log(data);
-        socket.emit('add-groups', data);
+        var data = { 'groupName' : groupName };
+        socket.emit('create-group', data);
     }
 
-    $scope.addUserToGroup = function(userID)
+    $scope.addUserToGroup = function(username)
     {
-
+        console.log(username);
     }
 
     $scope.getGroups = function()
     {
         GroupService.getGroupsOwner().then(function(data) {
             $scope.groups = data;
-        })
-    }
-
-    $scope.getGroupUsers = function(groupID)
-    {
-        GroupService.getGroupUsers(groupID).then(function(data) {
-            $scope.groupUsers = data;
         })
     }
 

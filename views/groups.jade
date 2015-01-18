@@ -47,7 +47,7 @@ div(ng-controller="GroupCtrl", class="container", ng-init="getGroups()")
                         div.list-group-item(href="#") {{ group.name }}
                             button.btn.btn-primary(type="button",
                                 style="float: right; padding: 0px;",
-                                ng-click="editGroup(group_group_id)") Edytuj
+                                ng-click="editGroup(group.group_id)") Edytuj
                             button.btn.btn-primary(type="button",
                                 style="float: right; padding: 0px;"
                                 ng-click="deleteGroup(group.group_id)") Usuń
@@ -57,7 +57,7 @@ div(ng-controller="GroupCtrl", class="container", ng-init="getGroups()")
                     strong  Nowa grupa
                 div(class="input-group")
                     input(type="text", ng-model="newGroup", placeholder="Nazwa grupy", class="form-control")
-                button(class="btn btn-primary", type="button", style="padding: 5px", ng-click="addGroup(newGroup)")
+                button(class="btn btn-primary", type="button", style="padding: 5px", ng-click="createGroup(newGroup)")
                     strong  Dodaj grupę
             #ModalerinoEdit.modal.fade(tabindex="-1", role="dialog", aria-labelledby="ModalLabelEdit", aria-hidden="true")
                 .modal-dialog
@@ -67,25 +67,25 @@ div(ng-controller="GroupCtrl", class="container", ng-init="getGroups()")
                                 span(aria-hidden="true") &#215;
                             h4#ModalLabelEdit.modal-title Edytuj grupę
                         .modal-body
-                            form
-                                .form-group
-                                    table(class="table table-hover")
-                                        thead
-                                            tr
-                                                th #
-                                                th Nazwa użytkownika
-                                                th Usuń
-                                        tbody
-                                            tr
-                                                th(scope="row") 1
-                                                td {{ user.name }}
-                                                td
-                                                    span(class="glyphicon glyphicon-remove")
-                                .form-group
-                                    label.control-label(for="event-users") Dodaj użytkownika do grupy
-                                    input#add-user.form-control(placeholder="Nazwa użytkownika", type="email", ng-model="newUser")
-                                    button(class="btn btn-primary", type="button", style="padding: 5px", ng-click="addUserToGroup(newUser)")
-                                        strong  Dodaj użytkownika
+                            .form-group
+                                table(class="table table-hover")
+                                    thead
+                                        tr
+                                            th #
+                                            th Nazwa użytkownika
+                                            th Usuń
+                                    tbodydiv(class="input-group")
+                                        tr(ng-repeat="user in groupUsers")
+                                            th(scope="row") {{user.user_id}}
+                                            td {{user.email}}
+                                            td
+                                                span(class="glyphicon glyphicon-remove", ng-click="deleteGroup(user.user_id)")
+                            div(class="input-group")
+                            label Dodaj użytkownika do grupy
+                            input(type="text", ng-model="newUser", placeholder="Nazwa użytkownika", class="form-control")
+                            span(class="input-group-btn")
+                                button(class="btn btn-default", type="button", style="padding: 5px", ng-click="addUserToGroup(newUser)")
+                                    strong  Dodaj użytkownika
                         .modal-footer
                             button.close(type="button", data-dismiss="modal", aria-label="Close")
                                 span(aria-hidden="true") Zamknij
