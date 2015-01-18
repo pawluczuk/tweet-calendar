@@ -1,5 +1,3 @@
-//
-   Created by lem on 2015-01-17.
 body
 include layout.jade
 
@@ -11,14 +9,12 @@ include layout.jade
 
                     h3
                         span(class="fa fa-file")
-                        |   Event
+                        |   Event #
+                        =event.id
         div(class="row")
             div(class="col-sm-6")
                 div(class="well")
                     h3
-                    p
-                        strong Event ID #
-                        =event.id
                     p
                         strong Name
                     |    event.Name
@@ -40,13 +36,18 @@ include layout.jade
             div(class="col-sm-6")
                 div(class="well")
                     h4
-                        strong  Użyszkodnicy
+                        strong  Użytkownicy
                     div(class="well")
                         button(class="btn btn-info btn-xs")
                             text Username
                             span(class="glyphicon glyphicon-remove-circle")
                         p
                             text  /resources/usersByEventID?&eventID=liczba
+                    div(class="input-group")
+                        input(type="text", placeholder="Username", class="form-control")
+                        span(class="input-group-btn")
+                            button(class="btn btn-default", type="button", style="padding: 5px")
+                                strong  Dodaj użytkownika
                     h4
                         strong  Grupy
                     div(class="well")
@@ -56,15 +57,20 @@ include layout.jade
 
                         p
                             text    /resources/groupsByEventID?eventID=liczba
+                    div(class="input-group")
+                        input(type="text", placeholder="Group name", class="form-control")
+                        span(class="input-group-btn")
+                            button(class="btn btn-default", type="button")
+                                strong  Dodaj grupę
 
                 div(class="well")
                     h3
-                    a(href="/eventEdit" class="btn btn-info btn-sm") Edytuj event
-                    a(href="/eventDel" class="btn btn-danger btn-sm") Usuń event
+                    a(href="/eventEdit", class="btn btn-info btn-sm", style="padding: 5px") Edytuj event
+                    a(href="/eventDel", class="btn btn-danger btn-sm", style="padding: 5px") Usuń event
         div(class="row")
             div(class="col-sm-12")
                div(class="well")
-                   h3
-                   |    Tweety
+                   h4
+                       strong Tweety
                    p
                    |    resources/tweetsByEventID?eventID=liczba
