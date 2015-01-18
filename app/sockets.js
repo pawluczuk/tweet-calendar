@@ -15,6 +15,8 @@ module.exports = function(io, sessionStore, passportSocketIo, passport, express,
 	var deleteUsers = require('./socket-events/delete-users.js')(io, query);
 	var deleteCons = require('./socket-events/delete-cons.js')(io, query);
 	var addGroupUsers = require('./socket-events/add-group-users.js')(io, query);
+	var deleteGroupEvent = require('./socket-events/delete-group-event.js')(io, query);
+	var newTweet = require('./socket-events/add-tweet.js')(io, query);
 
 	// supported actions' notifications
 	var newEventNotification = require('./socket-events/create-event-notification.js')(io, query);
@@ -61,7 +63,7 @@ module.exports = function(io, sessionStore, passportSocketIo, passport, express,
 		// new group created by user
 		socket.on('create-group', function(data) {
 			if (data) {
-				newGroup.createGroup(data, function(result) {
+				newGroup.createGroup(socket.request.user.id, data, function(result) {
 					if (result)
 						socket.emit('group-created', { response : 'true'});
 					else
@@ -178,6 +180,21 @@ module.exports = function(io, sessionStore, passportSocketIo, passport, express,
 			}
 		});
 
+		// delete group from existing event
+		socket.on('delete-group-event', function (data) {
+			if (data) {
+				deleteGroupEvent.deleteGroup(data, function(result, userIDs) {
+					if (result) {
+						socket.emit('group-event-added', { response : 'true'});
+						data.users = userIDs;
+						deleteUsersNotification.notify(data, userSocket, socket);
+					}
+					else
+						socket.emit('group-event-added', { response : 'false'});
+				});
+			}
+		});
+
 		// add users to event by their emails
 		socket.on('add-emails', function (data) {
 			if (data) {
@@ -203,6 +220,20 @@ module.exports = function(io, sessionStore, passportSocketIo, passport, express,
 					}
 					else
 						socket.emit('users-deleted', { response : 'false'});
+				});
+			}
+		});
+
+		// add tweets to event
+		socket.on('add-tweet', function (data) {
+			if (data) {
+				newTweet.tweet(socket.request.user.id, data, function(result, userIDs) {
+					if (result) {
+						socket.emit('tweet-added', { response : 'true'});
+						editEventNotification.tweet(data.eventID, userSocket, socket);
+					}
+					else
+						socket.emit('tweet-added', { response : 'false'});
 				});
 			}
 		});
