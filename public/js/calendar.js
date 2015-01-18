@@ -71,7 +71,9 @@ $(document).ready(function() {
             window.location.href = "event/" + calEvent.id;
         },
         eventLimit: true,
-        events: '/resources/eventsOwner'
+        events: '/resources/eventsOwner',
+        timeFormat: 'HH:MM' // uppercase H for 24-hour clock
+
         //                   events: "/resources/events?&start=startDate&end=endDate" {
         //                       $.ajax({
         //                               type: 'POST',
