@@ -1,4 +1,4 @@
-angular.module('tweetCalendarApp.controllers').controller('CalendarCtrl', function($http, $scope, CalendarService){
+angular.module('tweetCalendarApp.controllers').controller('CalendarCtrl', function($http, $scope){
 	$scope.event = {};
 
 	socket.on('event-created', function(data) {
