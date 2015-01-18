@@ -1,5 +1,14 @@
 //
    Created by lem on 2015-01-17.
+head
+    block prepend script
+        script(src='http://code.jquery.com/jquery-1.9.0.js')
+        script(src='http://code.jquery.com/jquery-migrate-1.2.1.min.js')
+        script(src='http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/js/bootstrap.js')
+        script(src='http://bootstrapdocs.com/v1.4.0/js/bootstrap-modal.js')
+        script(src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.js")
+        script(src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/additional-methods.js")
+
 body
 include layout.jade
     block content
@@ -62,9 +71,8 @@ include layout.jade
                                     strong  Dodaj grupę
 
                     div(class="well")
-                        h3
-                        a(href="/eventEdit", class="btn btn-info btn-sm", style="padding: 5px") Edytuj event
-                        a(href="/eventDel", class="btn btn-danger btn-sm", style="padding: 5px") Usuń event
+                        div(class="btn btn-info btn-sm", style="padding: 5px; margin: 2px", ng-click="editEvent(#{eventID})") Edytuj event
+                        div(class="btn btn-danger btn-sm", style="padding: 5px; margin: 2px", ng-click="deleteEvent(#{eventID})") Usuń event
             div(class="row")
                 div(class="col-sm-12")
                     div(class="well")
@@ -72,3 +80,38 @@ include layout.jade
                             strong Tweety
                         p
                         |    resources/tweetsByEventID?eventID=liczba
+            #Modalerino.modal.fade(tabindex="-1", role="dialog", aria-labelledby="ModalerinoLabel", aria-hidden="true")
+                .modal-dialog
+                    .modal-content
+                        .modal-header
+                            button.close(type="button", data-dismiss="modal", aria-label="Close")
+                                span(aria-hidden="true") &#215;
+                            h4#ModalerinoLabel.modal-title Edytuj event
+                        .modal-body
+                            form(ng-submit="saveEvent()")
+                                .form-group
+                                    label.control-label(for="when") Kiedy
+                                    #when.controls.controls-row(style="margin-top:5px;")
+                                .form-group
+                                    label.control-label Event
+                                    input.form-control(ng-model="eventInfo.name", type="text", placeholder="Write event name here")
+                                .form-group
+                                    label.control-label Opis eventu
+                                    textarea.form-control(ng-model="eventInfo.description", placeholder="Write event details here")
+                                .form-group
+                                    label.control-label Typ eventu
+                                    select.form-control(ng-model="newEventType")
+                                        option(value="CONS") Konsultacje
+                                        option(value="MEET") Spotkanie
+                                        option(value="DEAD") Deadline
+                                        option(value="BUSY") Zajęty
+                                .form-group
+                                    button#buttonCreate.btn.btn-primary(type="submit") Edytuj event
+                                .controls
+                                    input#eventStart.form-control(ng-model="eventInfo.start", type="hidden")
+                                    input#eventEnd.form-control(ng-model="eventInfo.end", type="hidden")
+                                    input#ownerId.form-control(ng-model="eventInfo.ownerId", value="#{user.id}", type="hidden")
+                                    input#dailyEvent(type="hidden")
+                        .modal-footer
+                            button.close(type="button", data-dismiss="modal", aria-label="Close")
+                                span(aria-hidden="true") Zamknij

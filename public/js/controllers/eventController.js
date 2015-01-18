@@ -3,6 +3,7 @@ angular.module('tweetCalendarApp.controllers').controller('EventCtrl', function(
     $scope.users = { };
     $scope.groups = { };
 
+    $scope.newEventType;
     $scope.newUser;
     $scope.newGroup;
 
@@ -42,6 +43,19 @@ angular.module('tweetCalendarApp.controllers').controller('EventCtrl', function(
         var data = { 'eventID' : $scope.eventInfo.event_id, 'users' : [ userID ]}
         socket.emit('delete-users', data)
     }
+
+    $scope.deleteEvent = function(eventID)
+    {
+        console.log(eventID);
+    }
+
+    $scope.editEvent = function(eventID)
+    {
+        console.log(eventID);
+        $scope.newEventType = $scope.eventInfo.type_code;
+        $('#Modalerino').modal('show');
+    }
+
 
     $scope.init = function(eventID)
     {
