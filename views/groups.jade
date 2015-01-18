@@ -36,26 +36,27 @@ head
                                 body
 include layout.jade
 block content
-div(ng-controller="CalendarCtrl", class="container")
+div(ng-controller="GrpCtrl", class="container")
     div(class="row")
         div(class="col-sm-12")
             div(class="well")
                 h3
-                    span(class="fa fa-user")
-                    | Moje grupy
-            div(class="list-group")
-                a.list-group-item  Grupa nr 1
-                    button#editButton.btn.btn-primary(type="button", style="float: right; padding: 0px;") Edit
-                    button#deleteButton.btn.btn-primary(type="button", style="float: right; padding: 0px;") Delete
-                a.list-group-item Grupa nr 2
-                    button.btn.btn-primary(type="button", style="float: right; padding: 0px;") Edit
-                    button.btn.btn-primary(type="button", style="float: right; padding: 0px;") Delete
-                a.list-group-item(href="#") Grupa nr 3
-                    button.btn.btn-primary(type="button", style="float: right; padding: 0px;") Edit
-                    button.btn.btn-primary(type="button", style="float: right; padding: 0px;") Delete
-                a.list-group-item(href="#") Grupa nr 4
-                    button.btn.btn-primary(type="button", style="float: right; padding: 0px;") Edit
-                    button.btn.btn-primary(type="button", style="float: right; padding: 0px;") Delete
+                    span(class="fa fa-th-list")
+                    text    Moje grupy
+            div(class="well")
+                div(class="list-group")
+                    a.list-group-item  Grupa nr 1
+                        button#editButton.btn.btn-primary(type="button", style="float: right; padding: 0px;") Edytuj
+                        button#deleteButton.btn.btn-primary(type="button", style="float: right; padding: 0px;") Usuń
+                    a.list-group-item Grupa nr 2
+                        button.btn.btn-primary(type="button", style="float: right; padding: 0px;") Edytuj
+                        button.btn.btn-primary(type="button", style="float: right; padding: 0px;") Usuń
+                    a.list-group-item(href="#") Grupa nr 3
+                        button.btn.btn-primary(type="button", style="float: right; padding: 0px;") Edytuj
+                        button.btn.btn-primary(type="button", style="float: right; padding: 0px;") Usuń
+                    a.list-group-item(href="#") Grupa nr 4
+                        button.btn.btn-primary(type="button", style="float: right; padding: 0px;") Edytuj
+                        button.btn.btn-primary(type="button", style="float: right; padding: 0px;") Usuń
             #ModalerinoEdit.modal.fade(tabindex="-1", role="dialog", aria-labelledby="ModalLabelEdit", aria-hidden="true")
                 .modal-dialog
                     .modal-content
