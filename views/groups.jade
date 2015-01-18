@@ -71,12 +71,10 @@ div(ng-controller="GroupCtrl", class="container", ng-init="getGroups()")
                                 table(class="table table-hover")
                                     thead
                                         tr
-                                            th #
                                             th Nazwa użytkownika
                                             th Usuń
                                     tbodydiv(class="input-group")
                                         tr(ng-repeat="user in groupUsers")
-                                            th(scope="row") {{user.user_id}}
                                             td {{user.email}}
                                             td
                                                 span(class="glyphicon glyphicon-remove", ng-click="deleteGroup(user.user_id)")

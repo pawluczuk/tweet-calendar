@@ -5,10 +5,21 @@ angular.module('tweetCalendarApp.controllers').controller('GroupCtrl', function(
     $scope.newGroup;
     $scope.newUser;
 
+    $scope.editingGroupID;
+
+    socket.on('group-users-added', function(data) {
+        var response = 'Dodales uzytkownika do grupy : ' + data.response;
+        console.log(response);
+        GroupService.getGroupUsers($scope.editingGroupID).then(function(data) {
+            $scope.groupUsers = data;
+        })
+    });
+
     $scope.editGroup = function(groupID)
     {
         GroupService.getGroupUsers(groupID).then(function(data) {
             $scope.groupUsers = data;
+            $scope.editingGroupID = groupID;
             $('#ModalerinoEdit').modal('show');
         })
     }
@@ -24,9 +35,10 @@ angular.module('tweetCalendarApp.controllers').controller('GroupCtrl', function(
         socket.emit('create-group', data);
     }
 
-    $scope.addUserToGroup = function(username)
+    $scope.addUserToGroup = function(user)
     {
-        console.log(username);
+        var data = { 'groupID' : $scope.editingGroupID, users : [ user ]}
+        socket.emit('add-group-users', data);
     }
 
     $scope.getGroups = function()
