@@ -131,9 +131,15 @@ $(document).ready(function() {
 });
 
 function createAlert(response) {
-  var alert = '<div class="alert alert-info fade in" role="alert">' + 
+  var alert = '<div class="alert alert-info fade in" role="alert", id="notificatione">' +
       '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
       ' <span aria-hidden="true">×</span></button>' + 
       '<h4>' + response + '</h4>';
+      setTimeout(function() {
+        $('#notificatione').fadeOut('slow',function(){
+          $("#notificatione").remove();
+        });
+      }, 1000);
       $("#group-create-response").append(alert);
+
 }
