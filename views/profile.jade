@@ -5,23 +5,23 @@ block content
             div(class="well")
                 h3
                     span(class="fa fa-user")
-                    | Profil
-                div(class="col-sm-12")
-                    form(method='post')
-                        h3 Change password
-                        .form-group
-                            label(for='field_password').sr-only New Password
-                            input(type='password', name='password', id='field_password', placeholder='New Password', tabindex=1).form-control
-                        .form-group
-                            label(for='field_password_confirm').sr-only Confirm Password
-                            input(type='password', name='password_confirm', id='field_password_confirm', placeholder='Confirm Password', tabindex=2).form-control
-                        .forum-group
-                            input(type='submit',name='submit',value='Submit').btn.btn-primary
-                        h3 Change email
-                        h4 current email:
-                            =user.username
-                        .form-group
-                            label(for='field_email').sr-only New email
-                            input(type='email', name='new_email', id='field_new_email', placeholder='New email').form-control
-                        .form-group
-                            input(type='submit_email',name='submit_email',value='Submit').btn.btn-primary
+                    text    Profil
+            div(class="well")
+                form(method='post')
+                    h3 Change password
+                    .form-group
+                        label(for='field_password').sr-only New Password
+                        input(type='password', name='password', id='field_password', placeholder='New Password', tabindex=1).form-control
+                    .form-group
+                        label(for='field_password_confirm').sr-only Confirm Password
+                        input(type='password', name='password_confirm', id='field_password_confirm', placeholder='Confirm Password', tabindex=2).form-control
+                    .forum-group
+                        input(type='submit',name='submit',value='Submit').btn.btn-primary
+                    h3 Change email
+                    h4 current email:
+                        =user.username
+                    .form-group
+                        label(for='field_email').sr-only New email
+                        input(type='email', name='new_email', id='field_new_email', placeholder='New email').form-control
+                    .form-group
+                        input(type='submit_email',name='submit_email',value='Submit').btn.btn-primary
