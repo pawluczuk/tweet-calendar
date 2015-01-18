@@ -71,7 +71,7 @@ module.exports = function(app, passport, query) {
     });
 
     // tweety przypisane do eventu o danym id
-    app.get(/\/resources\/usersByEventID/, isLoggedIn, function(req, res) {
+    app.get(/\/resources\/tweetsByEventID/, isLoggedIn, function(req, res) {
         eventID = req.query.eventID;
         if (eventID) {
             query('select * from "tweet" where event_id = $1::int',
