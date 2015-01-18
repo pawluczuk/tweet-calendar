@@ -48,7 +48,7 @@ $(document).ready(function() {
         selectable: true,
         defaultView: 'agendaWeek',
         selectHelper: true,
-        editable: true,
+        editable: false,
 
         select: function(start, end, allDay) {
             console.log(start);
