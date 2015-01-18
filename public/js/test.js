@@ -162,6 +162,7 @@ function createAlert(response) {
       '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
       ' <span aria-hidden="true">×</span></button>' + 
       '<h4>' + response + '</h4>';
+
       setTimeout(function() {
         $('#notificatione').fadeOut('slow',function(){
           $("#notificatione").remove();

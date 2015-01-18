@@ -1,11 +1,16 @@
 //
    Created by Muzyk on 2015-01-09.
 
-extends layout
+include layout.jade
 block content
+div(ng-controller="NotificationCtrl", class="container", ng-init="getUserNotifications()")
    div(class="row")
       div(class="col-sm-12")
          div(class="well")
-            h3
-               span(class="fa fa-user")
-               | Notyfikacje
+            span(class="fa fa-envelope")
+            strong Notyfikacje
+         div(class="well")
+            div(class="list-notify")
+               div(ng-repeat="notification in notifications")
+                  //button.close(type="button", data-dismiss="alert", aria-label="Close")
+                  //   span(aria-hidden="true") &#215;
