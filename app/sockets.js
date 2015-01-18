@@ -14,6 +14,7 @@ module.exports = function(io, sessionStore, passportSocketIo, passport, express,
 	var addEmails = require('./socket-events/add-emails.js')(io, query);
 	var deleteUsers = require('./socket-events/delete-users.js')(io, query);
 	var deleteCons = require('./socket-events/delete-cons.js')(io, query);
+	var addGroupUsers = require('./socket-events/add-group-users.js')(io, query);
 
 	// supported actions' notifications
 	var newEventNotification = require('./socket-events/create-event-notification.js')(io, query);
@@ -69,6 +70,7 @@ module.exports = function(io, sessionStore, passportSocketIo, passport, express,
 			}
 		});
 
+		// delete existing group
 		socket.on('delete-group', function(data) {
 			if (data) {
 				deleteGroup.deleteGroup(data, function(result) {
@@ -76,6 +78,19 @@ module.exports = function(io, sessionStore, passportSocketIo, passport, express,
 						socket.emit('group-deleted', { response : 'true'});
 					else
 						socket.emit('group-deleted', { response : 'false'});
+				});
+			}
+		});
+
+		// add users identified by email to existing group
+		socket.on('add-group-users', function(data) {
+			if (data) {
+				addGroupUsers.addEmails(data, function(result) {
+					if (result) {
+						socket.emit('group-users-added', { response : 'true'});
+					}
+					else
+						socket.emit('group-users-added', { response : 'false'});
 				});
 			}
 		});
@@ -108,6 +123,7 @@ module.exports = function(io, sessionStore, passportSocketIo, passport, express,
 			}
 		});
 
+		// accept event that user has been invited to
 		socket.on('accept-event', function(data) {
 			if (data) {
 				acceptEvent.response(socket.request.user.id, data, function(result) {
@@ -120,6 +136,7 @@ module.exports = function(io, sessionStore, passportSocketIo, passport, express,
 			}
 		});
 
+		// delete existing event
 		socket.on('delete-event', function(data) {
 			if (data) {
 				deleteEvent.deleteEvent(data, function(result, deletedUsers) {
@@ -146,6 +163,7 @@ module.exports = function(io, sessionStore, passportSocketIo, passport, express,
 			}
 		});
 
+		// add group to event
 		socket.on('add-group', function (data) {
 			if (data) {
 				addGroup.addGroup(data, function(result, userIDs) {
@@ -160,6 +178,7 @@ module.exports = function(io, sessionStore, passportSocketIo, passport, express,
 			}
 		});
 
+		// add users to event by their emails
 		socket.on('add-emails', function (data) {
 			if (data) {
 				addEmails.addEmails(data, function(result, userIDs) {

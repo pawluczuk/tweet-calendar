@@ -71,6 +71,11 @@ socket.on('user-deleted', function(data) {
   createAlert(response);
 });
 
+socket.on('group-users-added', function(data) {
+  var response = 'Dodales uzytkownikow do wydarzenia : ' + data.response;
+  createAlert(response);
+});
+
 $("#group-create-btn").on('click', function() {
   var group = {};
   group.groupName = 'mona-group3';
@@ -141,8 +146,11 @@ $("#add-emails-btn").on('click', function(){
 });
 
 $("#add-group-btn").on('click', function(){
-  console.log("add group btn click")
   socket.emit('add-group', { eventID : 116, groupID : 16 });
+});
+
+$("#add-group-users-btn").on('click', function(){
+  socket.emit('add-group-users', { groupID : 16, users : ["bronka@bronka.pl"] });
 });
 
 $(document).ready(function() {
