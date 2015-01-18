@@ -1,4 +1,3 @@
-var socket = io.connect();
 var userID = Number($('#mainContent').attr('user-id'));
 
 socket.on('event-edited', function(data) {

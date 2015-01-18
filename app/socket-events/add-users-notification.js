@@ -1,14 +1,11 @@
 module.exports = function(io, query) {
 	return {
 		notify : function(data, connectedUsers, socket) {
-			console.log(data)
 			if (invalid(data)) return;
-			var filter = filterUsers(data.users, connectedUsers);
-			var connected = filter.connectedUsers;
-			var disconnected = filter.disconnectedUsers;
+			var connected = filterUsers(data.users, connectedUsers);
 
 			notifyConnected(data.eventID, connected, io);
-			notifyDisconnected(data.eventID, disconnected, query);
+			notifyDb(data.eventID, data.users, query);
 		}
 	};
 };
@@ -18,16 +15,12 @@ function invalid(data) {
 }
 
 function filterUsers(userIDs, connectedUsers) {
-	var obj = {};
-	obj.connectedUsers = [];
-	obj.disconnectedUsers = [];
+	var usersArray = [];
 	for (var i = 0; i < userIDs.length; i++) {
 		if (connectedUsers[userIDs[i]])
-			obj.connectedUsers.push(connectedUsers[userIDs[i]]);
-		else
-			obj.disconnectedUsers.push(userIDs[i]);
+			usersArray.push(connectedUsers[userIDs[i]]);
 	}
-	return obj;
+	return usersArray;
 }
 
 function notifyConnected(eventID, connectedSockets, io) {
@@ -38,15 +31,15 @@ function notifyConnected(eventID, connectedSockets, io) {
 	}
 }
 
-function notifyDisconnected(eventID, disconnectedUsers, query) {
-	if (!disconnectedUsers || !disconnectedUsers.length) return;
+function notifyDb(eventID, users, query) {
+	if (!users || !users.length) return;
 	var message = 'Zostales dodany do wydarzenia.';
 	var statement = 'insert into "notification" values ';
-	for (var i = 0; i < disconnectedUsers.length; i++) {
- 		statement += "(DEFAULT," + disconnectedUsers[i] + "," + 
+	for (var i = 0; i < users.length; i++) {
+ 		statement += "(DEFAULT," + users[i] + "," + 
  			eventID + ", now()::timestamp, '" + message + "')";
 
- 		if (i !== disconnectedUsers.length - 1) statement += ', ';
+ 		if (i !== users.length - 1) statement += ', ';
 	}
 	query(statement, function(err, rows, result) {
     	if (err) console.log(err);
