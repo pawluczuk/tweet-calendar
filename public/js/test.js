@@ -1,8 +1,13 @@
 var socket = io.connect('http://localhost');
 var userID = Number($('#mainContent').attr('user-id'));
 
+socket.on('event-edited', function(data) {
+  var response = 'Edytowales wydarzenie : ' + data.response;
+  createAlert(response);
+});
+
 socket.on('send-notifications', function(data) {
-  console.log("data received")
+  console.log("data received");
   console.log(data.data);
   socket.emit('notifications-received', {});
 });
@@ -93,6 +98,17 @@ $("#event-create-btn-invalid").on('click', function() {
   userEvent.sender = userID;
   socket.emit('create-event', userEvent);
 });
+
+$("#event-edit-btn-valid").on('click', function() {
+  var userEvent = {};
+  userEvent.eventID = 84;
+  userEvent.eventName = 'Mona edit';
+  userEvent.eventType = 'BUSY';
+  userEvent.comment = 'EDIT mona event';
+
+  socket.emit('edit-event', userEvent);
+});
+
 
 $("#event-delete-btn").on('click', function(){
   socket.emit('delete-event', { eventID : 49 });

@@ -1,10 +1,11 @@
 module.exports = function(io, query) {
 	return {
 		notify : function(eventID, connectedUsers, socket) {
-			if (invalid(data)) return;
+			if (!eventID) return;
 			query ('select user_id from "event_user" where event_id = $1::int', [eventID],
 				function(err, rows, result) {
 					if (err || !rows) return;
+
 					else {
 						var filter = filterUsers(rows, connectedUsers);
 						var connected = filter.connectedUsers;
@@ -26,6 +27,7 @@ function notifyConnected(eventID, senderID, connectedSockets, io) {
 }
 
 function notifyDisconnected(eventID, disconnectedUsers, query) {
+	if (!disconnectedUsers || !disconnectedUsers.length) return;
 	var message = 'Edytowano wydarzenie.';
 	var statement = 'insert into "notification" values ';
 	for (var i = 0; i < disconnectedUsers.length; i++) {
@@ -35,7 +37,7 @@ function notifyDisconnected(eventID, disconnectedUsers, query) {
  		if (i !== disconnectedUsers.length - 1) statement += ', ';
 	}
 	query(statement, function(err, rows, result) {
-    	if (err) console.log(err);
+    	if (err) console.log("Notify disconnected (edit event) error: " + err);
     });
 }
 
@@ -53,8 +55,4 @@ function filterUsers(additionalRecipients, connectedUsers) {
 	}
 
 	return obj;
-}
-
-function invalid(data) {
-	return !eventID;
 }

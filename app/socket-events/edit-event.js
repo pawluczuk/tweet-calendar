@@ -8,6 +8,7 @@ module.exports = function(io, query) {
 			var stmt = insert_event_stmt(data);
 			query(stmt,	function(err, rows, result) {
 					if (err) {
+						console.log("Insert event statement error: " + err);
 						callback(false);
 						return;
 					}
