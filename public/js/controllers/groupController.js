@@ -5,6 +5,16 @@ angular.module('tweetCalendarApp.controllers').controller('GroupCtrl', function(
     $scope.newGroup;
     $scope.newUser;
 
+    $scope.editGroup = function(groupID)
+    {
+        $('#ModalerinoEdit').modal('show');
+    }
+
+    $scope.deleteGroup = function(groupID)
+    {
+        console.log(groupID);
+    }
+
     $scope.addGroup = function()
     {
         var data = { 'eventID' : $scope.eventInfo.event_id, 'groups' : [ groupName ]};
@@ -13,11 +23,6 @@ angular.module('tweetCalendarApp.controllers').controller('GroupCtrl', function(
     }
 
     $scope.addUserToGroup = function(userID)
-    {
-
-    }
-
-    $scope.deleteGroup = function(groupID)
     {
 
     }

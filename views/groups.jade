@@ -18,25 +18,22 @@ head
         script(src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.js")
         script(src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/additional-methods.js")
         script.
-           $(document).ready(function() {
-              $('#editButton').click(function () {
-                 $('#ModalerinoEdit').modal('show');
-              }),
-                             $('#deleteButton').click(function () {
-                 $('#ModalerinoDelete').modal('show');
-              });
-              $('#submitNo').click(function () {
-                 $('#ModalerinoDelete').modal('hide');
-              });
-                             $('#submitYes').click(function(){
-                 console.log("Grupa usunięta!");
-                 $('#ModalerinoDelete').modal('hide');
-              })
-           });
-                                body
+            $(document).ready(function() {
+                        $('#deleteButton').click(function () {
+                            $('#ModalerinoDelete').modal('show');
+                        });
+                $('#submitNo').click(function () {
+                    $('#ModalerinoDelete').modal('hide');
+                });
+                $('#submitYes').click(function(){
+                    console.log("Grupa usunięta!");
+                    $('#ModalerinoDelete').modal('hide');
+                })
+            });
+body
 include layout.jade
 block content
-div(ng-controller="GrpCtrl", class="container", ng-init="getGroups()")
+div(ng-controller="GroupCtrl", class="container", ng-init="getGroups()")
     div(class="row")
         div(class="col-sm-12")
             div(class="well")
@@ -46,18 +43,14 @@ div(ng-controller="GrpCtrl", class="container", ng-init="getGroups()")
         div(class="col-sm-6")
             div(class="well")
                 div(class="list-group")
-                    a.list-group-item  Grupa nr 1
-                        button#editButton.btn.btn-primary(type="button", style="float: right; padding: 0px;") Edytuj
-                        button#deleteButton.btn.btn-primary(type="button", style="float: right; padding: 0px;") Usuń
-                    a.list-group-item Grupa nr 2
-                        button.btn.btn-primary(type="button", style="float: right; padding: 0px;") Edytuj
-                        button.btn.btn-primary(type="button", style="float: right; padding: 0px;") Usuń
-                    a.list-group-item(href="#") Grupa nr 3
-                        button.btn.btn-primary(type="button", style="float: right; padding: 0px;") Edytuj
-                        button.btn.btn-primary(type="button", style="float: right; padding: 0px;") Usuń
-                    a.list-group-item(href="#") Grupa nr 4
-                        button.btn.btn-primary(type="button", style="float: right; padding: 0px;") Edytuj
-                        button.btn.btn-primary(type="button", style="float: right; padding: 0px;") Usuń
+                    div(ng-repeat="group in groups")
+                        div.list-group-item(href="#") {{ group.name }}
+                            button.btn.btn-primary(type="button",
+                                style="float: right; padding: 0px;",
+                                ng-click="editGroup(group_group_id)") Edytuj
+                            button.btn.btn-primary(type="button",
+                                style="float: right; padding: 0px;"
+                                ng-click="deleteGroup(group.group_id)") Usuń
         div(class="col-sm-6")
             div(class="well")
                 h4
@@ -76,18 +69,18 @@ div(ng-controller="GrpCtrl", class="container", ng-init="getGroups()")
                         .modal-body
                             form
                                 .form-group
-                                        table(class="table table-hover")
-                                            thead
-                                                tr
-                                                    th #
-                                                    th Nazwa użytkownika
-                                                    th Usuń
-                                            tbody
-                                                tr
-                                                    th(scope="row") 1
-                                                    td {{ user.name }}
-                                                    td
-                                                        span(class="glyphicon glyphicon-remove")
+                                    table(class="table table-hover")
+                                        thead
+                                            tr
+                                                th #
+                                                th Nazwa użytkownika
+                                                th Usuń
+                                        tbody
+                                            tr
+                                                th(scope="row") 1
+                                                td {{ user.name }}
+                                                td
+                                                    span(class="glyphicon glyphicon-remove")
                                 .form-group
                                     label.control-label(for="event-users") Dodaj użytkownika do grupy
                                     input#add-user.form-control(placeholder="Nazwa użytkownika", type="email", ng-model="newUser")
