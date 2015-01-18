@@ -1,5 +1,10 @@
 var userID = Number($('#mainContent').attr('user-id'));
 
+socket.on('group-users-removed', function(data) {
+  var response = 'Usunieto uzytkownikow z grupy: ' + data.response;
+  createAlert(response);
+});
+
 socket.on('new-tweet', function(data) {
   var response = 'Nowy tweet do wydarzenia: ' + data.eventID;
   createAlert(response);
@@ -174,6 +179,10 @@ $("#delete-group-event-btn").on('click', function(){
 
 $("#add-tweet-btn").on('click', function(){
   socket.emit('add-tweet', { eventID : 116, message : "message goes here" });
+});
+
+$("#delete-group-users-btn").on('click', function(){
+  socket.emit('remove-group-users', { groupID : 16, users : [16,17]});
 });
 
 $(document).ready(function() {
