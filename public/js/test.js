@@ -22,6 +22,11 @@ socket.on('event-created', function(data) {
   createAlert(response);
 });
 
+socket.on('emails-added', function(data) {
+  var response = 'Dodales maile do wydarzenia: ' + data.response;
+  createAlert(response);
+});
+
 socket.on('event-deleted', function(data) {
   var response = 'Usunales wydarzenie : ' + data.response;
   createAlert(response);
@@ -116,6 +121,11 @@ $("#event-delete-btn").on('click', function(){
 
 $("#users-delete-btn").on('click', function(){
   socket.emit('delete-users', { eventID : 51, users : [16, 18] });
+});
+
+$("#add-emails-btn").on('click', function(){
+  console.log("dd")
+  socket.emit('add-emails', { eventID : 76, users : ["pawluczuk.monika@gmail.com"] });
 });
 
 $(document).ready(function() {
