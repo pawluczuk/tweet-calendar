@@ -2,17 +2,25 @@ module.exports = function(io, query) {
 	return {
 		createEvent : function(data, callback) {
 			if (invalid(data)) {
+				console.log("bad data");
 				callback(false);
 				return;
 			}
-
 			query('insert into "event" values (DEFAULT, $1::int, $2, $3::text, $4::text, $5, $6, now()::timestamp) returning event_id',
-				[data.sender, data.eventType, data.eventName, data.comment, data.start, data.end],
+				[data.ownerId, data.type, data.name, data.description, data.start, data.end],
 				function(err, rows, result) {
+					console.log(err);
+					console.log(rows);
+					console.log(result);
 					if (err) {
 						callback(false);
 						return;
 					}
+					// TEMP: Bez dodawania userow
+					callback(true, rows[0].event_id);
+					return;
+					// KONIEC TEMP
+
 					if (!err && rows && rows[0] && rows[0].event_id) {
 						var eventID = rows[0].event_id;
 						var statement = event_user_statement(eventID, data.additionalUsers);
@@ -29,9 +37,9 @@ module.exports = function(io, query) {
 };
 
 function invalid(data) {
-	return 	!data || !data.eventName || !data.eventType ||
-			!data.start || !data.end || 
-			!data.recipient || !data.sender;
+	return 	!data || !data.ownerId || !data.type ||
+			!data.name || !data.description ||
+			!data.start || !data.end;
 }
 
 function event_user_statement(event_id, userIDs) {

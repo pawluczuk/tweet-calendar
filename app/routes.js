@@ -5,6 +5,7 @@ module.exports = function(app, passport) {
 	// HOME PAGE (with login links) ========
 	// =====================================
 	app.get('/', function(req, res) {
+		console.log(req);
 		res.render('index.jade'); // load the index.ejs file
 	});
 
@@ -69,10 +70,17 @@ module.exports = function(app, passport) {
 	});
 
 	app.get('/test', isLoggedIn, function(req, res) {
-		res.render('test.jade', {
-			user : req.user // get the user out of session and pass to template
-		});
-	});
+        res.render('test.jade', {
+            user : req.user // get the user out of session and pass to template
+        });
+    });
+
+    app.get('/event/:eventId', isLoggedIn, function(req, res) {
+        res.render('event.jade', {
+            user : req.user, // get the user out of session and pass to template
+            event : {id:[req.params.eventId]}
+        });
+    });
 
 	// =====================================
 	// LOGOUT ==============================

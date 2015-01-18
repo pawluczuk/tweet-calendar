@@ -1,0 +1,52 @@
+//
+   Created by lem on 2015-01-17.
+body
+include layout.jade
+
+    block content
+
+        div(class="row")
+            div(class="col-sm-12")
+                div(class="well")
+
+                    h3
+                        span(class="fa fa-file")
+                        |   Event
+        div(class="row")
+            div(class="col-sm-6")
+                div(class="well")
+                    h3
+                    p
+                        strong Event ID #
+                        =event.id
+                    p
+                        strong Name
+                    |    event.Name
+                    p
+                        strong Type
+                    |   event.Type
+                    p(class="text-left")
+                        strong Start Date
+                    |   event.StartDate
+                    p(class="text-left")
+                        strong End Date
+                    |   event.EndDate
+                    p
+                        strong Description
+                    |   event.Description
+                    p
+                        strong Edit Date
+                    |   event.EditDate
+                div(class="well")
+                    h3
+                    |   Użyszkodnicy
+            div(class="col-sm-6")
+                div(class="well")
+                    h3
+                    a(href="/eventEdit" class="btn btn-info btn-sm") Edytuj event
+                    a(href="/eventDel" class="btn btn-danger btn-sm") Usuń event
+        div(class="row")
+            div(class="col-sm-12")
+               div(class="well")
+                   h3
+                   |    Tweety
