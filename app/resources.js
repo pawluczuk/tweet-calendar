@@ -147,6 +147,19 @@ module.exports = function(app, passport, query) {
 		}
 		else res.send("Invalid query.");
 	});
+
+	//Notyfikacje użytkownika o danym userID
+	app.get(/\/resources\/userNotifications/, isLoggedIn, function(req, res) {
+		userID = req.user.id;
+		if (userID) {
+			query('select * from notification where user_id = $1::int', [userID],
+				function(err, rows, result) {
+					if (!err)
+						res.send(rows);
+				});
+		}
+		else res.send("Invalid query.");
+	});
 };
 
 // route middleware to make sure

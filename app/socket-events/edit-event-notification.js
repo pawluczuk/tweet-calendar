@@ -10,8 +10,9 @@ module.exports = function(io, query) {
 						var filter = filterUsers(rows, connectedUsers);
 						var connected = filter.connectedUsers;
 						var disconnected = filter.disconnectedUsers;
+
 						notifyConnected(eventID, connected, io);
-						notifyDisconnected(eventID, disconnected, query);
+						notifyDisconnected(eventID, rows, query);
 					} 
 				});
 		},
@@ -26,14 +27,14 @@ module.exports = function(io, query) {
 						var connected = filter.connectedUsers;
 						var disconnected = filter.disconnectedUsers;
 						tweetConnected(eventID, connected, io);
-						tweetDisconnected(eventID, disconnected, query);
+						tweetDisconnected(eventID, rows, query);
 					} 
 				});
 		}
 	};
 };
 
-function notifyConnected(eventID, senderID, connectedSockets, io) {
+function notifyConnected(eventID, connectedSockets, io) {
 	msg = {};
 	msg.eventID = eventID;
 	for (var i = 0; i < connectedSockets.length; i++) {
@@ -46,7 +47,7 @@ function notifyDisconnected(eventID, disconnectedUsers, query) {
 	var message = 'Edytowano wydarzenie.';
 	var statement = 'insert into "notification" values ';
 	for (var i = 0; i < disconnectedUsers.length; i++) {
- 		statement += "(DEFAULT," + disconnectedUsers[i] + "," + 
+ 		statement += "(DEFAULT," + disconnectedUsers[i].user_id + "," + 
  			eventID + ", now()::timestamp, '" + message + "')";
 
  		if (i !== disconnectedUsers.length - 1) statement += ', ';
@@ -56,7 +57,8 @@ function notifyDisconnected(eventID, disconnectedUsers, query) {
     });
 }
 
-function tweetConnected(eventID, senderID, connectedSockets, io) {
+function tweetConnected(eventID, connectedSockets, io) {
+	console.log(connectedSockets)
 	msg = {};
 	msg.eventID = eventID;
 	for (var i = 0; i < connectedSockets.length; i++) {
@@ -84,12 +86,11 @@ function filterUsers(additionalRecipients, connectedUsers) {
 	var obj = {};
 	obj.connectedUsers = [];
 	obj.disconnectedUsers = [];
-
 	for (var i = 0; i < additionalRecipients.length; i++) {
-		if (connectedUsers[additionalRecipients[i]])
-			obj.connectedUsers.push(connectedUsers[additionalRecipients[i]]);
+		if (connectedUsers[additionalRecipients[i].user_id])
+			obj.connectedUsers.push(connectedUsers[additionalRecipients[i].user_id]);
 		else 
-			obj.disconnectedUsers.push(additionalRecipients[i]);
+			obj.disconnectedUsers.push(additionalRecipients[i].user_id);
 	}
 	return obj;
 }
