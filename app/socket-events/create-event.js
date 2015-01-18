@@ -39,7 +39,7 @@ function event_user_statement(event_id, userIDs) {
  	var statement = 'insert into "event_user" values ';
  	for (var i = 0; i < userIDs.length; i++)
  	{
- 		statement += '(' + event_id + ',' + userIDs[i] + ')';
+ 		statement += '(' + event_id + ',' + userIDs[i] + ', DEFAULT)';
  		if (i !== userIDs.length - 1) statement += ', ';
  	}
  	return statement;

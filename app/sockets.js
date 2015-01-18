@@ -5,6 +5,7 @@ module.exports = function(io, sessionStore, passportSocketIo, passport, express,
 	// supported actions
 	var newEvent = require('./socket-events/create-event.js')(io, query);
 	var editEvent = require('./socket-events/edit-event.js')(io, query);
+	var acceptEvent = require('./socket-events/accept-event.js')(io, query);
 	var newGroup = require('./socket-events/create-group.js')(io, query);
 	var deleteEvent = require('./socket-events/delete-event.js')(io, query);
 	var addUsers = require('./socket-events/add-users.js')(io, query);
@@ -89,6 +90,18 @@ module.exports = function(io, sessionStore, passportSocketIo, passport, express,
 					}
 					else
 						socket.emit('event-edited', { response : 'false'});
+				});
+			}
+		});
+
+		socket.on('accept-event', function(data) {
+			if (data) {
+				acceptEvent.response(socket.request.user.id, data, function(result) {
+					if (result) {
+						socket.emit('event-accepted', { response : 'true'});
+					}
+					else
+						socket.emit('event-accepted', { response : 'false'});
 				});
 			}
 		});

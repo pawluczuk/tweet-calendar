@@ -23,7 +23,7 @@ function notifyConnected(eventID, senderID, connectedSockets, io) {
 }
 
 function notifyDisconnected(eventID, disconnectedUsers, query) {
-	var message = 'Nowe wydarzenie dla Ciebie.';
+	var message = 'Nowe wydarzenie dla Ciebie do zaakceptowania.';
 	var statement = 'insert into "notification" values ';
 	for (var i = 0; i < disconnectedUsers.length; i++) {
  		statement += "(DEFAULT," + disconnectedUsers[i] + "," + 
@@ -48,7 +48,7 @@ function notifyRecipient(eventID, senderID, recipientID, connectedUsers, io, que
 }
 
 function saveRecipientNotification(recipientID, eventID, query) {
-	var message = "Nowe wydarzenie.";
+	var message = "Nowe wydarzenie do zaakceptowania (dodatkowo).";
 	query('insert into "notification" values (DEFAULT, $1::int, $2::int, now()::timestamp, $3::text) returning notification_id', 
 		[recipientID, eventID, message], 
 	    function(err, rows, result) {

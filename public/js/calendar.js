@@ -45,20 +45,26 @@ $(document).ready(function() {
             center: 'title',
             right: 'month,agendaWeek,agendaDay'
         },
+        firstDay: 1,
+        allDaySlot: false,
         selectable: true,
         defaultView: 'agendaWeek',
         selectHelper: true,
         editable: false,
+        selectTimezone: 'Europe/Warsaw',
+        axisFormat: 'HH:mm',
+        timeFormat: 'HH:mm', // uppercase H for 24-hour clock
 
         select: function(start, end, allDay) {
             console.log(start);
+
             endtime = moment(end).format('dddd, MMM d, h:mm');
             starttime = moment(start).format('dddd, MMM d, h:mm');
 
             var mywhen = starttime + ' - ' + endtime;
 
-            endtime = moment(end).format('YYYY-MM-DD hh:mm:ss');
-            starttime = moment(start).format('YYYY-MM-DD hh:mm:ss');
+            endtime = moment(end).format('YYYY-MM-DD HH:mm:ss');
+            starttime = moment(start).format('YYYY-MM-DD HH:mm:ss');
 
             $('#eventStart').val(starttime);
             $('#eventEnd').val(endtime);
@@ -72,7 +78,6 @@ $(document).ready(function() {
         },
         eventLimit: true,
         events: '/resources/eventsOwner',
-        timeFormat: 'HH:MM' // uppercase H for 24-hour clock
 
         //                   events: "/resources/events?&start=startDate&end=endDate" {
         //                       $.ajax({
