@@ -194,6 +194,10 @@ $("#delete-group-users-btn").on('click', function(){
   socket.emit('remove-group-users', { groupID : 16, users : [16,17]});
 });
 
+$("#edit-is-edited-btn").on('click', function(){
+  socket.emit('event-is-edited', { eventID : 16 });
+});
+
 $(document).ready(function() {
   
 });
