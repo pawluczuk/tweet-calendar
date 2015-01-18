@@ -29,20 +29,21 @@ head
                  $('#ModalerinoDelete').modal('hide');
               });
                              $('#submitYes').click(function(){
-                 alert("grupa wypierdolona !");
+                 console.log("Grupa usunięta!");
                  $('#ModalerinoDelete').modal('hide');
               })
            });
                                 body
 include layout.jade
 block content
-div(ng-controller="GrpCtrl", class="container")
+div(ng-controller="GrpCtrl", class="container", ng-init="getGroups()")
     div(class="row")
         div(class="col-sm-12")
             div(class="well")
                 h3
                     span(class="fa fa-th-list")
                     text    Moje grupy
+        div(class="col-sm-6")
             div(class="well")
                 div(class="list-group")
                     a.list-group-item  Grupa nr 1
@@ -57,45 +58,55 @@ div(ng-controller="GrpCtrl", class="container")
                     a.list-group-item(href="#") Grupa nr 4
                         button.btn.btn-primary(type="button", style="float: right; padding: 0px;") Edytuj
                         button.btn.btn-primary(type="button", style="float: right; padding: 0px;") Usuń
+        div(class="col-sm-6")
+            div(class="well")
+                h4
+                    strong  Nowa grupa
+                div(class="input-group")
+                    input(type="text", ng-model="newGroup", placeholder="Nazwa grupy", class="form-control")
+                button(class="btn btn-primary", type="button", style="padding: 5px", ng-click="addGroup(newGroup)")
+                    strong  Dodaj grupę
             #ModalerinoEdit.modal.fade(tabindex="-1", role="dialog", aria-labelledby="ModalLabelEdit", aria-hidden="true")
                 .modal-dialog
                     .modal-content
                         .modal-header
                             button.close(type="button", data-dismiss="modal", aria-label="Close")
                                 span(aria-hidden="true") &#215;
-                            h4#ModalLabelEdit.modal-title Edit group
+                            h4#ModalLabelEdit.modal-title Edytuj grupę
                         .modal-body
                             form
                                 .form-group
-                                    label.control-label(for="recipient-name") Lista ziomków w grupie z możliwością ich wyjebania
                                         table(class="table table-hover")
                                             thead
                                                 tr
                                                     th #
-                                                    th Mail Adress
-                                                    th do wyjebania?
+                                                    th Nazwa użytkownika
+                                                    th Usuń
                                             tbody
                                                 tr
                                                     th(scope="row") 1
-                                                    td Janpawel@buziaczki.pl
-                                                    td button_do_wyjebania
+                                                    td {{ user.name }}
+                                                    td
+                                                        span(class="glyphicon glyphicon-remove")
                                 .form-group
-                                    label.control-label(for="event-users") Add users to group:
-                                    input#add-user.form-control(placeholder="Put Your friend email here", type="email")
+                                    label.control-label(for="event-users") Dodaj użytkownika do grupy
+                                    input#add-user.form-control(placeholder="Nazwa użytkownika", type="email", ng-model="newUser")
+                                    button(class="btn btn-primary", type="button", style="padding: 5px", ng-click="addUserToGroup(newUser)")
+                                        strong  Dodaj użytkownika
                         .modal-footer
                             button.close(type="button", data-dismiss="modal", aria-label="Close")
-                                span(aria-hidden="true") Close
+                                span(aria-hidden="true") Zamknij
             #ModalerinoDelete.modal.fade(tabindex="-1", role="dialog", aria-labelledby="ModalLabelDelete", aria-hidden="true")
                 .modal-dialog
                     .modal-content
                         .modal-header
-                            button.close(type="button", data-dismiss="modal", aria-label="Close")
+                            button.close(type="button", data-dismiss="modal", aria-label="Zamknij")
                                 span(aria-hidden="true") &#215;
-                            h4#ModalLabelDelete.modal-title Confirm need
+                            h4#ModalLabelDelete.modal-title Akceptuj
                         .modal-body
                             form
                                 .form-group
-                                    h4 Are You really sure You want to delete this group?
+                                    h4 Jesteś pewien, że chcesz usunąć tę grupę?
                                 .form-group
-                                    button#submitYes.btn.btn-primary(type="button") Yes
-                                    button#submitNo.btn.btn-primary(type="button", data-dismiss="modal", aria-label="Close") No
+                                    button#submitYes.btn.btn-primary(type="button", ng-click="deleteGroup(groupID)") Tak
+                                    button#submitNo.btn.btn-primary(type="button", data-dismiss="modal", aria-label="Close") Nie

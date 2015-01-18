@@ -126,7 +126,7 @@ module.exports = function(app, passport, query) {
 	app.get(/\/resources\/groupsOwner/, isLoggedIn, function(req, res) {
 		userID = req.user.id;
 		if (userID) {
-			query('select group_id from "group" where owner_id = $1::int', [userID],
+			query('select group_id, name from "group" where owner_id = $1::int', [userID],
 				function(err, rows, result) {
 					if (!err)
 						res.send(rows);
@@ -134,6 +134,12 @@ module.exports = function(app, passport, query) {
 				});
 		}
 		else res.send("Invalid query.");
+	});
+
+	// uzytkownicy, ktorzy naleza do danej grupy
+	app.get(/\/resources\/userGroups/, isLoggedIn, function(req, res) {
+		groupID = req.query.groupID;
+		// TODO
 	});
 
 	// grupy do ktorych nalezy uzytkownik o danym userID

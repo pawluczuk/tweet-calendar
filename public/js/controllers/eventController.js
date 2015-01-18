@@ -46,8 +46,8 @@ angular.module('tweetCalendarApp.controllers').controller('EventCtrl', function(
     $scope.init = function(eventID)
     {
         $scope.getEventInfo(eventID);
-
         $scope.getUsers(eventID);
+        $scope.getGroups(eventID)
     }
 
     $scope.getEventInfo = function(eventID)
@@ -63,9 +63,12 @@ angular.module('tweetCalendarApp.controllers').controller('EventCtrl', function(
             $scope.users = data;
         });
 
+    }
+
+    $scope.getGroups = function(eventID)
+    {
         EventService.getGroups(eventID).then(function(data) {
             $scope.groups = data;
         })
     }
-
 });
