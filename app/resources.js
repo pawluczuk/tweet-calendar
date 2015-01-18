@@ -42,8 +42,6 @@ module.exports = function(app, passport, query) {
     app.get(/\/resources\/eventsByID/, isLoggedIn, function(req, res) {
         userID = req.user.id;
         eventID = req.query.eventID;
-        console.log(userID);
-        console.log(eventID);
         if (userID && eventID) {
             query('select * from "event" where event_id in (select event_id from "event_user" where user_id = $1::int)and event_id=$2::int ',
                 [userID, eventID],
@@ -60,8 +58,7 @@ module.exports = function(app, passport, query) {
     // userzy przypisani do eventu o danym id
     app.get(/\/resources\/usersByEventID/, isLoggedIn, function(req, res) {
         eventID = req.query.eventID;
-        console.log(eventID);
-        if (userID && eventID) {
+        if (eventID) {
             query('select * from "user" where user_id in (select user_id from "event_user" where event_id = $1::int)',
                 [eventID],
                 function(err, rows, result) {
@@ -76,8 +73,7 @@ module.exports = function(app, passport, query) {
     // tweety przypisane do eventu o danym id
     app.get(/\/resources\/usersByEventID/, isLoggedIn, function(req, res) {
         eventID = req.query.eventID;
-        console.log(eventID);
-        if (userID && eventID) {
+        if (eventID) {
             query('select * from "tweet" where event_id = $1::int',
                 [eventID],
                 function(err, rows, result) {
