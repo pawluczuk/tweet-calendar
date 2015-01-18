@@ -17,6 +17,7 @@ module.exports = function(io, sessionStore, passportSocketIo, passport, express,
 	var addGroupUsers = require('./socket-events/add-group-users.js')(io, query);
 	var deleteGroupEvent = require('./socket-events/delete-group-event.js')(io, query);
 	var newTweet = require('./socket-events/add-tweet.js')(io, query);
+	var removeGroupUsers = require('./socket-events/remove-group-users.js')(io, query);
 
 	// supported actions' notifications
 	var newEventNotification = require('./socket-events/create-event-notification.js')(io, query);
@@ -93,6 +94,19 @@ module.exports = function(io, sessionStore, passportSocketIo, passport, express,
 					}
 					else
 						socket.emit('group-users-added', { response : 'false'});
+				});
+			}
+		});
+
+		// delete users identified by id from existing group
+		socket.on('remove-group-users', function(data) {
+			if (data) {
+				removeGroupUsers.removeUsers(data, function(result) {
+					if (result) {
+						socket.emit('group-users-removed', { response : 'true'});
+					}
+					else
+						socket.emit('group-users-removed', { response : 'false'});
 				});
 			}
 		});
