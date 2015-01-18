@@ -9,6 +9,7 @@ module.exports = function(io, sessionStore, passportSocketIo, passport, express,
 	var newGroup = require('./socket-events/create-group.js')(io, query);
 	var deleteEvent = require('./socket-events/delete-event.js')(io, query);
 	var addUsers = require('./socket-events/add-users.js')(io, query);
+	var addEmails = require('./socket-events/add-emails.js')(io, query);
 	var deleteUsers = require('./socket-events/delete-users.js')(io, query);
 	var deleteCons = require('./socket-events/delete-cons.js')(io, query);
 
@@ -128,6 +129,19 @@ module.exports = function(io, sessionStore, passportSocketIo, passport, express,
 					}
 					else
 						socket.emit('users-added', { response : 'false'});
+				});
+			}
+		});
+
+		socket.on('add-emails', function (data) {
+			if (data) {
+				addEmails.addEmails(data, function(result) {
+					if (result) {
+						socket.emit('emails-added', { response : 'true'});
+						//addUsersNotification.notify(data, userSocket, socket);
+					}
+					else
+						socket.emit('emails-added', { response : 'false'});
 				});
 			}
 		});
