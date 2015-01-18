@@ -19,6 +19,12 @@ angular.module('tweetCalendarApp.services').factory('EventService', function($ht
         });
     };
 
+    factory.getUserGroups = function() {
+        return $http.get("/resources/groupsOwner").then(function(result) {
+            return result.data;
+        });
+    };
+
 
     return factory;
 
