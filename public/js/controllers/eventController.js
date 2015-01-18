@@ -25,6 +25,12 @@ angular.module('tweetCalendarApp.controllers').controller('EventCtrl', function(
         console.log(response);
     });
 
+    socket.on('event-deleted', function(data) {
+        var response = 'Usunales event: ' + data.response;
+        console.log(response);
+        window.location.href = '/calendar';
+    });
+
     $scope.addUser = function(userEmail)
     {
         var data = { 'eventID' : $scope.eventInfo.event_id, 'users' : [ userEmail ]};
@@ -44,8 +50,20 @@ angular.module('tweetCalendarApp.controllers').controller('EventCtrl', function(
         socket.emit('delete-users', data)
     }
 
+    $scope.deleteEventButton = function()
+    {
+        $('#ModalerinoDelete').modal('show');
+    }
+
+    $scope.hide = function()
+    {
+        $('#ModalerinoDelete').modal('hide');
+    }
+
     $scope.deleteEvent = function(eventID)
     {
+        var data = { 'eventID' : $scope.eventInfo.event_id };
+        socket.emit('delete-event', data);
         console.log(eventID);
     }
 

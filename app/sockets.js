@@ -1,5 +1,6 @@
 var socketUser = {};
 var userSocket = {};
+var editedEvents = {};
 
 module.exports = function(io, sessionStore, passportSocketIo, passport, express, query) {
 	// supported actions
@@ -17,6 +18,8 @@ module.exports = function(io, sessionStore, passportSocketIo, passport, express,
 	var addGroupUsers = require('./socket-events/add-group-users.js')(io, query);
 	var deleteGroupEvent = require('./socket-events/delete-group-event.js')(io, query);
 	var newTweet = require('./socket-events/add-tweet.js')(io, query);
+	var deleteTweet = require('./socket-events/delete-tweet.js')(io, query);
+	var removeGroupUsers = require('./socket-events/remove-group-users.js')(io, query);
 
 	// supported actions' notifications
 	var newEventNotification = require('./socket-events/create-event-notification.js')(io, query);
@@ -58,6 +61,12 @@ module.exports = function(io, sessionStore, passportSocketIo, passport, express,
 			// remove client from the list of connected users
 			delete userSocket[socket.request.user.id];
 		    delete socketUser[socket.id];
+		    for (var property in editedEvents) {
+			    if (editedEvents.hasOwnProperty(property)) {
+			        if (editedEvents[property] === socket.request.user.id)
+			        	delete editedEvents[property];
+			    }
+			}
 		});
 
 		// new group created by user
@@ -97,6 +106,19 @@ module.exports = function(io, sessionStore, passportSocketIo, passport, express,
 			}
 		});
 
+		// delete users identified by id from existing group
+		socket.on('remove-group-users', function(data) {
+			if (data) {
+				removeGroupUsers.removeUsers(data, function(result) {
+					if (result) {
+						socket.emit('group-users-removed', { response : 'true'});
+					}
+					else
+						socket.emit('group-users-removed', { response : 'false'});
+				});
+			}
+		});
+
 		// new event created by user
 		socket.on('create-event', function(data) {
 			if (data) {
@@ -114,15 +136,31 @@ module.exports = function(io, sessionStore, passportSocketIo, passport, express,
 		// new event created by user
 		socket.on('edit-event', function(data) {
 			if (data) {
-				editEvent.editEvent(data, function(result) {
-					if (result) {
-						socket.emit('event-edited', { response : 'true'});
-						editEventNotification.notify(data.eventID, userSocket, socket);
+				if (data.eventID) {
+					if (editedEvents[eventID]) {
+						socket.emit('event-edit-fail', {});
 					}
-					else
-						socket.emit('event-edited', { response : 'false'});
-				});
+					else {
+						editEvent.editEvent(data, function(result) {
+							editedEvents[data.eventID] = null;
+							if (result) {
+								socket.emit('event-edited', { response : 'true'});
+								editEventNotification.notify(data.eventID, userSocket, socket);
+							}
+							else
+								socket.emit('event-edited', { response : 'false'});
+						});
+					}
+				}
 			}
+		});
+
+		// server is informed that user is editing event
+		socket.on('event-is-edited', function(data) {
+			if (data && data.eventID) {
+				editedEvents[data.eventID] = socket.request.user.id;
+			}
+			console.log(editedEvents);
 		});
 
 		// accept event that user has been invited to
@@ -234,6 +272,19 @@ module.exports = function(io, sessionStore, passportSocketIo, passport, express,
 					}
 					else
 						socket.emit('tweet-added', { response : 'false'});
+				});
+			}
+		});
+
+		// add tweets to event
+		socket.on('delete-tweet', function (data) {
+			if (data) {
+				deleteTweet.tweet(data, function(result) {
+					if (result) {
+						socket.emit('tweet-deleted', { response : 'true'});
+					}
+					else
+						socket.emit('tweet-deleted', { response : 'false'});
 				});
 			}
 		});

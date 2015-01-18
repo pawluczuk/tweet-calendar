@@ -58,7 +58,6 @@ function notifyDisconnected(eventID, disconnectedUsers, query) {
 }
 
 function tweetConnected(eventID, connectedSockets, io) {
-	console.log(connectedSockets)
 	msg = {};
 	msg.eventID = eventID;
 	for (var i = 0; i < connectedSockets.length; i++) {

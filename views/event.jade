@@ -26,22 +26,22 @@ include layout.jade
                     div(class="well")
                         h3
                         p
-                            strong Name
+                            strong Nazwa
                         |   {{ eventInfo.name }}
                         p
-                            strong Type
+                            strong Typ
                         |   {{ eventInfo.type_code }}
                         p(class="text-left")
-                            strong Start Date
+                            strong Data rozpocęcia
                         |   {{ eventInfo.start_date }}
                         p(class="text-left")
-                            strong End Date
+                            strong Data zakończenia
                         |   {{ eventInfo.end_date }}
                         p
-                            strong Description
+                            strong Opis
                         |   {{ eventInfo.description }}
                         p
-                            strong Edit Date
+                            strong Data modyfikacji
                         |   {{ eventInfo.edit_date }}
                 div(class="col-sm-6")
                     div(class="well")
@@ -72,7 +72,7 @@ include layout.jade
 
                     div(class="well")
                         div(class="btn btn-info btn-sm", style="padding: 5px; margin: 2px", ng-click="editEvent(#{eventID})") Edytuj event
-                        div(class="btn btn-danger btn-sm", style="padding: 5px; margin: 2px", ng-click="deleteEvent(#{eventID})") Usuń event
+                        div(class="btn btn-danger btn-sm", style="padding: 5px; margin: 2px", ng-click="deleteEventButton()") Usuń event
             div(class="row")
                 div(class="col-sm-12")
                     div(class="well")
@@ -115,3 +115,17 @@ include layout.jade
                         .modal-footer
                             button.close(type="button", data-dismiss="modal", aria-label="Close")
                                 span(aria-hidden="true") Zamknij
+            #ModalerinoDelete.modal.fade(tabindex="-1", role="dialog", aria-labelledby="ModalLabelDelete", aria-hidden="true")
+                .modal-dialog
+                    .modal-content
+                        .modal-header
+                            button.close(type="button", data-dismiss="modal", aria-label="Zamknij")
+                                span(aria-hidden="true") &#215;
+                            h4#ModalLabelDelete.modal-title Akceptuj
+                        .modal-body
+                            form
+                                .form-group
+                                    h4 Jesteś pewien, że chcesz usunąć ten event?
+                                .form-group
+                                    button#submitYes.btn.btn-primary(type="button", ng-click="deleteEvent(#{eventID})") Tak
+                                    button#submitNo.btn.btn-primary(type="button", data-dismiss="modal", aria-label="Close", ng-click="hide()") Nie
