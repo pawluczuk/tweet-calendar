@@ -56,6 +56,11 @@ socket.on('user-added', function(data) {
   createAlert(response);
 });
 
+socket.on('group-added', function(data) {
+  var response = 'Grupa dodana do wydarzenia : ' + data.response;
+  createAlert(response);
+});
+
 socket.on('user-deleted', function(data) {
   var response = 'Zostales usuniety z wydarzenia : ' + data.eventID;
   createAlert(response);
@@ -72,7 +77,7 @@ $("#group-create-btn").on('click', function() {
 $("#group-create-btn-invalid").on('click', function() {
   var group = {};
   group.groupName = 'mona-group3';
-  //sgroup.ownerID = 9;
+  //group.ownerID = 9;
   group.groupUsers = [9, 16, 18];
   socket.emit('create-group', group);
 });
@@ -124,6 +129,11 @@ $("#users-delete-btn").on('click', function(){
 
 $("#add-emails-btn").on('click', function(){
   socket.emit('add-emails', { eventID : 114, users : ["blemiec@gmail.com"] });
+});
+
+$("#add-group-btn").on('click', function(){
+  console.log("add group btn click")
+  socket.emit('add-group', { eventID : 116, groupID : 16 });
 });
 
 $(document).ready(function() {

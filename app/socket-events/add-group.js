@@ -11,20 +11,20 @@ module.exports = function(io, query) {
 						callback(false);
 						return;
 					}
-					else if (!rows || !rows.length) {
+					else if (rows && rows.length) {
 						var users = rows;
 						var userIds = getUsersArray(rows);
-						var stmt = add_users_statement(data.eventID, rows);
+						var statement = add_users_statement(data.eventID, rows);
 						query(statement, function(err, rows, result) {
 							if (err) {
 								callback(false);
 								return;
 							}
 							else {
-								query('insert into "event_group" where event_id = $1::int and group_id = $2::int',
+								query('insert into "event_group" values ($1::int,$2::int)',
 									[data.eventID, data.groupID], function(err, rows, result) {
 										if (err) callback(false);
-										else callback(true, userIDs);
+										else callback(true, userIds);
 									});
 							}
 						});
@@ -48,9 +48,9 @@ function invalid(data) {
 
 function add_users_statement(event_id, users) {
 	var statement = 'insert into "event_user" values ';
- 	for (var i = 0; i < userIDs.length; i++)
+ 	for (var i = 0; i < users.length; i++)
  	{
- 		statement += '(' + event_id + ',' + users[i].user_id + ')';
+ 		statement += '(' + event_id + ',' + users[i].user_id + ', DEFAULT)';
  		if (i !== users.length - 1) statement += ', ';
  	}
  	return statement;

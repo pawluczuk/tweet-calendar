@@ -13,7 +13,6 @@ module.exports = function(app, passport, query) {
 		if (groupID) {
 			query('select user_id, email from "user" where user_id in (select user_id from "user_group" where group_id = $1::int)',
 				[groupID], function(err, rows, result) {
-					console.log(err)
 					if (!err)
 						res.send(rows);
 					else res.send("Invalid query");
@@ -134,12 +133,6 @@ module.exports = function(app, passport, query) {
 				});
 		}
 		else res.send("Invalid query.");
-	});
-
-	// uzytkownicy, ktorzy naleza do danej grupy
-	app.get(/\/resources\/userGroups/, isLoggedIn, function(req, res) {
-		groupID = req.query.groupID;
-		// TODO
 	});
 
 	// grupy do ktorych nalezy uzytkownik o danym userID
