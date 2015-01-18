@@ -13,9 +13,10 @@ module.exports = function(io, query) {
 					return;
 				}
 				else {
+					var userIds = getUsersArray(rows);
 					var insertStatement = add_users_statement(data.eventID, rows);
 					query(insertStatement, function(err, rows, result) {
-						if (!err) callback(true);
+						if (!err) callback(true, userIds);
 						else callback(false);
 					});
 				}
@@ -26,6 +27,14 @@ module.exports = function(io, query) {
 
 function invalid(data) {
 	return !data || !data.eventID || !data.users.length;
+}
+
+function getUsersArray(originalArray) {
+	var array = [];
+	for (var i = 0; i < originalArray.length ; i++) {
+		array.push(originalArray[i].user_id);
+	}
+	return array;
 }
 
 function get_users_statement(emails) {
