@@ -4,11 +4,16 @@ angular.module('tweetCalendarApp.controllers').controller('EventCtrl', function(
 
     $scope.newUser;
 
-    $scope.addUser = function(userID)
+    socket.on('users-added', function(data) {
+        var response = 'Dodales uzytkownikow do wydarzenia : ' + data.response;
+        console.log(response);
+    });
+
+    $scope.addUser = function(userEmail)
     {
-        var data = { 'eventID' : $scope.eventInfo.event_id, 'users' : [ userID ]};
+        var data = { 'eventID' : $scope.eventInfo.event_id, 'users' : [ userEmail ]};
         console.log(data);
-        //socket.emit('add-users', data);
+        socket.emit('add-users', data);
     }
 
     $scope.deleteUser = function(userID)
