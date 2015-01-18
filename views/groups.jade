@@ -77,7 +77,7 @@ div(ng-controller="GroupCtrl", class="container", ng-init="getGroups()")
                                         tr(ng-repeat="user in groupUsers")
                                             td {{user.email}}
                                             td
-                                                span(class="glyphicon glyphicon-remove", ng-click="deleteGroup(user.user_id)")
+                                                span(class="glyphicon glyphicon-remove", ng-click="deleteUserFromGroup(user.user_id)")
                             div(class="input-group")
                             label Dodaj użytkownika do grupy
                             input(type="text", ng-model="newUser", placeholder="Nazwa użytkownika", class="form-control")

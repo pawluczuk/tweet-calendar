@@ -22,7 +22,7 @@ function invalid(data) {
 }
 
 function delete_users_statement(group_id, userIDs) {
-	var statement = 'delete from "user_group" where group_id = ' + group_id + 'and user_id in (';
+	var statement = 'delete from "user_group" where group_id = ' + group_id + ' and user_id in (';
  	for (var i = 0; i < userIDs.length; i++)
  	{
  		statement += userIDs[i];
