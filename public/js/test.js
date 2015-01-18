@@ -124,8 +124,7 @@ $("#users-delete-btn").on('click', function(){
 });
 
 $("#add-emails-btn").on('click', function(){
-  console.log("dd")
-  socket.emit('add-emails', { eventID : 76, users : ["pawluczuk.monika@gmail.com"] });
+  socket.emit('add-emails', { eventID : 114, users : ["monka@monka.pl"] });
 });
 
 $(document).ready(function() {
