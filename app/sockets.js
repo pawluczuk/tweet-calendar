@@ -1,5 +1,6 @@
 var socketUser = {};
 var userSocket = {};
+var editedEvents = {};
 
 module.exports = function(io, sessionStore, passportSocketIo, passport, express, query) {
 	// supported actions
@@ -60,6 +61,12 @@ module.exports = function(io, sessionStore, passportSocketIo, passport, express,
 			// remove client from the list of connected users
 			delete userSocket[socket.request.user.id];
 		    delete socketUser[socket.id];
+		    for (var property in editedEvents) {
+			    if (editedEvents.hasOwnProperty(property)) {
+			        if (editedEvents[property] === socket.request.user.id)
+			        	delete editedEvents[property];
+			    }
+			}
 		});
 
 		// new group created by user
@@ -129,15 +136,31 @@ module.exports = function(io, sessionStore, passportSocketIo, passport, express,
 		// new event created by user
 		socket.on('edit-event', function(data) {
 			if (data) {
-				editEvent.editEvent(data, function(result) {
-					if (result) {
-						socket.emit('event-edited', { response : 'true'});
-						editEventNotification.notify(data.eventID, userSocket, socket);
+				if (data.eventID) {
+					if (editedEvents[eventID]) {
+						socket.emit('event-edit-fail', {});
 					}
-					else
-						socket.emit('event-edited', { response : 'false'});
-				});
+					else {
+						editEvent.editEvent(data, function(result) {
+							editedEvents[data.eventID] = null;
+							if (result) {
+								socket.emit('event-edited', { response : 'true'});
+								editEventNotification.notify(data.eventID, userSocket, socket);
+							}
+							else
+								socket.emit('event-edited', { response : 'false'});
+						});
+					}
+				}
 			}
+		});
+
+		// server is informed that user is editing event
+		socket.on('event-is-edited', function(data) {
+			if (data && data.eventID) {
+				editedEvents[data.eventID] = socket.request.user.id;
+			}
+			console.log(editedEvents);
 		});
 
 		// accept event that user has been invited to
