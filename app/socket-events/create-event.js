@@ -35,6 +35,7 @@ function invalid(data) {
 }
 
 function event_user_statement(event_id, userIDs) {
+	if (!userIDs || userIDs.length) return;
  	var statement = 'insert into "event_user" values ';
  	for (var i = 0; i < userIDs.length; i++)
  	{
