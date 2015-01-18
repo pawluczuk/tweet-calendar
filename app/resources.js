@@ -8,11 +8,12 @@ module.exports = function(app, passport, query) {
 	});
 
 	// uzytkownicy nalezacy do grupy o danym groupID
-	app.get(/\/resources\/groupUsers/, isLoggedIn, function(res, req) {
-		group_id = req.query.groupID;
-		if (group_id) {
-			query('select user_id, mail from "user" where user_id in (select user_id from "user_group" where group_id = $1::int',
-				[group_id], function(err, rows, result) {
+	app.get(/\/resources\/groupUsers/, isLoggedIn, function(req, res) {
+		groupID = req.query.groupID;
+		if (groupID) {
+			query('select user_id, email from "user" where user_id in (select user_id from "user_group" where group_id = $1::int)',
+				[groupID], function(err, rows, result) {
+					console.log(err)
 					if (!err)
 						res.send(rows);
 					else res.send("Invalid query");
@@ -149,7 +150,6 @@ module.exports = function(app, passport, query) {
 				function(err, rows, result) {
 					if (!err)
 						res.send(rows);
-					
 				});
 		}
 		else res.send("Invalid query.");
