@@ -1,6 +1,5 @@
 var socket = io.connect('http://localhost');
 socket.on('news', function (data) {
-    console.log("NEWS");
     console.log(data);
 });
 
@@ -68,7 +67,8 @@ $(document).ready(function() {
             $('#Modalerino').modal('show');
         },
         eventClick: function (calEvent, jsEvent, view) {
-            alert("asd");
+            console.log(calEvent.id);
+            window.location.href = "event/" + calEvent.id;
         },
         eventLimit: true,
         events: '/resources/eventsOwner'
