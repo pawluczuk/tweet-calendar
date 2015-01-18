@@ -45,6 +45,10 @@ $(document).ready(function() {
             center: 'title',
             right: 'month,agendaWeek,agendaDay'
         },
+        businessHours: {
+            start: '8:00',
+            end: '20:00'
+        },
         firstDay: 1,
         allDaySlot: false,
         selectable: true,
