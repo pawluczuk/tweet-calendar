@@ -1,104 +1,100 @@
 //
-   Created by Muzyk on 2015-01-09.
+                  Created by Muzyk on 2015-01-09.
 html
 head
-   block append stylesheet
-      link(rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.css")
-      link(href='http://fullcalendar.io/js/fullcalendar-2.2.5/fullcalendar.css', rel='stylesheet')
-      link(rel='stylesheet' href="http://cdn.jsdelivr.net/fullcalendar/1.5.4/fullcalendar.print.css")
-   block prepend script
-      script(src='http://code.jquery.com/jquery-1.9.0.js')
-      script(src='http://code.jquery.com/jquery-migrate-1.2.1.min.js')
-      script(src='http://fullcalendar.io/js/fullcalendar-2.2.2/lib/moment.min.js')
-      script(src="http://fullcalendar.io/js/fullcalendar-2.2.2/lib/jquery-ui.custom.min.js")
-      script(src='http://fullcalendar.io/js/fullcalendar-2.2.2/fullcalendar.js')
-      script(src='http://cdn.jsdelivr.net/fullcalendar/1.5.4/gcal.js')
-      script(src='http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/js/bootstrap.js')
-      script(src='http://bootstrapdocs.com/v1.4.0/js/bootstrap-modal.js')
-      script(src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.js")
-      script(src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/additional-methods.js")
-      script.
-         $(document).ready(function() {
-            $('#editButton').click(function () {
-               $('#ModalerinoEdit').modal('show');
-            }),
-
-            $('#deleteButton').click(function () {
-               $('#ModalerinoDelete').modal('show');
-            });
-            $('#submitNo').click(function () {
-               $('#ModalerinoDelete').modal('hide');
-            });
-
-            $('#submitYes').click(function(){
-               alert("grupa wypierdolona !");
-               $('#ModalerinoDelete').modal('hide');
-            })
-         });
-
-
-body
+    block append stylesheet
+        link(rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.css")
+        link(href='http://fullcalendar.io/js/fullcalendar-2.2.5/fullcalendar.css', rel='stylesheet')
+        link(rel='stylesheet' href="http://cdn.jsdelivr.net/fullcalendar/1.5.4/fullcalendar.print.css")
+    block prepend script
+        script(src='http://code.jquery.com/jquery-1.9.0.js')
+        script(src='http://code.jquery.com/jquery-migrate-1.2.1.min.js')
+        script(src='http://fullcalendar.io/js/fullcalendar-2.2.2/lib/moment.min.js')
+        script(src="http://fullcalendar.io/js/fullcalendar-2.2.2/lib/jquery-ui.custom.min.js")
+        script(src='http://fullcalendar.io/js/fullcalendar-2.2.2/fullcalendar.js')
+        script(src='http://cdn.jsdelivr.net/fullcalendar/1.5.4/gcal.js')
+        script(src='http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/js/bootstrap.js')
+        script(src='http://bootstrapdocs.com/v1.4.0/js/bootstrap-modal.js')
+        script(src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.js")
+        script(src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/additional-methods.js")
+        script.
+           $(document).ready(function() {
+              $('#editButton').click(function () {
+                 $('#ModalerinoEdit').modal('show');
+              }),
+                             $('#deleteButton').click(function () {
+                 $('#ModalerinoDelete').modal('show');
+              });
+              $('#submitNo').click(function () {
+                 $('#ModalerinoDelete').modal('hide');
+              });
+                             $('#submitYes').click(function(){
+                 alert("grupa wypierdolona !");
+                 $('#ModalerinoDelete').modal('hide');
+              })
+           });
+                                body
 include layout.jade
 block content
 div(ng-controller="CalendarCtrl", class="container")
-   div(class="row")
-      div(class="col-sm-12")
-         div(class="well")
-            h3
-               span(class="fa fa-user")
-               | Moje grupy
-         div(class="list-group")
-            a.list-group-item  Grupa nr 1
-               button#editButton.btn.btn-primary(type="button", style="float: right; padding: 0px;") Edit
-               button#deleteButton.btn.btn-primary(type="button", style="float: right; padding: 0px;") Delete
-            a.list-group-item Grupa nr 2
-               button.btn.btn-primary(type="button", style="float: right; padding: 0px;") Edit
-               button.btn.btn-primary(type="button", style="float: right; padding: 0px;") Delete
-            a.list-group-item(href="#") Grupa nr 3
-               button.btn.btn-primary(type="button", style="float: right; padding: 0px;") Edit
-               button.btn.btn-primary(type="button", style="float: right; padding: 0px;") Delete
-            a.list-group-item(href="#") Grupa nr 4
-               button.btn.btn-primary(type="button", style="float: right; padding: 0px;") Edit
-               button.btn.btn-primary(type="button", style="float: right; padding: 0px;") Delete
-         #ModalerinoEdit.modal.fade(tabindex="-1", role="dialog", aria-labelledby="ModalLabelEdit", aria-hidden="true")
-            .modal-dialog
-               .modal-content
-                  .modal-header
-                     button.close(type="button", data-dismiss="modal", aria-label="Close")
-                        span(aria-hidden="true") &#215;
-                     h4#ModalLabelEdit.modal-title Edit group
-                  .modal-body
-                     form
-                        .form-group
-                           label.control-label(for="recipient-name") Lista ziomków w grupie z możliwością ich wyjebania
-                              table(class="table table-hover")
-                                 thead
-                                    tr
-                                       th #
-                                       th Mail Adress
-                                       th do wyjebania?
-                                 tbody
-                                    tr
-                                       th(scope="row") 1
-                                       td Janpawel@buziaczki.pl
-                                       td button_do_wyjebania
-                        .form-group
-                           label.control-label(for="event-users") Add users to group:
-                           input#add-user.form-control(placeholder="Put Your friend email here", type="email")
-                  .modal-footer
-                        button.close(type="button", data-dismiss="modal", aria-label="Close")
-                           span(aria-hidden="true") Close
-         #ModalerinoDelete.modal.fade(tabindex="-1", role="dialog", aria-labelledby="ModalLabelDelete", aria-hidden="true")
-            .modal-dialog
-               .modal-content
-                  .modal-header
-                     button.close(type="button", data-dismiss="modal", aria-label="Close")
-                        span(aria-hidden="true") &#215;
-                     h4#ModalLabelDelete.modal-title Confirm need
-                  .modal-body
-                     form
-                        .form-group
-                           h4 Are You really sure You want to delete this group?
-                        .form-group
-                           button#submitYes.btn.btn-primary(type="button") Yes
-                           button#submitNo.btn.btn-primary(type="button", data-dismiss="modal", aria-label="Close") No
+    div(class="row")
+        div(class="col-sm-12")
+            div(class="well")
+                h3
+                    span(class="fa fa-user")
+                    | Moje grupy
+            div(class="list-group")
+                a.list-group-item  Grupa nr 1
+                    button#editButton.btn.btn-primary(type="button", style="float: right; padding: 0px;") Edit
+                    button#deleteButton.btn.btn-primary(type="button", style="float: right; padding: 0px;") Delete
+                a.list-group-item Grupa nr 2
+                    button.btn.btn-primary(type="button", style="float: right; padding: 0px;") Edit
+                    button.btn.btn-primary(type="button", style="float: right; padding: 0px;") Delete
+                a.list-group-item(href="#") Grupa nr 3
+                    button.btn.btn-primary(type="button", style="float: right; padding: 0px;") Edit
+                    button.btn.btn-primary(type="button", style="float: right; padding: 0px;") Delete
+                a.list-group-item(href="#") Grupa nr 4
+                    button.btn.btn-primary(type="button", style="float: right; padding: 0px;") Edit
+                    button.btn.btn-primary(type="button", style="float: right; padding: 0px;") Delete
+            #ModalerinoEdit.modal.fade(tabindex="-1", role="dialog", aria-labelledby="ModalLabelEdit", aria-hidden="true")
+                .modal-dialog
+                    .modal-content
+                        .modal-header
+                            button.close(type="button", data-dismiss="modal", aria-label="Close")
+                                span(aria-hidden="true") &#215;
+                            h4#ModalLabelEdit.modal-title Edit group
+                        .modal-body
+                            form
+                                .form-group
+                                    label.control-label(for="recipient-name") Lista ziomków w grupie z możliwością ich wyjebania
+                                        table(class="table table-hover")
+                                            thead
+                                                tr
+                                                    th #
+                                                    th Mail Adress
+                                                    th do wyjebania?
+                                            tbody
+                                                tr
+                                                    th(scope="row") 1
+                                                    td Janpawel@buziaczki.pl
+                                                    td button_do_wyjebania
+                                .form-group
+                                    label.control-label(for="event-users") Add users to group:
+                                    input#add-user.form-control(placeholder="Put Your friend email here", type="email")
+                        .modal-footer
+                            button.close(type="button", data-dismiss="modal", aria-label="Close")
+                                span(aria-hidden="true") Close
+            #ModalerinoDelete.modal.fade(tabindex="-1", role="dialog", aria-labelledby="ModalLabelDelete", aria-hidden="true")
+                .modal-dialog
+                    .modal-content
+                        .modal-header
+                            button.close(type="button", data-dismiss="modal", aria-label="Close")
+                                span(aria-hidden="true") &#215;
+                            h4#ModalLabelDelete.modal-title Confirm need
+                        .modal-body
+                            form
+                                .form-group
+                                    h4 Are You really sure You want to delete this group?
+                                .form-group
+                                    button#submitYes.btn.btn-primary(type="button") Yes
+                                    button#submitNo.btn.btn-primary(type="button", data-dismiss="modal", aria-label="Close") No
