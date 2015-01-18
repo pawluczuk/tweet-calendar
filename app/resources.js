@@ -64,9 +64,9 @@ module.exports = function(app, passport, query) {
         eventID = req.query.eventID;
         if (eventID) {
             query('select u.user_id, u.email, u.name, u.surname, e.accepted' +
-				'from "user" as u, "event_user" as e' +
-				'where u.user_id = e.user_id' +
-				'and e.event_id = $1::int',
+				' from "user" as u, "event_user" as e' +
+				' where u.user_id = e.user_id' +
+				' and e.event_id = $1::int',
                 [eventID],
                 function(err, rows, result) {
                     if (!err)
