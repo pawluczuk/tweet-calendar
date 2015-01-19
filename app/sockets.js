@@ -68,9 +68,9 @@ module.exports = function(io, sessionStore, passportSocketIo, passport, express,
 			    }
 			}
 			console.log(socket.request.sessionID);
-			sessionStore.destroy(socket.request.sessionID, function() {
+			/*sessionStore.destroy(socket.request.sessionID, function() {
 				console.log("Session destroyed after user disconnected");
-			});
+			});*/
 		});
 
 		// new group created by user
