@@ -2,10 +2,11 @@ angular.module('tweetCalendarApp.controllers').controller('EventCtrl', function(
     $scope.eventInfo = { };
     $scope.users = { };
     $scope.groups = { };
+    $scope.userGroups = { };
 
     $scope.newEventType;
     $scope.newUser;
-    $scope.newGroup;
+    $scope.selectedGroup;
 
     socket.on('emails-added', function(data) {
         var response = 'Dodales uzytkownikow do wydarzenia : ' + data.response;
@@ -20,9 +21,10 @@ angular.module('tweetCalendarApp.controllers').controller('EventCtrl', function(
     });
 
 
-    socket.on('groups-added', function(data) {
+    socket.on('group-added', function(data) {
         var response = 'Dodales grupy do wydarzenia : ' + data.response;
         console.log(response);
+        $scope.getGroups($scope.eventInfo.event_id);
     });
 
     socket.on('event-deleted', function(data) {
@@ -37,11 +39,12 @@ angular.module('tweetCalendarApp.controllers').controller('EventCtrl', function(
         socket.emit('add-emails', data);
     }
 
-    $scope.addGroup = function(groupName)
+    $scope.addGroup = function(groupID)
     {
-        var data = { 'eventID' : $scope.eventInfo.event_id, 'groups' : [ groupName ]};
+        console.log(groupID);
+        var data = { 'eventID' : $scope.eventInfo.event_id, 'groupID' : groupID };
         console.log(data);
-        socket.emit('add-groups', data);
+        socket.emit('add-group', data);
     }
 
     $scope.deleteUser = function(userID)
@@ -80,6 +83,7 @@ angular.module('tweetCalendarApp.controllers').controller('EventCtrl', function(
         $scope.getEventInfo(eventID);
         $scope.getUsers(eventID);
         $scope.getGroups(eventID)
+        $scope.getUserGroups();
     }
 
     $scope.getEventInfo = function(eventID)
@@ -101,6 +105,14 @@ angular.module('tweetCalendarApp.controllers').controller('EventCtrl', function(
     {
         EventService.getGroups(eventID).then(function(data) {
             $scope.groups = data;
+        })
+    }
+
+    $scope.getUserGroups = function()
+    {
+        EventService.getUserGroups().then(function(data) {
+            $scope.userGroups = data;
+            console.log($scope.userGroups);
         })
     }
 });
