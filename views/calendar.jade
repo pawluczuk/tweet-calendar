@@ -8,6 +8,7 @@ html
             link(href='http://fullcalendar.io/js/fullcalendar-2.2.5/fullcalendar.css', rel='stylesheet')
             link(rel='stylesheet' href="http://cdn.jsdelivr.net/fullcalendar/1.5.4/fullcalendar.print.css")
         block prepend script
+
             script(src="https://cdn.socket.io/socket.io-1.2.1.js")
             script(src='http://code.jquery.com/jquery-1.9.0.js')
             script(src='http://code.jquery.com/jquery-migrate-1.2.1.min.js')
@@ -19,6 +20,7 @@ html
             script(src='http://bootstrapdocs.com/v1.4.0/js/bootstrap-modal.js')
             script(src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.js")
             script(src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/additional-methods.js")
+            script(src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.2.6/lang/pl.js")
             script(src="/js/calendar.js")
     body
     include layout.jade
@@ -49,27 +51,27 @@ html
                         .modal-header
                             button.close(type="button", data-dismiss="modal", aria-label="Close")
                                 span(aria-hidden="true") &#215;
-                            h4#ModalerinoLabel.modal-title New event
+                            h4#ModalerinoLabel.modal-title Nowy event
                         .modal-body
                             form(ng-submit="saveEvent()")
                                 .form-group
-                                    label.control-label(for="when") When:
+                                    label.control-label(for="when") Kiedy:
                                     #when.controls.controls-row(style="margin-top:5px;")
                                 .form-group
-                                    label.control-label Event name:
+                                    label.control-label Nazwa eventu:
                                     input.form-control(ng-model="event.name", type="text", placeholder="Write event name here")
                                 .form-group
-                                    label.control-label Event Description:
+                                    label.control-label Opis eventu:
                                     textarea.form-control(ng-model="event.description", placeholder="Write event details here")
                                 .form-group
-                                    label.control-label Pick event type:
+                                    label.control-label Typ eventu:
                                     select.form-control(ng-model="event.type")
                                         option(value="CONS") Consultations
                                         option(value="MEET") Meeting
                                         option(value="DEAD") Deadline
                                         option(value="BUSY") Busy
                                 .form-group
-                                    button#buttonCreate.btn.btn-primary(type="submit") Create event
+                                    button#buttonCreate.btn.btn-primary(type="submit") Stwórz event
                                 .controls
                                     input#eventStart.form-control(ng-model="event.start", type="hidden")
                                     input#eventEnd.form-control(ng-model="event.end", type="hidden")
@@ -77,5 +79,5 @@ html
                                     input#dailyEvent(type="hidden")
                         .modal-footer
                             button.close(type="button", data-dismiss="modal", aria-label="Close")
-                                span(aria-hidden="true") Close
+                                span(aria-hidden="true") Zamknij
 
