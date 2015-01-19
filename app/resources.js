@@ -35,7 +35,42 @@ module.exports = function(app, passport, query) {
 		else res.send("Invalid query.");
 	});
 
-	// eventy na ktore jest zapisany uzytkownik o danym userID
+    //niezaakceptowane eventy na ktore został zaprosozny użytkownik o danym userID
+    app.get(/\/resources\/invitedEventsNotAccepted/, isLoggedIn, function(req, res) {
+        userID = req.user.id;
+        if(userID) {
+            query('select e.event_id AS id, e.name AS title, e.start_date AS start, e.end_date AS end ' +
+            'from "event" AS e where e.event_id IN (select event_id from "event_user" where user_id = $1::int AND accepted = false)',
+            [userID],
+                function(err, rows, result) {
+                    if (!err)
+                        res.send(rows);
+                    else res.send("Invalid query.");
+                })
+        }
+        else res.send("Invalid query.");
+    });
+
+    //zaakceptowane eventy na ktore został zaprosozny użytkownik o danym userID
+    app.get(/\/resources\/invitedEventsAccepted/, isLoggedIn, function(req, res) {
+        userID = req.user.id;
+        if(userID) {
+            query('select e.event_id AS id, e.name AS title, e.start_date AS start, e.end_date AS end, et.color ' +
+                    'from "event" AS e, "event_type" AS et ' +
+                    'where e.event_id IN (select event_id from "event_user" where user_id = $1::int AND accepted = true) ' +
+                        'and e.type_code=et.type_code',
+                [userID],
+                function(err, rows, result) {
+                    if (!err)
+                        res.send(rows);
+                    else res.send("Invalid query.");
+                })
+        }
+        else res.send("Invalid query.");
+    });
+
+
+    // eventy na ktore jest zapisany uzytkownik o danym userID
 	app.get(/\/resources\/eventsByDate/, isLoggedIn, function(req, res) {
 		userID = req.user.id;
 		start = req.query.start;
@@ -160,7 +195,7 @@ module.exports = function(app, passport, query) {
 		}
 		else res.send("Invalid query.");
 	});
-};
+};;
 
 // route middleware to make sure
 function isLoggedIn(req, res, next) {
