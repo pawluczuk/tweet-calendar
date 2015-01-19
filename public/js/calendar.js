@@ -82,8 +82,7 @@ $(document).ready(function() {
         },
         eventSources: [
             '/resources/eventsOwner',
-            '/resources/invitedEventsAccepted',
-            '/resources/invitedEventsNotAccepted'
+            '/resources/invitedEventsAccepted'
         ]
 
         //                   events: "/resources/events?&start=startDate&end=endDate" {
@@ -102,7 +101,8 @@ $(document).ready(function() {
         //                           });
         //
         //                   }
-    });
+    }); $('#calendar').fullCalendar('addEventSource', { url: '/resources/invitedEventsNotAccepted', color: 'black'});
+
         //                   $.ajax({
         //                       type: 'POST',
         //                       url: "/Home/SaveEvent",
@@ -119,3 +119,4 @@ $(document).ready(function() {
         //                   });
 
 });
+
