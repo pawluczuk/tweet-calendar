@@ -33,6 +33,36 @@ angular.module('tweetCalendarApp.controllers').controller('EventCtrl', function(
         window.location.href = '/calendar';
     });
 
+    socket.on('event-accepted', function(data) {
+        var response = 'Zaakceptowales event: ' + data.response;
+        console.log(response);
+        window.location.reload;
+    });
+
+    $scope.acceptEvent = function(eventID)
+    {
+        var data = { 'eventID' : $scope.eventInfo.event_id, 'response' : true };
+        console.log(data);
+        socket.emit('accept-event', data);
+    }
+
+    $scope.rejectEvent = function(eventID)
+    {
+        var data = { 'eventID' : $scope.eventInfo.event_id, 'response' : false };
+        console.log(data);
+        socket.emit('accept-event', data);
+    }
+
+    $scope.checkOwner = function(userID)
+    {
+        console.log(userID);
+
+        if ($scope.eventInfo.owner_id==userID) return 'owner';
+        else return 'accepted';
+
+        //return $scope.eventInfo.owner_id==userID;
+    }
+
     $scope.addUser = function(userEmail)
     {
         var data = { 'eventID' : $scope.eventInfo.event_id, 'users' : [ userEmail ]};

@@ -51,8 +51,8 @@ include layout.jade
                             div(ng-repeat="user in users")
                                 button(class="btn btn-info btn-xs", ng-click="deleteUser(user.user_id)")
                                     text {{ user.email }}
-                                    span(class="glyphicon glyphicon-remove-circle")
-                        div(class="input-group")
+                                    span(class="glyphicon glyphicon-remove-circle", ng-if="checkOwner(#{user.id})=='owner'")
+                        div(class="input-group", ng-if="checkOwner(#{user.id})=='owner'")
                             input(type="text", ng-model="newUser", placeholder="Username", class="form-control")
                             span(class="input-group-btn")
                                 button(class="btn btn-default", type="button", style="padding: 5px", ng-click="addUser(newUser)")
@@ -63,8 +63,8 @@ include layout.jade
                             div(ng-repeat="group in groups")
                                 button(class="btn btn-info btn-xs", ng-click="deleteGroup(group.group_id)")
                                     text {{ group.name }}
-                                    span(class="glyphicon glyphicon-remove-circle")
-                        div(class="input-group")
+                                    span(class="glyphicon glyphicon-remove-circle", ng-if="checkOwner(#{user.id})=='owner'")
+                        div(class="input-group", ng-if="checkOwner(#{user.id})=='owner'")
                             select(ng-model="selectedGroup", ng-options="userGroup.group_id as userGroup.name for userGroup in userGroups")
                                 option(value="{{userGroup.group_id}}")
                                 //option(ng-repeat="userGroup in userGroups", value="{{ userGroup.group_id }}")
@@ -72,10 +72,12 @@ include layout.jade
                             span(class="input-group-btn")
                                 button(class="btn btn-default", type="button", style="padding: 5px", ng-click="addGroup(selectedGroup)")
                                     strong  Dodaj grupę
-
-                    div(class="well")
+                    div(class="well", ng-if="checkOwner(#{user.id})=='owner'")
                         div(class="btn btn-info btn-sm", style="padding: 5px; margin: 2px", ng-click="editEvent(#{eventID})") Edytuj event
                         div(class="btn btn-danger btn-sm", style="padding: 5px; margin: 2px", ng-click="deleteEventButton()") Usuń event
+                    div(class="well", ng-if="checkOwner(#{user.id})=='accepted'")
+                        div(class="btn btn-success btn-sm", style="padding: 5px; margin: 2px", ng-click="acceptEvent(#{eventID})") Akceptuj event
+                        div(class="btn btn-danger btn-sm", style="padding: 5px; margin: 2px", ng-click="rejectEvent(#{eventID})") Odrzuć event
             div(class="row")
                 div(class="col-sm-12")
                     div(class="well")
