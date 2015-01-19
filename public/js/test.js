@@ -1,5 +1,10 @@
 var userID = Number($('#mainContent').attr('user-id'));
 
+socket.on('event-accepted', function(data) {
+  var response = 'Akceptowano/odrzucono wydarzenie: ' + data.response;
+  createAlert(response);
+});
+
 socket.on('tweet-deleted', function(data) {
   var response = 'Tweet usuniety: ' + data.response;
   createAlert(response);
@@ -196,6 +201,14 @@ $("#delete-group-users-btn").on('click', function(){
 
 $("#edit-is-edited-btn").on('click', function(){
   socket.emit('event-is-edited', { eventID : 16 });
+});
+
+$("#accept-event-btn").on('click', function(){
+  socket.emit('accept-event', { response : true, eventID : 4 });
+});
+
+$("#reject-event-btn").on('click', function(){
+  socket.emit('accept-event', { response : false, eventID : 7 });
 });
 
 $(document).ready(function() {
