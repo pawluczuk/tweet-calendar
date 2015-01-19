@@ -80,7 +80,11 @@ $(document).ready(function() {
             console.log(calEvent.id);
             window.location.href = "event/" + calEvent.id;
         },
-        events: '/resources/eventsOwner'
+        eventSources: [
+            '/resources/eventsOwner',
+            '/resources/invitedEventsAccepted',
+            '/resources/invitedEventsNotAccepted'
+        ]
 
         //                   events: "/resources/events?&start=startDate&end=endDate" {
         //                       $.ajax({
