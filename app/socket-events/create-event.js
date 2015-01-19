@@ -5,25 +5,38 @@ module.exports = function(io, query) {
 				callback(false);
 				return;
 			}
-			query('insert into "event" values (DEFAULT, $1::int, $2, $3::text, $4::text, $5, $6, now()::timestamp) returning event_id',
-				[data.ownerId, data.type, data.name, data.description, data.start, data.end],
-				function(err, rows, result) {
-					if (err) {
-						callback(false);
-						return;
-					}
 
-					if (!err && rows && rows[0] && rows[0].event_id) {
+			query('BEGIN TRANSACTION', function (err) {
+				if (err)  {
+					rollback(query, callback);
+					console.log(err);
+					return;
+				}
+				query('insert into "event" values (DEFAULT, $1::int, $2, $3::text, $4::text, $5, $6, now()::timestamp) returning event_id',
+					[data.ownerId, data.type, data.name, data.description, data.start, data.end],
+					function(err, rows, result) {
+						if (err || !rows || !rows[0] || !rows[0].event_id)  {
+							rollback(query, callback);
+							console.log(err);
+							return;
+						}
 						var eventID = rows[0].event_id;
 						var statement = event_user_statement(eventID, data.additionalUsers);
 						query(statement, function(err, rows, result) {
-							if (!err)
-								callback(true, eventID);
-							else
-								callback(false);
+							query('END TRANSACTION',
+			        			function(err) {
+			        				if (err)  {
+										rollback(query, callback);
+										console.log(err);
+										return;
+									}
+			        				else {
+			        					callback(true, eventID);
+			        				}
+			        		});
 						});
-					}
 				});
+			});
 		}
 	};
 };
@@ -43,4 +56,13 @@ function event_user_statement(event_id, userIDs) {
  		if (i !== userIDs.length - 1) statement += ', ';
  	}
  	return statement;
+}
+
+function rollback(query, callback) {
+  query('ROLLBACK', function(err) {
+    if (err) {
+		callback(false);
+		return;
+	}
+  });
 }

@@ -5,31 +5,52 @@ module.exports = function(io, query) {
 				callback(false);
 				return;
 			}
-			query('select user_id from "user_group" where group_id = $1::int', [data.groupID],
+
+			query('BEGIN TRANSACTION', function (err) {
+				if (err)  {
+					rollback(query, callback);
+					console.log(err);
+					return;
+				}
+				query('select user_id from "user_group" where group_id = $1::int', [data.groupID],
 				function(err, rows, result) {
-					if (err) {
-						callback(false);
+					if (err)  {
+						rollback(query, callback);
+						console.log(err);
 						return;
 					}
 					else if (rows && rows.length) {
 						var users = rows;
 						var userIds = getUsersArray(rows);
 						var statement = add_users_statement(data.eventID, rows);
+
 						query(statement, function(err, rows, result) {
-							if (err) {
-								callback(false);
+							if (err)  {
+								rollback(query, callback);
+								console.log(err);
 								return;
 							}
 							else {
 								query('insert into "event_group" values ($1::int,$2::int)',
 									[data.eventID, data.groupID], function(err, rows, result) {
-										if (err) callback(false);
-										else callback(true, userIds);
+										if (err) rollback(query, callback);
+										query('END TRANSACTION',
+						        			function(err) {
+						        				if (err)  {
+													rollback(query, callback);
+													console.log(err);
+													return;
+												}
+						        				else {
+						        					callback(true, userIds);
+						        				}
+						        		});
 									});
 							}
 						});
 					}
-				});			
+				});	
+			});		
 		}
 	};
 };
@@ -54,4 +75,13 @@ function add_users_statement(event_id, users) {
  		if (i !== users.length - 1) statement += ', ';
  	}
  	return statement;
+}
+
+function rollback(query, callback) {
+  query('ROLLBACK', function(err) {
+    if (err) {
+		callback(false);
+		return;
+	}
+  });
 }

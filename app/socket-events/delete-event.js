@@ -5,44 +5,74 @@ module.exports = function(io, query) {
 				callback(false);
 				return;
 			}
-            query('delete from "tweet" where event_id = $1::int', [data.eventID],
+			query('BEGIN TRANSACTION', function (err) {
+				if (err)  {
+					rollback(query, callback);
+					console.log(err);
+					return;
+				}
+				query('delete from "tweet" where event_id = $1::int', [data.eventID],
                 function(err, rows, result) {
-                    if (err) {
-                        callback(false);
-                        return;
-                    }
+                    if (err)  {
+						rollback(query, callback);
+						console.log(err);
+						return;
+					}
 			        query('delete from "event_user" where event_id = $1::int returning user_id', [data.eventID],
 				        function(err, rows, result) {
-					        if (err) {
-					        	callback(false);
-					        	return;
-					        }
+					        if (err)  {
+								rollback(query, callback);
+								console.log(err);
+								return;
+							}
 					        var deletedUsers = rows;
 					        query('delete from "notification" where event_id = $1::int', [data.eventID],
 					        	function(err, rows, result) {
-					        		if (err) {
-					        			callback(false);
-					        			return;
-					        		}
+					        		if (err)  {
+										rollback(query, callback);
+										console.log(err);
+										return;
+									}
 					        		query('delete from "event_group" where event_id = $1::int', [data.eventID],
 							        	function(err, rows, result) {
-							        		if (err) {
-							        			callback(false);
-							        			return;
-							        		}
+							        		if (err)  {
+												rollback(query, callback);
+												console.log(err);
+												return;
+											}
 							        		query('delete from "event" where event_id = $1::int', [data.eventID],
 							        			function(err, rows, result) {
-							        				if (err) {
-							        					callback(false);
-							        				}
-							        				else {
-							        					callback(true, deletedUsers);
-							        				}
+							        				if (err)  {
+														rollback(query, callback);
+														console.log(err);
+														return;
+													}
+							        				query('END TRANSACTION',
+									        			function(err) {
+									        				if (err)  {
+																rollback(query, callback);
+																console.log(err);
+																return;
+															}
+									        				else {
+									        					callback(true, deletedUsers);
+									        				}
+									        		});
 							        		});
 							        });
 					        });
 		        	});
-              });
+              	});
+			});
 		}
 	};
 };
+
+function rollback(query, callback) {
+  query('ROLLBACK', function(err) {
+    if (err) {
+		callback(false);
+		return;
+	}
+  });
+}

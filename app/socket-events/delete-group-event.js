@@ -5,31 +5,55 @@ module.exports = function(io, query) {
 				callback(false);
 				return;
 			}
+
+			query('BEGIN TRANSACTION', function (err) {
+				if (err)  {
+					rollback(query, callback);
+					console.log(err);
+					return;
+				}
+			});
+
 			query('select user_id from "user_group" where group_id = $1::int', [data.groupID],
 				function(err, rows, result) {
-					if (err) {
-						callback(false);
+					if (err || !rows || !rows.length)  {
+						rollback(query, callback);
+						console.log(err);
 						return;
 					}
-					else if (rows && rows.length) {
-						var users = rows;
-						var userIds = getUsersArray(rows);
-						var statement = delete_users_statement(data.eventID, rows);
-						query(statement, function(err, rows, result) {
-							if (err) {
-								callback(false);
-								return;
-							}
-							else {
-								query('delete from "event_group" where event_id = $1::int and group_id = $2::int',
-									[data.eventID, data.groupID], function(err, rows, result) {
-										if (err) callback(false);
-										else callback(true, userIds);
-									});
-							}
-						});
-					}
-				});			
+					
+					var users = rows;
+					var userIds = getUsersArray(rows);
+					var statement = delete_users_statement(data.eventID, rows);
+					query(statement, function(err, rows, result) {
+						if (err)  {
+							rollback(query, callback);
+							console.log(err);
+							return;
+						}
+						else {
+							query('delete from "event_group" where event_id = $1::int and group_id = $2::int',
+								[data.eventID, data.groupID], function(err, rows, result) {
+									if (err)  {
+										rollback(query, callback);
+										console.log(err);
+										return;
+									}
+									query('END TRANSACTION',
+					        			function(err) {
+					        				if (err)  {
+												rollback(query, callback);
+												console.log(err);
+												return;
+											}
+					        				else {
+					        					callback(true, userIds);
+					        				}
+					        		});
+								});
+						}
+					});
+			});			
 		}
 	};
 };

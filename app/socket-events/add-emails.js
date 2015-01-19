@@ -6,19 +6,42 @@ module.exports = function(io, query) {
 				return;
 			}
 			var usersStatement = get_users_statement(data.users);
-			query(usersStatement, function(err, rows, result) {
-				if (err || !rows || !rows.length) {
-					callback(false);
+
+			query('BEGIN TRANSACTION', function (err) {
+				if (err)  {
+					rollback(query, callback);
+					console.log(err);
 					return;
 				}
-				else {
-					var userIds = getUsersArray(rows);
-					var insertStatement = add_users_statement(data.eventID, rows);
-					query(insertStatement, function(err, rows, result) {
-						if (!err) callback(true, userIds);
-						else callback(false);
-					});
-				}
+				query(usersStatement, function(err, rows, result) {
+					if (err || !rows || !rows.length) {
+						rollback(query, callback);
+						console.log(err);
+						return;
+					}
+					else {
+						var userIds = getUsersArray(rows);
+						var insertStatement = add_users_statement(data.eventID, rows);
+						query(insertStatement, function(err, rows, result) {
+							if (err)  {
+								rollback(query, callback);
+								console.log(err);
+								return;
+							}
+							query('END TRANSACTION',
+			        			function(err) {
+			        				if (err)  {
+										rollback(query, callback);
+										console.log(err);
+										return;
+									}
+			        				else {
+			        					callback(true, userIds);
+			        				}
+			        		});
+						});
+					}
+				});
 			});
 		}
 	};
@@ -56,4 +79,13 @@ function add_users_statement(event_id, userIDs) {
  		if (i !== userIDs.length - 1) statement += ', ';
  	}
  	return statement;
+}
+
+function rollback(query, callback) {
+  query('ROLLBACK', function(err) {
+    if (err) {
+		callback(false);
+		return;
+	}
+  });
 }

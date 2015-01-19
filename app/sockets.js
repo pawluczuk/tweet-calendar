@@ -14,7 +14,6 @@ module.exports = function(io, sessionStore, passportSocketIo, passport, express,
 	var addGroup = require('./socket-events/add-group.js')(io, query);
 	var addEmails = require('./socket-events/add-emails.js')(io, query);
 	var deleteUsers = require('./socket-events/delete-users.js')(io, query);
-	var deleteCons = require('./socket-events/delete-cons.js')(io, query);
 	var addGroupUsers = require('./socket-events/add-group-users.js')(io, query);
 	var deleteGroupEvent = require('./socket-events/delete-group-event.js')(io, query);
 	var newTweet = require('./socket-events/add-tweet.js')(io, query);

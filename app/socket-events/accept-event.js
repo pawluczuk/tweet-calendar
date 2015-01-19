@@ -23,7 +23,11 @@ module.exports = function(io, query) {
 function removeEvent(eventID, userID, query) {
 	query('delete from "event_user" where event_id = $1::int and user_id = $2::int',
 		[eventID, userID], function(err, rows, result) {
-			callback(false);
+			if (err) {
+				callback(false);
+				return;
+			}
+			else callback(true);
 		});
 }
 

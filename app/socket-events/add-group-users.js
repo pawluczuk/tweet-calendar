@@ -6,18 +6,25 @@ module.exports = function(io, query) {
 				return;
 			}
 			var usersStatement = get_users_statement(data.users);
-			query(usersStatement, function(err, rows, result) {
-				if (err || !rows || !rows.length) {
-					callback(false);
-					return;
-				}
-				else {
-					var insertStatement = add_users_statement(data.groupID, rows);
-					query(insertStatement, function(err, rows, result) {
-						if (!err) callback(true);
-						else callback(false);
-					});
-				}
+
+			query('BEGIN TRANSACTION', function (err) {
+				if (err) rollback(query, callback);
+				query(usersStatement, function(err, rows, result) {
+					if (err || !rows || !rows.length) rollback(query, callback);
+					else {
+						var insertStatement = add_users_statement(data.groupID, rows);
+						query(insertStatement, function(err, rows, result) {
+							if (err) rollback(query, callback);
+							query('END TRANSACTION',
+			        			function(err) {
+			        				if (err) rollback(query, callback);
+			        				else {
+			        					callback(true);
+			        				}
+			        		});
+						});
+					}
+				});
 			});
 		}
 	};
@@ -55,4 +62,13 @@ function add_users_statement(group_id, userIDs) {
  		if (i !== userIDs.length - 1) statement += ', ';
  	}
  	return statement;
+}
+
+function rollback(query, callback) {
+  query('ROLLBACK', function(err) {
+    if (err) {
+		callback(false);
+		return;
+	}
+  });
 }
