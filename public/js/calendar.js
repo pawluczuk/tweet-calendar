@@ -40,6 +40,7 @@ $(document).ready(function() {
     //                   }
     //               });
     $('#calendar').fullCalendar({
+        lang: 'pl',
         header: {
             left: 'prev,next, today',
             center: 'title',
